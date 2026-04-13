@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مُقيِّم القرار الاستراتيجي · غرفة العمليات</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@300;400;600;700&display=swap');
+:root{
+  --gold:#C49A3C;--gl:#E8C060;--gdim:rgba(196,154,60,0.10);
+  --ink:#07090F;--surf:#0D1118;
+  --bdr:rgba(196,154,60,0.18);--teal:#1AA886;--red:#E24B4A;--amber:#BA7517;--blue:#378ADD;
+  --tx:#E8D5A0;--t2:#9AABB5;--t3:#5A6A75;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-size:14px;line-height:1.8;min-height:100vh}
+.hdr{background:linear-gradient(135deg,#0A0C12,#111827);border-bottom:1px solid var(--bdr);padding:18px 28px;position:relative}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.hdr-in{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px}
+.seal{width:40px;height:40px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);font-family:'Scheherazade New',serif;flex-shrink:0}
+.org{font-family:'Scheherazade New',serif;font-size:16px;color:var(--tx);font-weight:700}
+.sub{font-size:9px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.hbadge{font-size:10px;font-weight:700;color:var(--gold);padding:3px 14px;border:1px solid rgba(196,154,60,0.35);border-radius:20px;background:rgba(196,154,60,0.08);font-family:'IBM Plex Mono',monospace}
+.main{max-width:860px;margin:0 auto;padding:24px 16px 60px}
+.tabs{display:flex;border-bottom:1px solid var(--bdr);margin-bottom:24px}
+.tab{padding:10px 20px;font-size:11px;font-weight:600;color:var(--t3);border-bottom:2px solid transparent;white-space:nowrap;font-family:'IBM Plex Mono',monospace;transition:all .2s}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab.done{color:var(--teal);border-bottom-color:var(--teal)}
+.ph{display:none}.ph.show{display:block}
+.api-row{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.api-lbl{font-size:10px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.api-inp-row{display:flex;align-items:center;gap:8px}
+.api-dot{width:8px;height:8px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:background .3s}
+.api-dot.ok{background:var(--teal)}
+.api-inp{flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(196,154,60,0.25);border-radius:7px;padding:9px 12px;color:var(--tx);font-family:'IBM Plex Mono',monospace;font-size:12px;outline:none;direction:ltr;transition:border-color .2s}
+.api-inp:focus{border-color:rgba(196,154,60,0.5)}
+.api-inp::placeholder{color:var(--t3)}
+.api-hint{font-size:10px;color:var(--t3);margin-top:6px}
+.upload-zone{background:var(--surf);border:2px dashed rgba(196,154,60,0.22);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:12px}
+.upload-zone:hover{border-color:var(--gold);background:var(--gdim)}
+.upload-zone input{display:none}
+.uz-name{font-size:11px;color:var(--teal);font-family:'IBM Plex Mono',monospace;margin-top:6px;display:none}
+.divider{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--t3);font-size:11px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.dec-inp{width:100%;min-height:180px;background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;color:var(--tx);font-family:'Cairo',sans-serif;font-size:13.5px;line-height:1.85;resize:vertical;outline:none;direction:rtl;transition:border-color .2s;margin-bottom:12px}
+.dec-inp:focus{border-color:rgba(196,154,60,0.45)}
+.dec-inp::placeholder{color:var(--t3)}
+.char-row{display:flex;justify-content:space-between;margin-bottom:14px;font-size:11px;color:var(--t3);font-family:'IBM Plex Mono',monospace}
+.go-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gl));color:var(--ink);border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s}
+.go-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(196,154,60,.3)}
+.go-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.load-wrap{text-align:center;padding:60px 20px}
+.load-seal{width:68px;height:68px;border-radius:50%;border:2px solid var(--gold);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--gold);font-family:'Scheherazade New',serif;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(196,154,60,.4)}50%{box-shadow:0 0 0 14px rgba(196,154,60,0)}}
+.load-title{font-family:'Scheherazade New',serif;font-size:20px;color:var(--tx);margin-bottom:8px}
+.load-step{font-size:12px;color:var(--t3);font-family:'IBM Plex Mono',monospace;min-height:18px}
+.load-bar-wrap{width:300px;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin:20px auto;overflow:hidden}
+.load-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:2px;width:0;transition:width .4s ease}
+.score-hero{background:linear-gradient(135deg,#0A0C12,#111827);border:1px solid var(--bdr);border-radius:14px;padding:28px;margin-bottom:18px;text-align:center;position:relative;overflow:hidden}
+.score-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.score-num{font-size:72px;font-weight:900;font-family:'IBM Plex Mono',monospace;line-height:1;margin-bottom:6px}
+.score-lbl{font-size:10px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin-bottom:14px}
+.score-verdict{font-size:13px;font-weight:700;padding:7px 22px;border-radius:22px;display:inline-block;margin-bottom:18px}
+.sv-r{background:rgba(26,168,134,.12);color:var(--teal);border:1px solid rgba(26,168,134,.35)}
+.sv-p{background:rgba(186,117,23,.12);color:var(--amber);border:1px solid rgba(186,117,23,.35)}
+.sv-n{background:rgba(226,75,74,.12);color:var(--red);border:1px solid rgba(226,75,74,.35)}
+.score-meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:11px;color:var(--t3);font-family:'IBM Plex Mono',monospace;border-top:1px solid var(--bdr);padding-top:14px}
+.score-meta span{display:flex;flex-direction:column;align-items:center;gap:3px}
+.score-meta b{color:var(--tx);font-size:13px;font-weight:500}
+.dims{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+@media(max-width:540px){.dims{grid-template-columns:1fr}}
+.dim{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:13px;position:relative;overflow:hidden}
+.dim::before{content:'';position:absolute;top:0;right:0;bottom:0;width:3px}
+.dim.ok::before{background:var(--teal)}.dim.mid::before{background:var(--amber)}.dim.low::before{background:var(--red)}
+.dim-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.dim-name{font-size:11px;font-weight:700;color:var(--tx)}
+.dim-sc{font-size:14px;font-weight:900;font-family:'IBM Plex Mono',monospace}
+.dim-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-bottom:7px;overflow:hidden}
+.dim-fill{height:100%;border-radius:2px}
+.dim-found{font-size:11px;color:var(--teal);line-height:1.5}
+.dim-miss{font-size:11px;color:var(--red);margin-top:4px;line-height:1.5}
+.sec{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.sec-h{display:flex;align-items:center;gap:8px;padding:11px 16px;background:rgba(196,154,60,0.04);border-bottom:1px solid var(--bdr)}
+.sec-n{font-size:9px;color:var(--gold);letter-spacing:3px;font-family:'IBM Plex Mono',monospace}
+.sec-t{font-size:13px;font-weight:700;color:var(--tx);flex:1}
+.badge{font-size:10px;padding:2px 9px;border-radius:20px;font-weight:600}
+.b-r{background:rgba(26,168,134,.1);color:var(--teal);border:1px solid rgba(26,168,134,.3)}
+.b-w{background:rgba(186,117,23,.1);color:var(--amber);border:1px solid rgba(186,117,23,.3)}
+.b-d{background:rgba(226,75,74,.1);color:var(--red);border:1px solid rgba(226,75,74,.3)}
+.b-b{background:rgba(55,138,221,.1);color:var(--blue);border:1px solid rgba(55,138,221,.3)}
+.sec-b{padding:15px 16px}
+.item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px}
+.item:last-child{border-bottom:none}
+.item-n{font-size:9px;color:var(--t3);font-family:'IBM Plex Mono',monospace;min-width:20px;margin-top:2px}
+.item-c{flex:1;line-height:1.65}
+.item-t{font-weight:700;color:var(--tx);margin-bottom:3px}
+.item-d{color:var(--t2)}
+.item-r{font-size:11px;color:var(--teal);margin-top:5px;padding:4px 9px;background:rgba(26,168,134,0.06);border-radius:5px;border-right:2px solid var(--teal)}
+.q-item{padding:10px 14px;background:rgba(55,138,221,0.05);border:1px solid rgba(55,138,221,0.15);border-right:3px solid var(--blue);border-radius:6px;margin-bottom:8px;font-size:12.5px;color:var(--t2);line-height:1.65}
+.q-item:last-child{margin-bottom:0}
+.verdict-box{background:linear-gradient(135deg,rgba(196,154,60,0.06),rgba(196,154,60,0.02));border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:18px;font-size:13px;color:var(--t2);line-height:1.9}
+.act-row{display:flex;gap:10px;flex-wrap:wrap}
+.ab{padding:10px 20px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:none}
+.ab-g{background:linear-gradient(135deg,var(--gold),var(--gl));color:var(--ink)}
+.ab-t{background:rgba(26,168,134,.1);color:var(--teal);border:1px solid rgba(26,168,134,.3)}
+.ab-o{background:transparent;color:var(--t2);border:1px solid var(--bdr)}
+.ab-g:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(196,154,60,.25)}
+.ab-t:hover{background:rgba(26,168,134,.2)}
+.ab-o:hover{border-color:var(--t2);color:var(--tx)}
+.err{background:rgba(226,75,74,.06);border:1px solid rgba(226,75,74,.25);border-right:3px solid var(--red);border-radius:8px;padding:14px 16px;margin-bottom:14px;font-size:13px;color:rgba(226,75,74,.95);line-height:1.7;display:none}
+.err.show{display:block}
+@media print{
+  .hdr,.tabs,.act-row,.load-wrap,.api-row,.upload-zone,.divider,.dec-inp,.char-row,.go-btn,.err{display:none!important}
+  body{background:#fff;color:#1C2028}
+  .score-hero{background:#f8f6f0;border:2px solid #C49A3C}
+  .score-num{color:#C49A3C}
+  .sec{border:1px solid #ddd}.sec-h{background:#f8f6f0}
+  .sec-t,.item-t{color:#1C2028}
+  .item-d,.q-item,.verdict-box{color:#333}
+  .dim{border:1px solid #ddd}
+  @page{size:A4;margin:14mm 18mm}
+}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="logo">
+      <div class="seal">غ.ع</div>
+      <div><div class="org">غرفة العمليات الاستراتيجية</div><div class="sub">DECISION ASSESSOR v2.1 · AI-POWERED</div></div>
+    </div>
+    <div class="hbadge">⬡ مُقيِّم القرار</div>
+  </div>
+</div>
+<div class="main">
+  <div class="tabs">
+    <div class="tab active" id="t1">01 · القرار</div>
+    <div class="tab" id="t2">02 · التقييم</div>
+    <div class="tab" id="t3">03 · التقرير</div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="ph show" id="p1">
+    <div class="api-row">
+      <div class="api-lbl">
+        <span>مفتاح Anthropic API</span>
+        <span id="apiSt" style="font-size:10px;color:var(--t3)">غير متصل</span>
+      </div>
+      <div class="api-inp-row">
+        <div class="api-dot" id="apiDot"></div>
+        <input class="api-inp" type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
+      </div>
+      <div class="api-hint">المفتاح يُستخدم محلياً ولا يُحفظ</div>
+    </div>
+    <div class="err" id="errBox"></div>
+    <label class="upload-zone">
+      <input type="file" id="fileIn" accept=".txt,.docx,.doc,.pdf">
+      <div style="font-size:28px;margin-bottom:8px">📎</div>
+      <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px">ارفع ملف القرار</div>
+      <div style="font-size:12px;color:var(--t3)">PDF · Word · نص</div>
+      <div class="uz-name" id="uzName"></div>
+    </label>
+    <div class="divider">أو اكتب القرار مباشرة</div>
+    <textarea class="dec-inp" id="decTxt" placeholder="اكتب قرارك الاستراتيجي هنا..."></textarea>
+    <div class="char-row">
+      <span id="charCnt">0 حرف</span>
+      <span id="minHint" style="color:var(--red);display:none">50 حرف على الأقل</span>
+    </div>
+    <button class="go-btn" id="goBtn" disabled>⬡ تقييم القرار بالذكاء الاصطناعي</button>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="ph" id="p2">
+    <div class="load-wrap">
+      <div class="load-seal">غ.ع</div>
+      <div class="load-title">المُقيِّم يحلل قرارك</div>
+      <div class="load-step" id="loadStep">جارٍ التحليل...</div>
+      <div class="load-bar-wrap"><div class="load-bar" id="loadBar"></div></div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="ph" id="p3">
+    <div class="score-hero">
+      <div style="display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--teal);background:rgba(26,168,134,.08);border:1px solid rgba(26,168,134,.25);padding:3px 10px;border-radius:20px;font-family:'IBM Plex Mono',monospace;margin-bottom:10px" id="aiBadge">✦ Claude AI</div>
+      <div class="score-num" id="rScore">—</div>
+      <div class="score-lbl">درجة نضج القرار / 100</div>
+      <div class="score-verdict" id="rVerdict"></div>
+      <div class="score-meta">
+        <span><b id="smType">—</b>نوع القرار</span>
+        <span><b id="smRef">—</b>رقم التقييم</span>
+        <span><b id="smDate">—</b>التاريخ</span>
+        <span><b id="smReady">—</b>جاهزية المجلس</span>
+      </div>
+    </div>
+    <div class="dims" id="dimsGrid"></div>
+    <div class="sec">
+      <div class="sec-h"><span class="sec-n">01</span><span class="sec-t">نقاط القوة</span><span class="badge b-r">موجودة</span></div>
+      <div class="sec-b" id="bStr"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="sec-n">02</span><span class="sec-t">الثغرات الحرجة</span><span class="badge b-d" id="bGapCnt"></span></div>
+      <div class="sec-b" id="bGap"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="sec-n">03</span><span class="sec-t">توصيات التعزيز</span><span class="badge b-w">إجراءات محددة</span></div>
+      <div class="sec-b" id="bRec"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="sec-n">04</span><span class="sec-t">التحيزات المعرفية</span><span class="badge b-w" id="bBiasCnt"></span></div>
+      <div class="sec-b" id="bBias"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="sec-n">05</span><span class="sec-t">أسئلة المجلس الـ28</span><span class="badge b-b">للخبراء</span></div>
+      <div class="sec-b" id="bQ"></div>
+    </div>
+    <div class="verdict-box" id="bVerdict"></div>
+    <div class="act-row">
+      <button class="ab ab-g" onclick="sendSOR()">⚡ إرسال للمجلس</button>
+      <button class="ab ab-t" onclick="window.print()">🖨 طباعة</button>
+      <button class="ab ab-o" onclick="copyR()">📋 نسخ</button>
+      <button class="ab ab-o" onclick="reset()">↺ جديد</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var KEY = '', DEC = '', REP = {};
+
+var DIMS = {
+  context:      {n:'السياق والوضع الراهن',    w:10},
+  objective:    {n:'الأهداف ومعايير النجاح',  w:15},
+  decision:     {n:'وضوح القرار والبدائل',    w:18},
+  data:         {n:'البيانات والأدلة',         w:14},
+  stakeholders: {n:'أصحاب المصلحة',           w:8},
+  resources:    {n:'الموارد والقيود',          w:10},
+  risks:        {n:'المخاطر والفرص',           w:13},
+  timeline:     {n:'الجدول التنفيذي',          w:8},
+  compliance:   {n:'الامتثال والحوكمة',        w:4}
+};
+
+var TYPES = {
+  investment:'استثمار رأس المال', market_entry:'دخول سوق جديد',
+  ma:'اندماج واستحواذ', transformation:'تحول مؤسسي',
+  partnership:'شراكة استراتيجية', crisis:'قرار أزمة',
+  product:'إطلاق منتج', general:'قرار استراتيجي'
+};
+
+// ═══ EVENT LISTENERS ═══════════════════════════════
+document.getElementById('apiKey').addEventListener('input', function(){
+  KEY = this.value.trim();
+  var ok = KEY.startsWith('sk-ant-') && KEY.length > 20;
+  document.getElementById('apiDot').className = 'api-dot' + (ok ? ' ok' : '');
+  document.getElementById('apiSt').textContent = ok ? 'متصل ✓' : 'غير متصل';
+  document.getElementById('apiSt').style.color = ok ? '#1AA886' : 'var(--t3)';
+  chkReady();
+});
+
+document.getElementById('decTxt').addEventListener('input', function(){
+  DEC = this.value.trim();
+  document.getElementById('charCnt').textContent = DEC.length + ' حرف';
+  document.getElementById('minHint').style.display = DEC.length > 0 && DEC.length < 50 ? 'inline' : 'none';
+  chkReady();
+});
+
+document.getElementById('fileIn').addEventListener('change', function(){
+  var f = this.files[0];
+  if(!f) return;
+  var nm = document.getElementById('uzName');
+  nm.style.display = 'block';
+  nm.textContent = '⏳ جارٍ القراءة...';
+  readFile(f).then(function(txt){
+    if(!txt.startsWith('[')){
+      document.getElementById('decTxt').value = txt;
+      DEC = txt.trim();
+      document.getElementById('charCnt').textContent = DEC.length + ' حرف';
+      nm.textContent = '✓ ' + f.name;
+      chkReady();
+    } else {
+      nm.textContent = '⚠ ' + f.name + ' — الصق النص يدوياً';
+    }
+  }).catch(function(){ nm.textContent = '⚠ تعذّرت القراءة'; });
+});
+
+function chkReady(){
+  document.getElementById('goBtn').disabled = !(KEY.startsWith('sk-ant-') && KEY.length > 20 && DEC.length >= 50);
+}
+
+// ═══ FILE READING ════════════════════════════════
+async function readFile(f){
+  var n = f.name.toLowerCase();
+  if(f.type === 'text/plain' || n.endsWith('.txt')) return f.text();
+  if(n.endsWith('.docx') || n.endsWith('.doc')){
+    if(!window.JSZip) await loadSc('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+    var z = await JSZip.loadAsync(await f.arrayBuffer());
+    var d = z.file('word/document.xml');
+    if(!d) return '[لم يُعثر على محتوى]';
+    var xml = await d.async('string');
+    var out = [], p = 0;
+    while(p < xml.length){
+      var wi = xml.indexOf('<w:t', p), pi = xml.indexOf('</w:p>', p);
+      if(wi === -1) break;
+      if(pi !== -1 && pi < wi){ out.push('\n'); p = pi+6; continue; }
+      var gt = xml.indexOf('>', wi), ct = xml.indexOf('</w:t>', gt);
+      if(gt === -1 || ct === -1) break;
+      var t = xml.substring(gt+1, ct);
+      if(t.length) out.push(t);
+      p = ct+6;
+    }
+    var r = out.join('').replace(/\s+/g,' ').trim();
+    return r.length > 60 ? r.substring(0,8000) : '[النص فارغ]';
+  }
+  if(n.endsWith('.pdf') || f.type === 'application/pdf'){
+    var bytes = new Uint8Array(await f.arrayBuffer());
+    var raw = '', lim = Math.min(bytes.length, 200000);
+    for(var i=0;i<lim;i++) raw += String.fromCharCode(bytes[i]);
+    var parts = [], j = 0;
+    while(j < raw.length){
+      var tj = raw.indexOf(') Tj', j);
+      if(tj === -1) break;
+      var op = raw.lastIndexOf('(', tj);
+      if(op !== -1 && tj-op < 400){ var c = raw.substring(op+1,tj).trim(); if(c.length>1) parts.push(c); }
+      j = tj+4;
+    }
+    var pdf = parts.join(' ').replace(/\s+/g,' ').trim();
+    return pdf.length > 80 ? pdf.substring(0,6000) : '[تعذّر استخراج PDF — الصق النص يدوياً]';
+  }
+  return f.text().catch(function(){ return '[تعذّرت القراءة]'; });
+}
+
+function loadSc(src){
+  return new Promise(function(res,rej){
+    var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s);
+  });
+}
+
+// ═══ ASSESSMENT ══════════════════════════════════
+document.getElementById('goBtn').addEventListener('click', startAssess);
+
+async function startAssess(){
+  showErr('');
+  goPhase(2);
+  var bar = document.getElementById('loadBar');
+  var step = document.getElementById('loadStep');
+  var STEPS = ['قراءة القرار وتحديد نوعه...','تقييم الأبعاد التسعة...','كشف الثغرات والتحيزات...','صياغة توصيات المجلس...','بناء تقرير النضج...'];
+  var si = 0, bw = 10;
+  bar.style.width = '10%';
+  step.textContent = STEPS[0];
+  var st = setInterval(function(){ si=(si+1)%STEPS.length; step.textContent=STEPS[si]; }, 5000);
+  var bt = setInterval(function(){ if(bw<88){bw+=2;bar.style.width=bw+'%';} }, 1200);
+  try{
+    var result = await callAPI(DEC);
+    clearInterval(st); clearInterval(bt);
+    bar.style.width = '100%';
+    step.textContent = 'اكتمل التقييم ✓';
+    await sleep(400);
+    render(result);
+    goPhase(3);
+  } catch(err){
+    clearInterval(st); clearInterval(bt);
+    goPhase(1);
+    var m = err.message || 'خطأ غير معروف';
+    if(m.includes('401')) m = 'مفتاح API غير صحيح — تحقق من المفتاح';
+    else if(m.includes('429')) m = 'تم تجاوز الحد — انتظر دقيقة وأعد المحاولة';
+    else if(m.includes('529') || m.includes('500')) m = 'الخادم مشغول — انتظر 30 ثانية وأعد المحاولة';
+    else if(m.includes('fetch') || m.includes('network') || m.includes('Network')) m = 'تعذّر الاتصال — تحقق من الإنترنت';
+    else if(m.includes('abort') || m.includes('Abort')) m = 'انتهت مهلة الاتصال — أعد المحاولة';
+    showErr('⚠ ' + m);
+  }
+}
+
+// ═══ API CALL ════════════════════════════════════
+async function callAPI(text){
+  var ctrl = new AbortController();
+  var tid = setTimeout(function(){ ctrl.abort(); }, 90000);
+  var resp;
+  try {
+    resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: ctrl.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: buildBody(text)
+    });
+  } finally {
+    clearTimeout(tid);
+  }
+  if(resp.status === 401) throw new Error('401 مفتاح خاطئ');
+  if(resp.status === 429) throw new Error('429 حد الاستخدام');
+  if(resp.status === 529 || resp.status === 500){ await sleep(30000); return callAPI(text); }
+  if(!resp.ok){
+    var ed = await resp.json().catch(function(){return{};});
+    throw new Error((ed.error && ed.error.message) || 'HTTP ' + resp.status);
+  }
+  var data = await resp.json();
+  var raw = (data.content && data.content[0]) ? data.content[0].text : '';
+  return parseJSON(raw);
+}
+
+function buildBody(text){
+  var SYS = buildSYS();
+  var payload = {
+    model: 'claude-sonnet-4-6',
+    max_tokens: 4000,
+    system: SYS,
+    messages: [{ role: 'user', content: 'Decision text to assess:\n\n' + text.substring(0, 6000) }]
+  };
+  return JSON.stringify(payload);
+}
+
+function buildSYS(){
+  var lines = [
+    'You are an expert strategic decision assessor at the Strategic Operations Room (SOR) in Saudi Arabia.',
+    '',
+    'TASK: Assess the decision text and return ONLY a JSON object. Zero text before or after JSON.',
+    '',
+    'RULES:',
+    '1. Start your response with { and end with } — nothing else',
+    '2. All string values must be valid JSON strings (properly escaped)',
+    '3. Write found/missing/reason/action in Arabic (max 80 chars each)',
+    '4. Scores are integers 0-100',
+    '5. decType must be one of: investment, market_entry, ma, transformation, partnership, crisis, product, general',
+    '',
+    'FRAMEWORKS BY TYPE:',
+    'investment=NPV+IRR+Monte Carlo | market_entry=Porter+CAGE | ma=Synergy+DueDiligence',
+    'transformation=Kotter+ADKAR | partnership=TCE+Nash | crisis=OODA+Triage',
+    'product=JTBD+GTM | general=SWOT+PESTLE+Balanced Scorecard',
+    '',
+    'GULF CONTEXT: Vision 2030, SAMA, CMA, SDAIA, ZATCA, NCA, PDPL 2023',
+    '',
+    'JSON STRUCTURE (return exactly this format with your values):',
+    '{',
+    '"score": 65,',
+    '"decType": "investment",',
+    '"dims": {',
+    '"context": {"score": 70, "found": "وصف المنظمة واضح", "missing": "حجم السوق غائب"},',
+    '"objective": {"score": 55, "found": "هدف موجود", "missing": "KPIs غير محددة"},',
+    '"decision": {"score": 75, "found": "قرار محدد", "missing": "لا بدائل"},',
+    '"data": {"score": 45, "found": "بعض الأرقام", "missing": "مصادر البيانات"},',
+    '"stakeholders": {"score": 40, "found": "ذُكر العملاء", "missing": "أصحاب المصلحة الداخليين"},',
+    '"resources": {"score": 60, "found": "ميزانية تقريبية", "missing": "الكفاءات المطلوبة"},',
+    '"risks": {"score": 50, "found": "مخاطر السوق", "missing": "خطة الطوارئ"},',
+    '"timeline": {"score": 40, "found": "إطار زمني عام", "missing": "مراحل تفصيلية"},',
+    '"compliance": {"score": 65, "found": "رؤية 2030 مذكورة", "missing": "جهات تنظيمية محددة"}',
+    '},',
+    '"strengths": ["نقطة قوة أولى", "نقطة قوة ثانية", "نقطة قوة ثالثة"],',
+    '"criticalGaps": [',
+    '{"dim": "البيانات والأدلة", "score": 45, "reason": "لا توجد أرقام موثقة", "action": "أضف بيانات من GASTAT أو دراسة سوق"}',
+    '],',
+    '"recommendations": [',
+    '{"dim": "الأهداف", "priority": "حرج", "action": "صُغ هدفاً SMART برقم ومدة محددة", "framework": "SMART Goals + OKRs"}',
+    '],',
+    '"biases": [',
+    '{"name": "تحيز التأكيد", "evidence": "يذكر الإيجابيات فقط", "rec": "أضف الحجج المضادة"}',
+    '],',
+    '"councilQuestions": [',
+    '{"label": "مالي", "q": "ما معدل العائد المطلوب مقارنة بتكلفة رأس المال؟"}',
+    '],',
+    '"verdict": "القرار في مرحلة النضج الجزئي. يُوصى بتعزيز البيانات والمخاطر قبل دخول المجلس."',
+    '}'
+  ];
+  return lines.join('\n');
+}
+
+function parseJSON(raw){
+  // خطوة 1: تنظيف markdown
+  raw = raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+
+  // خطوة 2: استخراج JSON object
+  var s = raw.indexOf('{');
+  var e = raw.lastIndexOf('}');
+  if(s === -1 || e === -1 || e <= s) throw new Error('لم يُعثر على JSON في الرد');
+  var j = raw.substring(s, e+1);
+
+  // خطوة 3: محاولة parse مباشرة
+  try{ return JSON.parse(j); } catch(e1){}
+
+  // خطوة 4: إزالة trailing commas
+  try{ return JSON.parse(j.replace(/,(\s*[}\]])/g,'$1')); } catch(e2){}
+
+  // خطوة 5: إصلاح القيم العربية غير المُقتبَسة
+  // مثال: {"found": وصف واضح} → {"found": "وصف واضح"}
+  var fixed = fixUnquoted(j);
+  try{ return JSON.parse(fixed); } catch(e3){}
+  try{ return JSON.parse(fixed.replace(/,(\s*[}\]])/g,'$1')); } catch(e4){}
+
+  // خطوة 6: تنظيف control chars
+  try{
+    var cleaned = fixed.replace(/[\x00-\x1F\x7F]/g, function(ch){
+      if(ch === '\n') return '\\n';
+      if(ch === '\t') return '\\t';
+      return '';
+    });
+    return JSON.parse(cleaned);
+  } catch(e5){
+    throw new Error('تعذّر تحليل الرد — حاول مرة أخرى');
+  }
+}
+
+function fixUnquoted(j){
+  // إصلاح القيم النصية غير المُقتبَسة في JSON
+  var result = '';
+  var i = 0;
+  while(i < j.length){
+    var ch = j[i];
+    // تجاوز strings المُقتبَسة كاملاً
+    if(ch === '"'){
+      result += ch; i++;
+      while(i < j.length){
+        var c2 = j[i];
+        result += c2; i++;
+        if(c2 === '\\' && i < j.length){ result += j[i]; i++; continue; }
+        if(c2 === '"') break;
+      }
+      continue;
+    }
+    // بعد : — هل القيمة بدون quotes؟
+    if(ch === ':'){
+      result += ch; i++;
+      // تخطي whitespace
+      while(i < j.length && (j[i]===' '||j[i]==='\t'||j[i]==='\n'||j[i]==='\r')){
+        result += j[i]; i++;
+      }
+      if(i < j.length){
+        var nxt = j[i];
+        // قيمة نصية بدون quotes إذا لم تبدأ بـ " { [ 0-9 t f n -
+        if(nxt !== '"' && nxt !== '{' && nxt !== '[' && nxt !== ']' && nxt !== '}' &&
+           !(nxt >= '0' && nxt <= '9') && nxt !== '-' &&
+           nxt !== 't' && nxt !== 'f' && nxt !== 'n'){
+          // ابحث عن نهاية القيمة
+          var end = i;
+          while(end < j.length && j[end] !== ',' && j[end] !== '}' && j[end] !== ']' && j[end] !== '\n'){
+            end++;
+          }
+          var val = j.substring(i, end).trim();
+          if(val.length > 0){
+            result += '"' + val.replace(/"/g, '\\"') + '"';
+            i = end;
+            continue;
+          }
+        }
+      }
+      continue;
+    }
+    result += ch; i++;
+  }
+  return result;
+}
+
+// ═══ RENDER ══════════════════════════════════════
+function render(r){
+  REP = r;
+  var sc = parseInt(r.score)||0;
+  var ref = 'SOR-DA-' + Date.now().toString(36).toUpperCase().slice(-7);
+  var now = new Date();
+  var el = document.getElementById('rScore');
+  el.textContent = sc;
+  el.style.color = sc>=75?'#1AA886':sc>=50?'#C49A3C':'#E24B4A';
+  var vd = document.getElementById('rVerdict');
+  if(sc>=75){vd.textContent='✦ ناضج — جاهز للمجلس';vd.className='score-verdict sv-r';}
+  else if(sc>=50){vd.textContent='⚠ نضج جزئي — يحتاج تعزيزاً';vd.className='score-verdict sv-p';}
+  else{vd.textContent='✗ غير جاهز — ثغرات حرجة';vd.className='score-verdict sv-n';}
+  document.getElementById('smType').textContent = TYPES[r.decType]||r.decType||'—';
+  document.getElementById('smRef').textContent = ref;
+  document.getElementById('smDate').textContent = now.toLocaleDateString('ar-SA',{month:'short',day:'numeric'});
+  document.getElementById('smReady').textContent = sc>=75?'نعم ✓':sc>=50?'مشروط ⚠':'لا ✗';
+
+  // Dims
+  var grid = document.getElementById('dimsGrid'); grid.innerHTML='';
+  var dims = r.dims||{};
+  Object.entries(DIMS).forEach(function(e){
+    var k=e[0],inf=e[1],d=dims[k]||{score:0,found:'—',missing:'—'};
+    var s2=parseInt(d.score)||0;
+    var cls=s2>=70?'ok':s2>=45?'mid':'low';
+    var col=s2>=70?'#1AA886':s2>=45?'#C49A3C':'#E24B4A';
+    var c=document.createElement('div'); c.className='dim '+cls;
+    c.innerHTML='<div class="dim-top"><span class="dim-name">'+inf.n+'</span><span class="dim-sc" style="color:'+col+'">'+s2+'%</span></div>'
+      +'<div class="dim-bar"><div class="dim-fill" style="width:'+s2+'%;background:'+col+'"></div></div>'
+      +(d.found&&d.found!=='—'?'<div class="dim-found">✓ '+esc(d.found)+'</div>':'')
+      +(d.missing&&d.missing!=='—'?'<div class="dim-miss">✗ '+esc(d.missing)+'</div>':'');
+    grid.appendChild(c);
+  });
+
+  // Strengths
+  var str=r.strengths||[];
+  document.getElementById('bStr').innerHTML = str.length
+    ? str.map(function(s){return '<div class="item"><div class="item-n">★</div><div class="item-c">'+esc(s)+'</div></div>';}).join('')
+    : '<div style="font-size:12px;color:var(--t3)">لم تُحدَّد نقاط قوة واضحة.</div>';
+
+  // Gaps
+  var gaps=r.criticalGaps||[];
+  document.getElementById('bGapCnt').textContent=gaps.length+' ثغرات';
+  document.getElementById('bGap').innerHTML = gaps.length
+    ? gaps.map(function(g,i){return '<div class="item"><div class="item-n">'+(i+1)+'</div><div class="item-c"><div class="item-t">'+esc(g.dim||'—')+(g.score?' — '+g.score+'%':'')+'</div><div class="item-d">'+esc(g.reason||'—')+'</div><div class="item-r">'+esc(g.action||'—')+'</div></div></div>';}).join('')
+    : '<div style="font-size:12px;color:var(--teal)">لا ثغرات حرجة.</div>';
+
+  // Recs
+  var recs=r.recommendations||[];
+  document.getElementById('bRec').innerHTML = recs.length
+    ? recs.map(function(rc,i){var pc=rc.priority==='حرج'?'var(--red)':rc.priority==='مهم'?'var(--amber)':'var(--blue)';return '<div class="item"><div class="item-n">'+(i+1)+'</div><div class="item-c"><div class="item-t">'+esc(rc.dim||'—')+' <span style="font-size:10px;color:'+pc+'">'+esc(rc.priority||'')+'</span></div><div class="item-d">'+esc(rc.action||'—')+'</div>'+(rc.framework?'<div class="item-r">'+esc(rc.framework)+'</div>':'')+'</div></div>';}).join('')
+    : '<div style="font-size:12px;color:var(--teal)">لا توصيات إضافية.</div>';
+
+  // Biases
+  var biases=r.biases||[];
+  document.getElementById('bBiasCnt').textContent=biases.length?biases.length+' مُكتشفة':'لا تحيزات';
+  document.getElementById('bBias').innerHTML = biases.length
+    ? biases.map(function(b,i){return '<div class="item"><div class="item-n">'+(i+1)+'</div><div class="item-c"><div class="item-t" style="color:var(--red)">'+esc(b.name||'—')+'</div><div class="item-d">'+esc(b.evidence||'—')+'</div><div class="item-r">'+esc(b.rec||'—')+'</div></div></div>';}).join('')
+    : '<div style="font-size:12px;color:var(--teal)">لم تُكتشف تحيزات.</div>';
+
+  // Questions
+  var qs=r.councilQuestions||[];
+  document.getElementById('bQ').innerHTML = qs.length
+    ? qs.map(function(q){return '<div class="q-item"><b style="color:#85B7EB">['+esc(q.label||'استراتيجي')+']</b> '+esc(q.q||'—')+'</div>';}).join('')
+    : '<div style="font-size:12px;color:var(--teal)">لا أسئلة معلقة.</div>';
+
+  // Verdict
+  document.getElementById('bVerdict').innerHTML = '<b style="color:var(--tx)">التوصية النهائية:</b><br>' + esc(r.verdict||'—');
+}
+
+// ═══ ACTIONS ═════════════════════════════════════
+function sendSOR(){
+  window.open('https://soliman-2025.github.io/big-Sol/SOR_Council.html?decision='+encodeURIComponent(DEC),'_blank');
+}
+function copyR(){
+  var t='تقرير مُقيِّم القرار\nالدرجة: '+(REP.score||0)+'/100\nالنوع: '+(TYPES[REP.decType]||'—')+'\n\nالتوصية: '+(REP.verdict||'—');
+  navigator.clipboard.writeText(t).then(function(){alert('✓ تم النسخ');}).catch(function(){alert('حدد النص يدوياً');});
+}
+function reset(){
+  KEY='';DEC='';REP={};
+  document.getElementById('decTxt').value='';
+  document.getElementById('apiKey').value='';
+  document.getElementById('charCnt').textContent='0 حرف';
+  document.getElementById('apiDot').className='api-dot';
+  document.getElementById('apiSt').textContent='غير متصل';
+  document.getElementById('apiSt').style.color='var(--t3)';
+  document.getElementById('uzName').style.display='none';
+  document.getElementById('goBtn').disabled=true;
+  showErr(''); goPhase(1);
+}
+
+// ═══ HELPERS ═════════════════════════════════════
+function goPhase(n){
+  ['p1','p2','p3'].forEach(function(id,i){document.getElementById(id).className='ph'+(i+1===n?' show':'');});
+  ['t1','t2','t3'].forEach(function(id,i){document.getElementById(id).className='tab'+(i+1===n?' active':i+1<n?' done':'');});
+}
+function showErr(m){var e=document.getElementById('errBox');e.textContent=m;e.className='err'+(m?' show':'');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+// URL params
+(function(){
+  var p=new URLSearchParams(window.location.search), dec=p.get('decision');
+  if(dec){try{var d=decodeURIComponent(dec);document.getElementById('decTxt').value=d;DEC=d.trim();document.getElementById('charCnt').textContent=DEC.length+' حرف';chkReady();}catch(e){}}
+})();
+</script>
+</body>
+</html>

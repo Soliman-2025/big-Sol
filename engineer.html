@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مهندس القرار الاستراتيجي v4 · غرفة العمليات</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@300;400;600;700&display=swap');
+:root{
+  --gold:#C49A3C;--gl:#E8C060;--gdim:rgba(196,154,60,0.1);
+  --ink:#07090F;--surf:#0D1118;
+  --bdr:rgba(196,154,60,0.18);--teal:#1AA886;--red:#E24B4A;--amber:#BA7517;--blue:#378ADD;
+  --tx:#E8D5A0;--t2:#9AABB5;--t3:#5A6A75;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-size:14px;line-height:1.8;min-height:100vh;display:flex;flex-direction:column}
+
+.hdr{background:linear-gradient(135deg,#0A0C12,#111827);border-bottom:1px solid var(--bdr);padding:16px 28px;position:relative;flex-shrink:0}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.hdr-in{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px}
+.seal{width:38px;height:38px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);font-family:'Scheherazade New',serif;flex-shrink:0}
+.org{font-family:'Scheherazade New',serif;font-size:15px;color:var(--tx);font-weight:700}
+.sub{font-size:9px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.hbadge{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--teal);padding:3px 12px;border:1px solid rgba(26,168,134,0.3);border-radius:20px;background:rgba(26,168,134,0.08);font-family:'IBM Plex Mono',monospace}
+
+.wrap{flex:1;max-width:820px;margin:0 auto;width:100%;padding:16px 16px 0;display:flex;flex-direction:column;gap:12px}
+
+/* PHILOSOPHY BANNER */
+.phil{background:linear-gradient(135deg,rgba(196,154,60,0.06),rgba(196,154,60,0.02));border:1px solid var(--bdr);border-right:3px solid var(--gold);border-radius:10px;padding:14px 18px}
+.phil-q{font-family:'Scheherazade New',serif;font-size:16px;color:var(--tx);margin-bottom:6px}
+.phil-body{font-size:12px;color:var(--t3);line-height:1.7}
+.phil-steps{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.phil-step{background:rgba(196,154,60,0.06);border:1px solid rgba(196,154,60,0.15);border-radius:6px;padding:5px 10px;font-size:10px;color:var(--t2);font-family:'IBM Plex Mono',monospace;display:flex;align-items:center;gap:5px}
+.phil-step-n{color:var(--gold);font-weight:700}
+
+/* DECISION TYPE BADGE */
+.dtype-wrap{display:none}
+.dtype-wrap.show{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(55,138,221,0.06);border:1px solid rgba(55,138,221,0.2);border-radius:8px;font-size:11px;flex-wrap:wrap}
+.dtype-lbl{color:var(--t3);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px}
+.dtype-val{color:var(--blue);font-weight:700}
+.dtype-frame{color:var(--t3);font-size:10px}
+
+/* BIAS ALERT */
+.bias-alert{display:none;background:rgba(226,75,74,0.05);border:1px solid rgba(226,75,74,0.2);border-right:3px solid var(--red);border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(226,75,74,0.9);line-height:1.7}
+.bias-alert.show{display:block}
+
+/* METER */
+.meter{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:12px 16px;display:none}
+.meter.show{display:block}
+.meter-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mscore{font-size:28px;font-weight:900;font-family:'IBM Plex Mono',monospace;min-width:52px}
+.mlbl{font-size:10px;color:var(--t3);font-family:'IBM Plex Mono',monospace}
+.mverdict{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700}
+.vr{background:rgba(26,168,134,.1);color:var(--teal);border:1px solid rgba(26,168,134,.3)}
+.vp{background:rgba(186,117,23,.1);color:var(--amber);border:1px solid rgba(186,117,23,.3)}
+.vn{background:rgba(226,75,74,.1);color:var(--red);border:1px solid rgba(226,75,74,.3)}
+.mdims{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.mdim{font-size:9px;padding:2px 7px;border-radius:10px;font-family:'IBM Plex Mono',monospace;border:1px solid transparent}
+.dok{background:rgba(26,168,134,.08);color:var(--teal);border-color:rgba(26,168,134,.2)}
+.dmid{background:rgba(186,117,23,.08);color:var(--amber);border-color:rgba(186,117,23,.2)}
+.dlow{background:rgba(226,75,74,.08);color:var(--red);border-color:rgba(226,75,74,.2)}
+.dna{background:rgba(255,255,255,.04);color:var(--t3);border-color:rgba(255,255,255,.06)}
+
+/* UPLOAD */
+.upload-zone{background:var(--surf);border:1.5px dashed rgba(196,154,60,0.22);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.upload-zone:hover{border-color:var(--gold);background:var(--gdim)}
+.upload-zone input{display:none}
+.up-icon{font-size:20px;flex-shrink:0}
+.up-txt{font-size:12px;color:var(--t3);line-height:1.5}
+.up-txt b{color:var(--t2);display:block;font-size:13px}
+.up-name{font-size:11px;color:var(--teal);font-family:'IBM Plex Mono',monospace;margin-top:3px;display:none}
+
+/* CHAT */
+.chat{flex:1;min-height:280px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding:4px 0}
+.msg{display:flex;gap:9px;align-items:flex-start;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.msg-s{flex-direction:row}.msg-u{flex-direction:row-reverse}
+.av{width:33px;height:33px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.av-s{background:rgba(196,154,60,.15);color:var(--gold);border:1px solid rgba(196,154,60,.3);font-family:'Scheherazade New',serif}
+.av-u{background:rgba(26,168,134,.15);color:var(--teal);border:1px solid rgba(26,168,134,.3);font-size:10px}
+.bbl{max-width:82%;padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.85}
+.bbl-s{background:var(--surf);border:1px solid var(--bdr);border-right:3px solid var(--gold);border-radius:4px 12px 12px 12px;color:var(--t2)}
+.bbl-u{background:rgba(26,168,134,.08);border:1px solid rgba(26,168,134,.2);border-radius:12px 4px 12px 12px;color:var(--tx);text-align:right}
+.bbl-s b,.bbl-s strong{color:var(--tx)}
+.bbl-enrich{background:rgba(55,138,221,0.05);border:1px solid rgba(55,138,221,0.2);border-right:3px solid var(--blue);border-radius:4px 12px 12px 12px;color:var(--t2)}
+.bbl-enrich b{color:#85B7EB}
+.typing-w{display:flex;gap:4px;align-items:center;padding:11px 15px;background:var(--surf);border:1px solid var(--bdr);border-right:3px solid var(--gold);border-radius:4px 12px 12px 12px;width:fit-content}
+.typing-w span{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:bc 1.2s infinite}
+.typing-w span:nth-child(2){animation-delay:.2s}.typing-w span:nth-child(3){animation-delay:.4s}
+@keyframes bc{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.opts{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.opt{padding:6px 14px;border:1px solid var(--bdr);border-radius:20px;background:transparent;color:var(--t2);font-family:'Cairo',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.opt:hover{border-color:var(--gold);color:var(--tx);background:var(--gdim)}
+
+/* PREVIEW */
+.preview{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;display:none}
+.preview.show{display:block}
+.prev-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bdr);flex-wrap:wrap;gap:8px}
+.prev-title{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:6px}
+.prev-body{padding:16px;font-size:12.5px;color:var(--t2);line-height:1.9;white-space:pre-wrap;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(196,154,60,.3) transparent}
+.prev-acts{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--bdr);flex-wrap:wrap}
+.pa{padding:9px 20px;border-radius:7px;font-family:'Cairo',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;border:none;font-weight:600}
+.pa-g{background:linear-gradient(135deg,var(--gold),var(--gl));color:var(--ink)}
+.pa-t{background:rgba(26,168,134,.1);color:var(--teal);border:1px solid rgba(26,168,134,.3)}
+.pa-o{background:transparent;color:var(--t2);border:1px solid var(--bdr)}
+.pa-g:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(196,154,60,.25)}
+.pa-t:hover{background:rgba(26,168,134,.2)}
+.pa-o:hover{border-color:var(--t2);color:var(--tx)}
+
+/* INPUT */
+.inp-wrap{padding:10px 0 14px;flex-shrink:0}
+.inp-box{display:flex;gap:9px;align-items:flex-end;background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:9px 12px;transition:border-color .2s}
+.inp-box:focus-within{border-color:rgba(196,154,60,.4)}
+.inp-txt{flex:1;background:transparent;border:none;outline:none;color:var(--tx);font-family:'Cairo',sans-serif;font-size:13px;resize:none;min-height:22px;max-height:100px;line-height:1.6;direction:rtl}
+.inp-txt::placeholder{color:var(--t3)}
+.snd{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gl));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:15px;color:var(--ink);font-weight:700}
+.snd:hover{transform:scale(1.08)}.snd:disabled{opacity:.3;cursor:not-allowed;transform:none}
+
+@media print{
+  .hdr,.upload-zone,.inp-wrap,.meter,.prev-acts,.opts,.dtype-wrap,.bias-alert,.phil-steps{display:none!important}
+  body{background:#fff;color:#1C2028}
+  .bbl-s,.bbl-enrich{background:#f8f6f0;border-right:3px solid #C49A3C;color:#333}
+  .preview{border:1px solid #ddd}
+  .prev-body{max-height:none}
+  .phil{background:#f8f6f0;border-right:3px solid #C49A3C;color:#333}
+  @page{size:A4;margin:15mm 18mm}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="logo">
+      <div class="seal">غ.ع</div>
+      <div>
+        <div class="org">غرفة العمليات الاستراتيجية</div>
+        <div class="sub">DECISION ENGINEER v4.0 · SCIENTIFIC FRAMEWORK</div>
+      </div>
+    </div>
+    <div class="hbadge">⬡ مهندس القرار العلمي</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- PHILOSOPHY BANNER -->
+  <div class="phil" id="philBanner">
+    <div class="phil-q">«القرار الذي لم يُناقَش قبل اعتماده — مخاطرة مؤجَّلة»</div>
+    <div class="phil-body">مهندس القرار يجلس معك كخبير حقيقي — يناقش قرارك، يكتشف ثغراته، يُثريه بأطر علمية عالمية، ثم يُسلّمه للمجلس ناضجاً محكماً.</div>
+    <div class="phil-steps">
+      <div class="phil-step"><span class="phil-step-n">١</span> حوار مع المهندس</div>
+      <div class="phil-step"><span class="phil-step-n">٢</span> تشخيص وإثراء علمي</div>
+      <div class="phil-step"><span class="phil-step-n">٣</span> صياغة القرار الناضج</div>
+      <div class="phil-step"><span class="phil-step-n">٤</span> اعتماد صاحب الصلاحية</div>
+      <div class="phil-step"><span class="phil-step-n">٥</span> إرسال لمجلس الـ28 خبيراً</div>
+    </div>
+  </div>
+
+  <!-- DECISION TYPE -->
+  <div class="dtype-wrap" id="dtypeWrap">
+    <span class="dtype-lbl">نوع القرار المُشخَّص</span>
+    <span class="dtype-val" id="dtypeVal">—</span>
+    <span class="dtype-frame" id="dtypeFrame"></span>
+  </div>
+
+  <!-- BIAS ALERT -->
+  <div class="bias-alert" id="biasAlert"></div>
+
+  <!-- METER -->
+  <div class="meter" id="meter">
+    <div class="meter-row">
+      <div><div class="mscore" id="msc" style="color:var(--gold)">—</div><div class="mlbl">نضج القرار / 100</div></div>
+      <div class="mverdict" id="mvd"></div>
+    </div>
+    <div class="mdims" id="mdims"></div>
+  </div>
+
+  <!-- UPLOAD -->
+  <label class="upload-zone" id="upZone">
+    <input type="file" id="fileIn" accept=".txt,.pdf,.docx,.doc" onchange="handleFile(this)">
+    <div class="up-icon">📎</div>
+    <div class="up-txt">
+      <b>لديك قرار جاهز في ملف؟</b>
+      ارفع PDF أو Word أو نص — المهندس يقرأه ويناقشك فيه
+    </div>
+    <div class="up-name" id="upName"></div>
+  </label>
+
+  <!-- CHAT -->
+  <div class="chat" id="chat"></div>
+
+  <!-- PREVIEW -->
+  <div class="preview" id="prevCard">
+    <div class="prev-hdr">
+      <div class="prev-title"><span style="color:var(--gold)">⬡</span> وثيقة القرار الناضج — جاهزة للاعتماد</div>
+      <div style="font-size:10px;color:var(--t3);font-family:'IBM Plex Mono',monospace" id="prevRef">SOR-DE-000000</div>
+    </div>
+    <div class="prev-body" id="prevBody"></div>
+    <div class="prev-acts">
+      <button class="pa pa-g" onclick="sendToSOR()">⚡ إرسال للمجلس</button>
+      <button class="pa pa-t" onclick="window.print()">🖨 طباعة</button>
+      <button class="pa pa-o" onclick="copyDoc()">📋 نسخ</button>
+      <button class="pa pa-o" onclick="editDoc()">✏ تعديل</button>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="inp-wrap">
+    <div class="inp-box">
+      <textarea class="inp-txt" id="inp" placeholder="تحدث بحرية — لا توجد إجابة خاطئة..." rows="1"
+        onkeydown="hkey(event)" oninput="autores(this)"></textarea>
+      <button class="snd" id="sndBtn" onclick="send()">↑</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// SCIENTIFIC KNOWLEDGE BASE
+// ══════════════════════════════════════════════
+const DECISION_TYPES = {
+  investment: {
+    label:'استثمار رأس المال',
+    frameworks:['NPV + IRR','Monte Carlo Simulation','Hurdle Rate Analysis','Real Options Theory'],
+    keyQuestions:['ما معدل العائد المطلوب (Hurdle Rate)?','هل حُسب NPV بسيناريوهات متعددة؟','ما تكلفة رأس المال (WACC)?'],
+    gulfContext:'تحقق من توافق الاستثمار مع صندوق الاستثمارات العامة أو فرص التمويل عبر Vision 2030 Programs',
+    triggers:['استثمار','رأس مال','تمويل','عائد','ROI','IRR','ربحية']
+  },
+  market_entry: {
+    label:'دخول سوق جديد',
+    frameworks:["Porter's Five Forces",'Blue Ocean Strategy','CAGE Distance Framework','TAM/SAM/SOM'],
+    keyQuestions:['ما CAGE Distance بين سوقك الحالي والجديد؟','هل السوق المستهدف in Blue Ocean أم Red Ocean؟','ما حجم TAM/SAM/SOM؟'],
+    gulfContext:'استكشف فرص رؤية 2030 القطاعية — السياحة، الترفيه، التقنية، الصناعة المتقدمة',
+    triggers:['سوق جديد','توسع','دخول','منطقة','دولة','جغرافي']
+  },
+  ma: {
+    label:'اندماج أو استحواذ',
+    frameworks:['Synergy Analysis','Due Diligence Framework','Integration Risk Matrix','Valuation Multiples'],
+    keyQuestions:['ما الـ Synergies المتوقعة وكيف حُسبت؟','هل أُجري Full Due Diligence؟','ما خطة الـ Integration بعد الإغلاق؟'],
+    gulfContext:'تحقق من متطلبات CMA/SAMA للصفقات + قواعد الملكية الأجنبية المحدّثة 2026',
+    triggers:['استحواذ','اندماج','شراء شركة','acquisition','دمج']
+  },
+  transformation: {
+    label:'تحول مؤسسي',
+    frameworks:["Kotter's 8-Step Model",'ADKAR Change Model','McKinsey 7-S Framework','Balanced Scorecard'],
+    keyQuestions:['هل يوجد Burning Platform واضح يدفع للتغيير؟','كيف ستدير المقاومة التنظيمية؟','ما Quick Wins المخطط لها في الـ 90 يوم الأولى؟'],
+    gulfContext:'الثقافة القيادية الخليجية تحتاج Coalition Building مع القيادات — لا يكفي القرار من الأعلى',
+    triggers:['تحول','تغيير','هيكلة','إعادة هيكلة','transformation','رقمنة']
+  },
+  crisis: {
+    label:'قرار أزمة',
+    frameworks:['OODA Loop (Boyd)','Crisis Decision Matrix','Triage Framework','Scenario Planning'],
+    keyQuestions:['ما الـ Time Horizon للقرار؟','هل جُمعت كل المعلومات المتاحة أم تعمل بمعلومات ناقصة؟','من صاحب الصلاحية الفعلي للقرار الآن؟'],
+    gulfContext:'في الأزمات الخليجية — التواصل مع أصحاب المصلحة يسبق الإعلان العام دائماً',
+    triggers:['أزمة','طارئ','خسارة مفاجئة','مشكلة حادة','تهديد فوري','انهيار']
+  },
+  partnership: {
+    label:'شراكة استراتيجية',
+    frameworks:['Transaction Cost Economics (TCE)','Alliance Portfolio Theory','Game Theory (Nash)','Governance Design'],
+    keyQuestions:['هل الشريك يملك ما يكملك أم ما يُنافسك؟','ما Exit Clauses في حال الفشل؟','كيف تُحمى IP وبيانات الشركة؟'],
+    gulfContext:'في السوق السعودي — الشراكة مع كيان حكومي تحتاج NDA خاصاً ومراجعة SDAIA',
+    triggers:['شراكة','partner','تحالف','joint venture','اتفاقية','عقد استراتيجي']
+  },
+  product: {
+    label:'إطلاق منتج أو خدمة',
+    frameworks:['Jobs-to-be-Done (JTBD)','Lean Validation','Product-Market Fit Framework','Go-to-Market Strategy'],
+    keyQuestions:['ما الـ Job-to-be-Done الأساسي الذي يحله المنتج؟','هل اختُبر الـ Product-Market Fit؟','ما GTM Strategy وقنوات التوزيع؟'],
+    gulfContext:'السوق السعودي يتبنى التقنية بسرعة لكن يحتاج Localization حقيقي — ليس مجرد ترجمة',
+    triggers:['منتج','خدمة','إطلاق','تطوير','سوق','عملاء','مستخدمين']
+  }
+};
+
+const COGNITIVE_BIASES = [
+  {
+    id:'confirmation',
+    label:'تحيز التأكيد',
+    detect:(hist) => {
+      const pos = hist.filter(m=>m.role==='user').join(' ');
+      const posWords = (pos.match(/سيكون ناجحاً|متأكد|واثق|سيعمل|لن يفشل|ممتاز/g)||[]).length;
+      const negWords = (pos.match(/ربما|قد|لكن|مخاطرة|خوف|قلق|لا أعرف/g)||[]).length;
+      return posWords > 3 && negWords < 1;
+    },
+    msg:'⚠ **تحيز التأكيد (Confirmation Bias):** ألاحظ أنك تذكر بشكل رئيسي ما يدعم القرار. سؤال مهم: **ما أقوى حجة ضد هذا القرار؟** خبراء الاستراتيجية يُقيّمون جودة القرار بقدرة صاحبه على تسمية نقاط ضعفه.'
+  },
+  {
+    id:'sunk_cost',
+    label:'مغالطة التكلفة الغارقة',
+    detect:(hist) => {
+      const txt = hist.filter(m=>m.role==='user').join(' ');
+      return /استثمرنا|دفعنا كثيراً|لا يمكن التراجع|بعد كل ما|وقتنا|جهدنا/.test(txt);
+    },
+    msg:'⚠ **مغالطة التكلفة الغارقة (Sunk Cost Fallacy):** لاحظت إشارات لاستثمارات سابقة كمبرر للاستمرار. القرار الصحيح يُبنى على **المستقبل** لا على ما أُنفق. السؤال الحقيقي: إذا بدأت من الصفر اليوم — هل ستتخذ نفس القرار؟'
+  },
+  {
+    id:'overconfidence',
+    label:'الثقة المفرطة',
+    detect:(hist) => {
+      const txt = hist.filter(m=>m.role==='user').join(' ');
+      return /بنسبة \d{2,3}%|متأكد جداً|لا شك|مضمون النجاح|100%|سينجح بالتأكيد/.test(txt);
+    },
+    msg:'⚠ **الثقة المفرطة (Overconfidence Bias):** التوقعات تبدو عالية الثقة. الدراسات تُظهر أن المديرين التنفيذيين يُبالغون في توقعات النجاح بمعدل 40%. سؤال مهم: **ما السيناريو الأسوأ واحتمالية حدوثه؟**'
+  },
+  {
+    id:'planning_fallacy',
+    label:'مغالطة التخطيط',
+    detect:(hist) => {
+      const txt = hist.filter(m=>m.role==='user').join(' ');
+      return /\d+ أشهر|شهرين|ثلاثة أشهر|سريع|بسرعة|خلال أسابيع/.test(txt) &&
+             !/تأخر|مخاطر زمنية|قد يتأخر/.test(txt);
+    },
+    msg:'⚠ **مغالطة التخطيط (Planning Fallacy):** الجدول الزمني يبدو متفائلاً. الأبحاث تُظهر أن المشاريع تتأخر في المتوسط 2-3 أضعاف التقدير الأولي. **هل تضمّنت هامش تأخير 30-50% في الجدول؟**'
+  }
+];
+
+const GULF_REGULATORS = {
+  finance:     {reg:'SAMA + CMA', note:'يحتاج ترخيص مسبق + إفصاح للمساهمين'},
+  tech:        {reg:'SDAIA + NCA', note:'يخضع لـ PDPL + متطلبات الأمن السيبراني'},
+  real_estate: {reg:'هيئة العقار + وزارة البلديات', note:'تراخيص REGA + اشتراطات البناء الساحلي'},
+  food:        {reg:'SFDA', note:'اشتراطات الجودة والسلامة الغذائية الإلزامية'},
+  health:      {reg:'وزارة الصحة + SFDA', note:'ترخيص الصحة + اشتراطات سلامة المنتجات'},
+  education:   {reg:'وزارة التعليم + NCAAA', note:'الاعتماد الأكاديمي إلزامي'},
+  energy:      {reg:'وزارة الطاقة + ECZA', note:'إطار الاستثمار في قطاع الطاقة 2024'},
+  default:     {reg:'وزارة التجارة + الهيئة العامة للاستثمار', note:'السجل التجاري + ترخيص الاستثمار'}
+};
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const ST = {
+  phase:'intro', data:{}, dims:{}, hist:[], uploadTxt:'',
+  decType:null, decDoc:'', biasesChecked:new Set()
+};
+
+const DIMS = {
+  context:'السياق',objective:'الأهداف',decision:'القرار',
+  data:'البيانات',resources:'الموارد',risks:'المخاطر',
+  timeline:'التنفيذ',compliance:'الامتثال'
+};
+const WEIGHTS = {context:12,objective:18,decision:15,data:12,resources:10,risks:13,timeline:10,compliance:10};
+
+// ══════════════════════════════════════════════
+// DECISION TYPE DETECTOR
+// ══════════════════════════════════════════════
+function detectDecisionType(text){
+  const txt = text.toLowerCase();
+  let best = null, bestCount = 0;
+  for(const [key, dt] of Object.entries(DECISION_TYPES)){
+    const count = dt.triggers.filter(t => txt.includes(t)).length;
+    if(count > bestCount){ bestCount = count; best = key; }
+  }
+  if(best && bestCount > 0){
+    ST.decType = best;
+    const dt = DECISION_TYPES[best];
+    document.getElementById('dtypeWrap').classList.add('show');
+    document.getElementById('dtypeVal').textContent = dt.label;
+    document.getElementById('dtypeFrame').textContent = '· ' + dt.frameworks.slice(0,2).join(' · ');
+  }
+}
+
+// ══════════════════════════════════════════════
+// BIAS DETECTOR
+// ══════════════════════════════════════════════
+function checkBiases(){
+  const userMsgs = ST.hist.filter(m=>m.role==='user').map(m=>m.txt);
+  for(const bias of COGNITIVE_BIASES){
+    if(ST.biasesChecked.has(bias.id)) continue;
+    if(bias.detect(userMsgs)){
+      ST.biasesChecked.add(bias.id);
+      const el = document.getElementById('biasAlert');
+      el.innerHTML = bias.msg.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+      el.classList.add('show');
+      setTimeout(()=>el.classList.remove('show'), 12000);
+      return bias.msg;
+    }
+  }
+  return null;
+}
+
+// ══════════════════════════════════════════════
+// ENRICHMENT ENGINE — يُثري القرار بأطر علمية
+// ══════════════════════════════════════════════
+function buildEnrichment(phase, answer){
+  if(!ST.decType) return null;
+  const dt = DECISION_TYPES[ST.decType];
+
+  const enrichments = {
+    objective: () => {
+      const q = dt.keyQuestions[0];
+      return `**إثراء علمي — ${dt.label}:**\nوفق إطار **${dt.frameworks[0]}**، الأهداف الجيدة تحتاج تحديد:\n• ${q}\n• ما المقياس الكمي لنجاح الهدف؟\n\n*${dt.gulfContext}*`;
+    },
+    risks: () => {
+      return `**إثراء علمي — تحليل المخاطر:**\nوفق **${dt.frameworks[1] || dt.frameworks[0]}**، المخاطر الأكثر إغفالاً في هذا النوع من القرارات:\n• مخاطر التنفيذ (Execution Risk) — الفجوة بين القرار والتطبيق\n• مخاطر السوق الديناميكية — تغيّر البيئة أثناء التنفيذ\n• مخاطر الاستجابة التنافسية — ماذا سيفعل المنافس؟`;
+    },
+    compliance: () => {
+      const sector = detectSector(Object.values(ST.data).join(' '));
+      const reg = GULF_REGULATORS[sector] || GULF_REGULATORS.default;
+      return `**الإطار التنظيمي الخليجي المُشخَّص:**\nالجهة التنظيمية المعنية: **${reg.reg}**\nملاحظة: ${reg.note}\n\nمتطلبات PDPL: أي بيانات تُجمَع تخضع لنظام حماية البيانات الشخصية (SDAIA 2024)`;
+    }
+  };
+
+  const fn = enrichments[phase];
+  return fn ? fn() : null;
+}
+
+function detectSector(text){
+  if(/بنك|تمويل|استثمار|صندوق|مال/.test(text)) return 'finance';
+  if(/تقني|برمجة|تطبيق|ذكاء اصطناعي|بيانات/.test(text)) return 'tech';
+  if(/عقار|تطوير عقاري|مباني|سكن/.test(text)) return 'real_estate';
+  if(/غذاء|مطعم|أغذية|مواد غذائية/.test(text)) return 'food';
+  if(/صحة|مستشفى|طب|دواء/.test(text)) return 'health';
+  if(/تعليم|مدرسة|جامعة|تدريب/.test(text)) return 'education';
+  if(/طاقة|نفط|كهرباء|متجددة/.test(text)) return 'energy';
+  return 'default';
+}
+
+// ══════════════════════════════════════════════
+// CONVERSATION FLOW
+// ══════════════════════════════════════════════
+const FLOW = {
+  intro: {
+    msg:`مرحباً — أنا **مهندس القرار الاستراتيجي**.\n\nأجلس معك كخبير حقيقي، لا كاستمارة. أناقشك، أكتشف ثغرات قرارك، أُثريه بأطر علمية عالمية، ثم نُسلّمه للمجلس ناضجاً محكماً.\n\n**فلسفتي:** القرار الذي لم يُناقَش قبل اعتماده — مخاطرة مؤجَّلة.\n\nابدأ بكلماتك الخاصة:\n**ما القرار الذي يشغل تفكيرك؟**`,
+    opts:['لديّ قرار استثماري','أريد الدخول لسوق جديد','أدرس شراكة استراتيجية','نمر بتحول مؤسسي','لديّ ملف قرار جاهز']
+  },
+  context: (ans) => {
+    detectDecisionType(ans);
+    const dt = ST.decType ? DECISION_TYPES[ST.decType] : null;
+    const typeNote = dt ? `\n\n*لاحظت أن قرارك يندرج تحت: **${dt.label}** — سأطبق أطر ${dt.frameworks[0]} و${dt.frameworks[1]} في التحليل.*` : '';
+    if(ans.length < 40){
+      return `أحتاج صورة أوضح.\n\nأخبرني:\n• **من** صاحب هذا القرار؟ (شركة، مؤسسة، فرد)\n• **ما القطاع** الذي تعمل فيه؟\n• **ما الوضع الحالي** قبل هذا القرار؟${typeNote}`;
+    }
+    return `السياق واضح.${typeNote}\n\n**سؤال جوهري:**\nإذا نجح هذا القرار تماماً بعد سنة — **كيف سيبدو الوضع بالأرقام؟**\nلا تقيّد نفسك — صوّر لي النتيجة المثالية.`;
+  },
+  objective: (ans) => {
+    const enrich = buildEnrichment('objective', ans);
+    const base = `الهدف واضح.\n\n**السؤال الحاسم:**\n**ما القرار المحدد الذي ستتخذه فعلاً؟** — لا النتيجة التي تريدها، بل الفعل الذي ستقوم به.\n\nوهل هناك بديل آخر على الطاولة؟`;
+    return enrich ? base + `\n\n${enrich}` : base;
+  },
+  decision: (ans) => {
+    const hasBadiel = /بديل|خيار| أو |لا أفعل/.test(ans);
+    if(!hasBadiel){
+      return `القرار واضح.\n\nملاحظة مهمة: **"لا أفعل شيئاً" هو دائماً بديل مشروع** — الخبراء يحتاجون المقارنة معه.\n\n**سؤالان:**\n• ما أهم بديل آخر فكّرت فيه؟\n• ما المعلومات التي تعرفها وتؤثر على هذا الاختيار؟`;
+    }
+    return `ممتاز — البدائل مُحددة.\n\n**البيانات:**\nما المعلومات المتاحة لديك؟\n• أرقام مالية (تقريبية تكفي)\n• بيانات السوق\n• أي دراسات أو تقارير\n\nوما **المعلومات الناقصة** التي تعرف أنك تحتاجها؟`;
+  },
+  data: (ans) => {
+    return `البيانات مُسجَّلة — الفجوات المعرفية مُوثَّقة وهذا في حد ذاته قيمة للخبراء.\n\n**الموارد:**\nما المتاح لتنفيذ هذا القرار؟\n• تقدير الميزانية (نطاق تقريبي يكفي)\n• الفريق والكفاءات\n• الوقت المتاح\n• **أهم قيد يُقلقك؟**`;
+  },
+  resources: (ans) => {
+    const enrich = buildEnrichment('risks', ans);
+    const base = `الموارد والقيود واضحة.\n\n**المخاطر — سؤال صريح:**\n**ما الذي يمكن أن يُفشل هذا القرار؟**\nلا تُجمّل — ثلاث مخاطر حقيقية تقلقك، سواء أكانت سوقية أو مالية أو تنظيمية أو داخلية.`;
+    return enrich ? base + `\n\n${enrich}` : base;
+  },
+  risks: (ans) => {
+    checkBiases();
+    return `المخاطر مُشخَّصة.\n\n**التنفيذ:**\n• **متى** يجب اتخاذ القرار؟ هل هناك ضغط زمني؟\n• ما **المراحل الرئيسية** للتنفيذ؟\n• **من** سيكون مسؤولاً عن كل مرحلة؟`;
+  },
+  timeline: (ans) => {
+    const enrich = buildEnrichment('compliance', ans);
+    const sector = detectSector(Object.values(ST.data).join(' '));
+    const reg = GULF_REGULATORS[sector] || GULF_REGULATORS.default;
+    return `الجدول الزمني واضح.\n\n**الامتثال التنظيمي:**\nبناءً على ما شاركته، الجهة التنظيمية المحتملة هي: **${reg.reg}**\n${reg.note}\n\nهل هذا القرار يحتاج موافقات تنظيمية؟ وهل تتوافق مع رؤية 2030 ومحاورها؟${enrich ? '\n\n' + enrich : ''}`;
+  },
+  compliance: (ans) => null
+};
+
+// ══════════════════════════════════════════════
+// SCORE ENGINE
+// ══════════════════════════════════════════════
+function score(phase, ans){
+  const l = ans.trim().length;
+  let s = l < 20 ? 15 : l < 60 ? 42 : l < 150 ? 63 : l < 300 ? 78 : 87;
+  const KEYS = {
+    context:['قطاع','سوق','موظف','إيراد','شركة','مؤسسة','مشروع'],
+    objective:['هدف','نتيجة','نسبة','بحلول','تحقيق','قياس','مليون'],
+    decision:['قرار','بديل','خيار','فعل','توسع','استثمار','إطلاق'],
+    data:['بيانات','رقم','دراسة','تقرير','ناقص','لا أعرف','تقريب'],
+    resources:['ميزانية','فريق','وقت','شهر','ريال','قيد','محدود'],
+    risks:['مخاطرة','خطر','فشل','منافس','تنظيم','قلق','تحدي'],
+    timeline:['متى','شهر','ربع','جدول','مرحلة','مسؤول','موعد'],
+    compliance:['SAMA','CMA','SDAIA','هيئة','وزارة','رؤية 2030','نظام']
+  };
+  const found = (KEYS[phase]||[]).filter(k=>ans.includes(k)).length;
+  return Math.min(97, Math.round(s + found * 2.8));
+}
+
+function updateMeter(){
+  const done = Object.keys(DIMS).filter(p=>ST.dims[p]!==undefined);
+  if(!done.length) return;
+  const w = WEIGHTS;
+  let tot = 0, totW = 0;
+  done.forEach(p=>{ tot += (ST.dims[p]/100)*w[p]; totW += w[p]; });
+  const sc = totW > 0 ? Math.round((tot/totW)*100) : 0;
+  document.getElementById('meter').classList.add('show');
+  const msc = document.getElementById('msc');
+  msc.textContent = sc;
+  msc.style.color = sc>=75?'#1AA886':sc>=50?'#C49A3C':'#E24B4A';
+  const mvd = document.getElementById('mvd');
+  if(sc>=75){mvd.textContent='✦ ناضج للمجلس';mvd.className='mverdict vr';}
+  else if(sc>=50){mvd.textContent='⚠ نضج جزئي';mvd.className='mverdict vp';}
+  else{mvd.textContent='✗ يحتاج اكتمالاً';mvd.className='mverdict vn';}
+  document.getElementById('mdims').innerHTML = Object.entries(DIMS).map(([k,v])=>{
+    const s = ST.dims[k];
+    const cls = s===undefined?'dna':s>=70?'dok':s>=45?'dmid':'dlow';
+    return `<span class="mdim ${cls}">${v}${s!==undefined?' '+s+'%':''}</span>`;
+  }).join('');
+}
+
+function calcFinal(){
+  let tot = 0;
+  Object.entries(WEIGHTS).forEach(([k,w])=>{ tot += ((ST.dims[k]||0)/100)*w; });
+  return Math.round(tot);
+}
+
+// ══════════════════════════════════════════════
+// DOCUMENT BUILDER
+// ══════════════════════════════════════════════
+function buildDoc(){
+  const ref = 'SOR-DE-'+Date.now().toString(36).toUpperCase().slice(-7);
+  const now = new Date();
+  const dt = ST.decType ? DECISION_TYPES[ST.decType] : null;
+  const sc = calcFinal();
+  let hijri='';
+  try{hijri=now.toLocaleDateString('ar-SA-u-ca-islamic',{year:'numeric',month:'long',day:'numeric'});}catch(e){}
+
+  const doc = `وثيقة القرار الاستراتيجي الناضج
+══════════════════════════════════════════
+الرقم المرجعي: ${ref}
+التاريخ الميلادي: ${now.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}${hijri?'\nالتاريخ الهجري: '+hijri:''}
+درجة النضج: ${sc}/100 — ${sc>=75?'ناضج — جاهز للمجلس':sc>=50?'نضج جزئي':'يحتاج استكمالاً'}
+نوع القرار: ${dt?dt.label:'—'}
+الأطر العلمية المطبّقة: ${dt?dt.frameworks.join(' · '):'—'}
+══════════════════════════════════════════
+
+١. السياق الحالي
+${ST.data.context||'—'}
+
+٢. الأهداف الاستراتيجية
+${ST.data.objective||'—'}
+
+٣. القرار المقترح والبدائل
+${ST.data.decision||'—'}
+
+٤. البيانات المتاحة والفجوات المعرفية
+${ST.data.data||'—'}
+
+٥. الموارد والقيود
+${ST.data.resources||'—'}
+
+٦. المخاطر والفرص الأولية
+${ST.data.risks||'—'}
+
+٧. الجدول الزمني والتنفيذ
+${ST.data.timeline||'—'}
+
+٨. الامتثال التنظيمي والحوكمة
+${ST.data.compliance||'—'}
+
+══════════════════════════════════════════
+ملاحظات المهندس العلمية
+──────────────────────────────────────────
+${buildNotes()}
+
+══════════════════════════════════════════
+هذه الوثيقة استشارية · القرار النهائي لصاحب الصلاحية وحده
+غرفة العمليات الاستراتيجية · ${ref} · 2026`;
+
+  ST.decDoc = doc;
+  document.getElementById('prevRef').textContent = ref;
+  document.getElementById('prevBody').textContent = doc;
+  document.getElementById('prevCard').classList.add('show');
+}
+
+function buildNotes(){
+  const notes = [];
+  const dt = ST.decType ? DECISION_TYPES[ST.decType] : null;
+  if(dt){
+    notes.push(`نوع القرار: ${dt.label}`);
+    notes.push(`الأطر الموصى بها: ${dt.frameworks.join(' · ')}`);
+    notes.push(`السياق الخليجي: ${dt.gulfContext}`);
+    notes.push(`أسئلة جوهرية للمجلس: ${dt.keyQuestions.join(' | ')}`);
+  }
+  if(ST.biasesChecked.size > 0){
+    notes.push(`\nتحيزات مُكتشفة: ${[...ST.biasesChecked].join(', ')} — تحتاج مراجعة معمّقة`);
+  }
+  Object.entries(DIMS).forEach(([k,v])=>{
+    if(!ST.dims[k]) notes.push(`${v}: لم يُستكمل — يُوصى بإضافته`);
+    else if(ST.dims[k]<50) notes.push(`${v}: مستوى منخفض (${ST.dims[k]}%) — يحتاج تعميقاً`);
+  });
+  if(!notes.length) notes.push('جميع الأبعاد مكتملة بمستوى جيد.');
+  return notes.join('\n');
+}
+
+// ══════════════════════════════════════════════
+// FILE UPLOAD
+// ══════════════════════════════════════════════
+async function extractText(file){
+  var name = file.name.toLowerCase();
+
+  // TXT
+  if(file.type==='text/plain' || name.endsWith('.txt')){
+    return await file.text();
+  }
+
+  // DOCX -- JSZip
+  if(name.endsWith('.docx') || name.endsWith('.doc')){
+    try{
+      if(!window.JSZip){
+        await new Promise(function(res,rej){
+          var s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+          s.onload = res;
+          s.onerror = rej;
+          document.head.appendChild(s);
+        });
+      }
+      var buf = await file.arrayBuffer();
+      var zip = await JSZip.loadAsync(buf);
+      var docXml = zip.file('word/document.xml');
+      if(!docXml) throw new Error('لم يُعثر على document.xml');
+      var xml = await docXml.async('string');
+
+      // استخراج النص بدون regex معقد
+      var result = [];
+      var pos = 0;
+      var openTag = '<w:t';
+      var closeTag = '</w:t>';
+      var paraEnd = '</w:p>';
+      while(pos < xml.length){
+        var pi = xml.indexOf(paraEnd, pos);
+        var wi = xml.indexOf(openTag, pos);
+        if(wi === -1) break;
+        if(pi !== -1 && pi < wi){ result.push(''); pos = pi + paraEnd.length; continue; }
+        var gt = xml.indexOf('>', wi);
+        if(gt === -1) break;
+        var ct = xml.indexOf(closeTag, gt);
+        if(ct === -1) break;
+        var txt = xml.substring(gt+1, ct);
+        if(txt.length > 0) result.push(txt);
+        pos = ct + closeTag.length;
+      }
+      var text = result.join('').replace(/\s+/g,' ').trim();
+      if(text.length > 50) return text.substring(0,6000);
+      throw new Error('النص فارغ');
+    }catch(err){
+      return '[تعذّرت قراءة ' + file.name + ': ' + err.message + ' -- يُرجى نسخ المحتوى ولصقه في المحادثة]';
+    }
+  }
+
+  // PDF
+  if(name.endsWith('.pdf') || file.type === 'application/pdf'){
+    try{
+      var buf2 = await file.arrayBuffer();
+      var bytes = new Uint8Array(buf2);
+      var raw = '';
+      var lim = Math.min(bytes.length, 150000);
+      for(var i=0; i<lim; i++) raw += String.fromCharCode(bytes[i]);
+      // استخراج نص Tj بدون regex
+      var parts = [];
+      var j = 0;
+      while(j < raw.length){
+        var tj = raw.indexOf(') Tj', j);
+        if(tj === -1) break;
+        var openP = raw.lastIndexOf('(', tj);
+        if(openP !== -1 && tj - openP < 300){
+          var chunk = raw.substring(openP+1, tj).trim();
+          if(chunk.length > 1) parts.push(chunk);
+        }
+        j = tj + 4;
+      }
+      var pdfText = parts.join(' ').trim();
+      if(pdfText.length > 80) return pdfText.substring(0,5000);
+      return '[ملف PDF: ' + file.name + ' -- يُرجى نسخ المحتوى ولصقه في المحادثة]';
+    }catch(e){
+      return '[ملف PDF: ' + file.name + ']';
+    }
+  }
+
+  // أي نوع آخر
+  try{ return await file.text(); }
+  catch(e){ return '[ملف: ' + file.name + ']'; }
+}
+
+async function handleFile(input){
+  const file = input.files[0]; if(!file) return;
+  const upName = document.getElementById('upName');
+  upName.style.display='block'; upName.textContent='⏳ جارٍ قراءة الملف...';
+  addSORMsg(`استلمت **${file.name}** — أقرأه الآن وسأناقشك فيه.`);
+  const raw = await extractText(file);
+  const readable = raw.length>100 && !raw.startsWith('[ملف');
+  upName.textContent = '📄 ' + file.name + (readable?' ✓':' — الصق المحتوى يدوياً');
+  ST.uploadTxt = raw;
+  ST.data.context = raw.substring(0,3000);
+  ST.dims.context = readable ? 72 : 35;
+  detectDecisionType(raw);
+  updateMeter();
+  const preview = raw.substring(0,300).replace(/\n/g,' ');
+  if(readable){
+    const dt = ST.decType ? DECISION_TYPES[ST.decType] : null;
+    addSORMsg(`قرأت الملف بنجاح.\n\nأول ما لفت انتباهي:\n*"${preview}..."*\n\n${dt?`يبدو أن هذا **${dt.label}** — سأطبق إطار **${dt.frameworks[0]}** في التحليل.\n\n`:''}`
+      + `**سؤالي الأول:** ما الهدف الأساسي الذي تريد أن يحلله المجلس في هذا القرار؟`);
+  } else {
+    addSORMsg(`الملف وصل لكن استخراج النص محدود.\n\nأفضل طريقة: **انسخ النص الرئيسي للقرار وألصقه هنا** — سأحلله كاملاً.\n\nأو أخبرني شفهياً: ما القرار الذي يحتويه الملف؟`);
+  }
+  ST.phase = 'objective';
+}
+
+// ══════════════════════════════════════════════
+// CONVERSATION PROCESSOR
+// ══════════════════════════════════════════════
+async function processInput(txt){
+  ST.hist.push({role:'user',txt});
+  const ph = ST.phase;
+
+  if(ph!=='intro' && ph!=='done'){
+    ST.data[ph] = (ST.data[ph]?ST.data[ph]+'\n':'')+txt;
+    ST.dims[ph] = score(ph, ST.data[ph]);
+    updateMeter();
+    if(ph!=='context') detectDecisionType(txt);
+  } else if(ph==='intro'){
+    ST.data.context = txt;
+    ST.dims.context = score('context',txt);
+    detectDecisionType(txt);
+    updateMeter();
+  }
+
+  addTyping();
+  await sleep(750+Math.random()*500);
+  removeTyping();
+
+  const biasMsg = ST.hist.length > 3 ? checkBiases() : null;
+
+  let resp = '';
+  let next = ph;
+
+  const phaseMap = {
+    intro: ()=>{ resp = FLOW.context(txt); next='context'; },
+    context: ()=>{ resp = FLOW.objective(txt); next='objective'; },
+    objective: ()=>{ resp = FLOW.decision(txt); next='decision'; },
+    decision: ()=>{ resp = FLOW.data(txt); next='data'; },
+    data: ()=>{ resp = FLOW.resources(txt); next='resources'; },
+    resources: ()=>{ resp = FLOW.risks(txt); next='risks'; },
+    risks: ()=>{ resp = FLOW.timeline(txt); next='timeline'; },
+    timeline: ()=>{
+      resp = FLOW.compliance(txt);
+      if(!resp) resp = `سؤال أخير:\n**هل هناك جهات تنظيمية معنية؟** SAMA · CMA · SDAIA · ZATCA أو غيرها.\nإن لم تكن متأكداً أخبرني القطاع وسأحدد أنا.`;
+      next='compliance';
+    },
+    compliance: ()=>{
+      ST.data.compliance = (ST.data.compliance?ST.data.compliance+'\n':'')+txt;
+      ST.dims.compliance = score('compliance',txt);
+      updateMeter();
+      const sc = calcFinal();
+      resp = buildFinalMsg(sc);
+      next = 'done';
+      addSORMsg(resp);
+      ST.phase = next;
+      sleep(400).then(buildDoc);
+      return true;
+    }
+  };
+
+  const done = phaseMap[ph]?.();
+  if(done) return;
+
+  ST.phase = next;
+  ST.hist.push({role:'sor',txt:resp});
+
+  if(biasMsg){
+    addSORMsg(resp);
+    return;
+  }
+  addSORMsg(resp);
+}
+
+function buildFinalMsg(sc){
+  const dt = ST.decType?DECISION_TYPES[ST.decType]:null;
+  let msg = `شكراً — الوثيقة جاهزة.\n\n**درجة النضج: ${sc}/100**\n`;
+  if(sc>=75) msg+=`القرار **ناضج ومحكم** — جاهز للمجلس. ✦\n`;
+  else if(sc>=50) msg+=`قرار في **منطقة النضج الجزئي** — يُرسَل مع ملاحظات. ⚠\n`;
+  else msg+=`بعض الأبعاد تحتاج تعزيزاً — لكن يمكن إرساله وتوضيح الفجوات للخبراء.\n`;
+  if(dt) msg+=`\nالأطر العلمية المطبّقة: **${dt.frameworks.slice(0,2).join(' · ')}**`;
+  if(ST.biasesChecked.size>0) msg+=`\n\nتحيزات مُكتشفة ومُوثَّقة: ${[...ST.biasesChecked].join(' · ')}`;
+  msg+=`\n\nراجع الوثيقة — عدّل ما تراه — ثم أرسلها للمجلس.`;
+  return msg;
+}
+
+// ══════════════════════════════════════════════
+// ACTIONS
+// ══════════════════════════════════════════════
+function sendToSOR(){
+  const doc = encodeURIComponent(ST.decDoc);
+  const url = `https://soliman-2025.github.io/big-Sol/SOR_Council.html?decision=${doc}`;
+  window.open(url,'_blank');
+  addSORMsg(`تم إرسال القرار للمجلس. ✦\n\nستجد النص جاهزاً — أدخل مفتاح API وأطلق الجلسة.`);
+}
+function copyDoc(){ navigator.clipboard.writeText(ST.decDoc||'').then(()=>alert('✓ تم النسخ')).catch(()=>alert('حدد النص يدوياً')); }
+function editDoc(){
+  const b=document.getElementById('prevBody');
+  b.contentEditable='true';b.style.border='1px solid rgba(196,154,60,0.3)';b.style.borderRadius='6px';b.focus();
+  addSORMsg(`الوثيقة قابلة للتعديل المباشر الآن.`);
+}
+
+// ══════════════════════════════════════════════
+// UI
+// ══════════════════════════════════════════════
+function addSORMsg(text,opts=[]){
+  const d=document.createElement('div');d.className='msg msg-s';
+  const fmt=text.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+  const isEnrich = text.includes('إثراء علمي') || text.includes('إطار التنظيمي');
+  d.innerHTML=`<div class="av av-s">غ.ع</div><div class="bbl ${isEnrich?'bbl-enrich':'bbl-s'}">${fmt}${opts.length?buildOpts(opts):''}</div>`;
+  document.getElementById('chat').appendChild(d);scrollChat();
+}
+function buildOpts(opts){ return`<div class="opts">${opts.map(o=>`<button class="opt" onclick="selOpt('${o}')">${o}</button>`).join('')}</div>`; }
+function selOpt(t){ document.getElementById('inp').value=t; send(); }
+function addUserMsg(t){
+  const d=document.createElement('div');d.className='msg msg-u';
+  d.innerHTML=`<div class="av av-u">أنت</div><div class="bbl bbl-u">${t.replace(/\n/g,'<br>')}</div>`;
+  document.getElementById('chat').appendChild(d);scrollChat();
+}
+function addTyping(){
+  const d=document.createElement('div');d.className='msg msg-s';d.id='typDiv';
+  d.innerHTML=`<div class="av av-s">غ.ع</div><div class="typing-w"><span></span><span></span><span></span></div>`;
+  document.getElementById('chat').appendChild(d);scrollChat();
+}
+function removeTyping(){ const t=document.getElementById('typDiv');if(t)t.remove(); }
+function scrollChat(){ const c=document.getElementById('chat');c.scrollTop=c.scrollHeight; }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function hkey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
+function autores(el){ el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px'; }
+
+async function send(){
+  const inp=document.getElementById('inp');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';autores(inp);
+  document.getElementById('sndBtn').disabled=true;
+  addUserMsg(txt);
+  await processInput(txt);
+  document.getElementById('sndBtn').disabled=false;
+  document.getElementById('inp').focus();
+}
+
+// URL params
+function init(){
+  const p=new URLSearchParams(window.location.search);
+  const name=p.get('name');
+  const preDecision=p.get('decision');
+  if(preDecision){
+    try{
+      const dec=decodeURIComponent(preDecision);
+      ST.data.context=dec;ST.dims.context=65;
+      detectDecisionType(dec);updateMeter();
+      addSORMsg(`استلمت قراراً مُعدّاً مسبقاً.\n\n**سأراجعه وأناقشك فيه.**\n\nأول سؤال: ما الهدف الأساسي الذي تريد تحقيقه من هذا القرار؟`);
+      ST.phase='objective';
+    }catch(e){ addSORMsg(FLOW.intro.msg,FLOW.intro.opts); }
+  } else if(name){
+    addSORMsg(`مرحباً **${name}** — أنا مهندس القرار الاستراتيجي.\n\n${FLOW.intro.msg.split('\n\n').slice(1).join('\n\n')}`,FLOW.intro.opts);
+  } else {
+    addSORMsg(FLOW.intro.msg,FLOW.intro.opts);
+  }
+}
+init();
+</script>
+</body>
+</html>

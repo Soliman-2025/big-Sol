@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نموذج إقرار العميل · غرفة العمليات الاستراتيجية</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@300;400;600;700&display=swap');
+
+:root{
+  --gold:#C49A3C; --gold-light:#E8C060; --gold-dim:rgba(196,154,60,0.15);
+  --ink:#07090F; --surface:#0D1118; --card:#111827;
+  --border:rgba(196,154,60,0.2); --teal:#1AA886;
+  --text:#E8D5A0; --text2:#9AABB5; --text3:#5A6A75;
+  --red:#E24B4A; --green:#1AA886;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--ink);
+  color:var(--text2);
+  font-family:'Cairo',sans-serif;
+  font-size:14px;
+  line-height:1.8;
+  min-height:100vh;
+}
+
+/* ══ HEADER ══ */
+.page-header{
+  background:linear-gradient(135deg,#0A0C12,#111827);
+  border-bottom:1px solid var(--border);
+  padding:28px 40px 22px;
+  position:relative;
+  overflow:hidden;
+}
+.page-header::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+}
+.header-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.org-badge{
+  display:flex;align-items:center;gap:10px;
+}
+.org-seal{
+  width:48px;height:48px;border-radius:50%;
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:var(--gold);
+  font-family:'Scheherazade New',serif;
+  flex-shrink:0;
+}
+.org-name{font-family:'Scheherazade New',serif;font-size:18px;color:var(--text);font-weight:700}
+.org-sub{font-size:10px;color:var(--text3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.doc-ref{
+  text-align:left;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:var(--text3);
+  line-height:1.8;
+}
+.doc-ref span{color:var(--gold);display:block}
+
+/* ══ MAIN ══ */
+.main{max-width:860px;margin:0 auto;padding:32px 24px 60px}
+
+/* ══ SECTION ══ */
+.section{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+.section-head{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 20px;
+  background:rgba(196,154,60,0.04);
+  border-bottom:1px solid var(--border);
+}
+.section-num{
+  font-size:9px;color:var(--gold);
+  letter-spacing:3px;font-family:'IBM Plex Mono',monospace;
+}
+.section-title{font-size:13px;font-weight:700;color:var(--text);flex:1}
+.section-body{padding:20px}
+
+/* ══ BISM ══ */
+.bism{
+  text-align:center;padding:24px;
+  font-family:'Scheherazade New',serif;
+  font-size:22px;color:var(--gold);
+  letter-spacing:2px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:20px;
+}
+
+/* ══ INTRO TEXT ══ */
+.intro-box{
+  background:rgba(196,154,60,0.04);
+  border:1px solid var(--border);
+  border-right:3px solid var(--gold);
+  border-radius:8px;
+  padding:16px 18px;
+  margin-bottom:20px;
+  font-size:13px;
+  color:var(--text2);
+  line-height:1.9;
+}
+
+/* ══ FORM ══ */
+.field-group{margin-bottom:20px}
+.field-label{
+  font-size:11px;color:var(--gold);
+  letter-spacing:2px;text-transform:uppercase;
+  font-family:'IBM Plex Mono',monospace;
+  margin-bottom:8px;display:block;
+}
+.field-input{
+  width:100%;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(196,154,60,0.25);
+  border-radius:7px;
+  padding:10px 14px;
+  color:var(--text);
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  outline:none;
+  transition:border-color 0.2s;
+  direction:rtl;
+}
+.field-input:focus{border-color:var(--gold);background:rgba(196,154,60,0.04)}
+.field-input::placeholder{color:var(--text3)}
+select.field-input option{background:#111827;color:var(--text)}
+
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.field-row{grid-template-columns:1fr}}
+
+/* ══ CLAUSES ══ */
+.clause{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:12px 0;
+  border-bottom:1px solid rgba(196,154,60,0.08);
+  font-size:13px;color:var(--text2);line-height:1.8;
+}
+.clause:last-child{border-bottom:none}
+.clause-num{
+  min-width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--gold);font-family:'IBM Plex Mono',monospace;
+  flex-shrink:0;margin-top:2px;
+}
+.clause-txt strong{color:var(--text);font-weight:600}
+
+/* ══ CHECKBOXES ══ */
+.checks-wrap{display:flex;flex-direction:column;gap:10px}
+.check-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 14px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(196,154,60,0.12);
+  border-radius:8px;
+  cursor:pointer;
+  transition:background 0.2s,border-color 0.2s;
+}
+.check-item:hover{background:rgba(196,154,60,0.05);border-color:rgba(196,154,60,0.3)}
+.check-item.checked{background:rgba(26,168,134,0.06);border-color:rgba(26,168,134,0.3)}
+.check-box{
+  width:20px;height:20px;border-radius:4px;
+  border:1.5px solid rgba(196,154,60,0.4);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+  transition:all 0.2s;
+  background:transparent;
+}
+.check-item.checked .check-box{background:var(--teal);border-color:var(--teal)}
+.check-mark{color:#fff;font-size:12px;display:none}
+.check-item.checked .check-mark{display:block}
+.check-lbl{font-size:12px;color:var(--text2);line-height:1.7;flex:1}
+.check-lbl strong{color:var(--text)}
+
+/* ══ SIGNATURE PAD ══ */
+.sig-wrap{position:relative}
+.sig-label-row{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+}
+.sig-canvas-wrap{
+  border:1.5px dashed rgba(196,154,60,0.35);
+  border-radius:10px;
+  background:rgba(255,255,255,0.02);
+  position:relative;overflow:hidden;
+}
+.sig-canvas-wrap canvas{display:block;width:100%;cursor:crosshair;touch-action:none}
+.sig-placeholder{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  pointer-events:none;gap:6px;
+}
+.sig-placeholder-icon{font-size:28px;opacity:0.2}
+.sig-placeholder-txt{font-size:11px;color:var(--text3);letter-spacing:1px}
+.sig-clear-btn{
+  font-size:10px;padding:4px 12px;
+  border:1px solid var(--border);border-radius:20px;
+  background:transparent;color:var(--text3);cursor:pointer;
+  font-family:'Cairo',sans-serif;
+  transition:all 0.2s;
+}
+.sig-clear-btn:hover{border-color:var(--red);color:var(--red)}
+.sig-status{
+  font-size:10px;margin-top:6px;display:flex;align-items:center;gap:6px;
+}
+.sig-dot{width:6px;height:6px;border-radius:50%;background:var(--text3)}
+.sig-dot.signed{background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ══ TIMESTAMP ══ */
+.timestamp-box{
+  background:rgba(196,154,60,0.04);
+  border:1px solid var(--border);border-radius:8px;
+  padding:12px 16px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+  font-size:11px;
+}
+.ts-item{display:flex;flex-direction:column;gap:2px}
+.ts-key{color:var(--text3);letter-spacing:1px;font-family:'IBM Plex Mono',monospace;font-size:9px}
+.ts-val{color:var(--text);font-weight:600;font-family:'IBM Plex Mono',monospace}
+
+/* ══ SUBMIT BTN ══ */
+.submit-wrap{margin-top:24px;text-align:center}
+.submit-btn{
+  padding:14px 48px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:var(--ink);
+  border:none;border-radius:8px;
+  font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;
+  transition:all 0.2s;
+  letter-spacing:1px;
+}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(196,154,60,0.3)}
+.submit-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
+.validation-msg{
+  font-size:11px;color:var(--red);margin-top:10px;
+  display:none;
+}
+
+/* ══ SUCCESS OVERLAY ══ */
+.success-overlay{
+  position:fixed;inset:0;background:rgba(7,9,15,0.95);
+  display:none;align-items:center;justify-content:center;
+  z-index:1000;padding:20px;
+}
+.success-overlay.show{display:flex}
+.success-card{
+  background:var(--surface);
+  border:1px solid rgba(26,168,134,0.4);
+  border-radius:16px;padding:40px;max-width:560px;width:100%;
+  text-align:center;position:relative;
+}
+.success-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  border-radius:16px 16px 0 0;
+}
+.success-icon{font-size:48px;margin-bottom:16px}
+.success-title{font-family:'Scheherazade New',serif;font-size:22px;color:var(--text);margin-bottom:8px}
+.success-sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.8}
+.success-ref{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  background:rgba(26,168,134,0.08);border:1px solid rgba(26,168,134,0.2);
+  border-radius:6px;padding:10px 16px;margin-bottom:24px;
+  color:var(--teal);letter-spacing:1px;
+}
+.success-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-print{
+  padding:10px 24px;border-radius:7px;font-family:'Cairo',sans-serif;font-size:13px;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-pdf{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--ink);border:none;font-weight:700}
+.btn-close{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-pdf:hover{transform:translateY(-1px)}
+.btn-close:hover{border-color:var(--text2);color:var(--text)}
+
+/* ══ PRINT STYLES ══ */
+@media print{
+  body{background:white;color:#1C2028}
+  .page-header{background:#f8f6f0;border-bottom:2px solid #C49A3C;padding:20px}
+  .org-name{color:#1C2028} .org-sub{color:#888}
+  .section{border:1px solid #ddd;break-inside:avoid}
+  .section-head{background:#f8f6f0}
+  .section-title{color:#1C2028} .section-num{color:#C49A3C}
+  .field-input{border:1px solid #ccc;background:white;color:#1C2028}
+  .clause{color:#333} .clause-num{border-color:#C49A3C;color:#C49A3C}
+  .clause-txt strong{color:#1C2028}
+  .check-item{border:1px solid #ddd}
+  .check-item.checked{background:#f0faf6;border-color:#1AA886}
+  .timestamp-box{background:#f8f6f0;border-color:#ddd}
+  .ts-key{color:#888} .ts-val{color:#1C2028}
+  .submit-wrap,.sig-clear-btn,.success-overlay{display:none!important}
+  .intro-box{background:#f8f6f0;border-right:3px solid #C49A3C;color:#333}
+  .bism{color:#C49A3C}
+  @page{size:A4;margin:15mm 18mm}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-inner">
+    <div class="org-badge">
+      <div class="org-seal">غ.ع</div>
+      <div>
+        <div class="org-name">غرفة العمليات الاستراتيجية</div>
+        <div class="org-sub">STRATEGIC OPERATIONS ROOM · 2026</div>
+      </div>
+    </div>
+    <div class="doc-ref">
+      <span id="docRef">SOR-IQ-000000</span>
+      نموذج رقم الإقرار<br>
+      الإصدار: 1.0 · أبريل 2026<br>
+      © 2026 جميع الحقوق محفوظة
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="bism">بسم الله الرحمن الرحيم</div>
+
+  <div class="intro-box">
+    يُمثّل هذا النموذج <strong style="color:var(--text)">وثيقة إقرار قانونية ملزِمة</strong> يُوقِّعها العميل قبل كل جلسة في غرفة العمليات الاستراتيجية. يُثبّت هذا الإقرار أن العميل اطّلع على طبيعة الخدمة وحدودها وقيودها، وأنه يتحمل وحده المسؤولية الكاملة عن قراراته. التوقيع الإلكتروني على هذا النموذج يُعادل قانونياً التوقيع الخطي وفق نظام التعاملات الإلكترونية السعودي.
+  </div>
+
+  <!-- SECTION 1: بيانات العميل -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">01 · PARTY</span>
+      <span class="section-title">بيانات الطرف الموقِّع</span>
+    </div>
+    <div class="section-body">
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">الاسم الكامل *</label>
+          <input class="field-input" id="clientName" type="text" placeholder="الاسم الثلاثي كاملاً" required>
+        </div>
+        <div class="field-group">
+          <label class="field-label">رقم الهوية / الإقامة *</label>
+          <input class="field-input" id="clientId" type="text" placeholder="10 أرقام" maxlength="10" style="direction:ltr">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">الصفة الوظيفية *</label>
+          <input class="field-input" id="clientRole" type="text" placeholder="مثال: الرئيس التنفيذي">
+        </div>
+        <div class="field-group">
+          <label class="field-label">اسم المنظمة / الجهة *</label>
+          <input class="field-input" id="clientOrg" type="text" placeholder="اسم الشركة أو المؤسسة">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">البريد الإلكتروني *</label>
+          <input class="field-input" id="clientEmail" type="email" placeholder="email@domain.com" style="direction:ltr">
+        </div>
+        <div class="field-group">
+          <label class="field-label">رقم الجوال *</label>
+          <input class="field-input" id="clientPhone" type="tel" placeholder="+966 5x xxx xxxx" style="direction:ltr">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">نوع القرار موضوع الجلسة *</label>
+        <select class="field-input" id="sessionType">
+          <option value="">— اختر نوع القرار —</option>
+          <option>قرار استراتيجي</option>
+          <option>استثمار وتمويل</option>
+          <option>شراكة وعقود</option>
+          <option>توسع وسوق جديد</option>
+          <option>منتج وخدمة</option>
+          <option>هيكلة وتحول مؤسسي</option>
+          <option>أزمة طارئة</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: بنود الإقرار -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">02 · CLAUSES</span>
+      <span class="section-title">بنود الإقرار والاستيعاب</span>
+    </div>
+    <div class="section-body">
+      <div class="clause">
+        <div class="clause-num">١</div>
+        <div class="clause-txt">اطّلعت على الطبيعة الاستشارية لغرفة العمليات الاستراتيجية، وأُقرّ بأن مخرجاتها <strong>لا تُشكّل توصيات استثمارية أو قانونية أو مالية ملزِمة</strong>، ولا تحلّ محل الاستشارة المتخصصة المرخّصة.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٢</div>
+        <div class="clause-txt"><strong>القرار النهائي</strong> في أي شأن مطروح يعود حصراً لي أنا، وأتحمل وحدي المسؤولية القانونية والمالية والأخلاقية الكاملة عن قراراتي وتداعياتها بصرف النظر عن مضمون المحضر الحوكمي.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٣</div>
+        <div class="clause-txt">أُقرّ بأن المخرجات مبنية على <strong>المعلومات التي قدّمتها أنا</strong>، وأن أي نقص أو خطأ في تلك المعلومات يعود أثره القانوني والمالي كاملاً عليّ لا على مقدِّم الخدمة.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٤</div>
+        <div class="clause-txt">أُقرّ بأن المنظومة تعتمد على <strong>نماذج ذكاء اصطناعي</strong> تابعة لـ Anthropic Inc.، وأن احتمالية الخطأ في مخرجات الذكاء الاصطناعي قائمة وموثّقة علمياً، وكانت معلومة لي قبل الجلسة. لا تتحمل غرفة العمليات الاستراتيجية أي مسؤولية عن قصور النموذج اللغوي.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٥</div>
+        <div class="clause-txt">أتعهد بأن <strong>المحضر الحوكمي سري</strong> ومُعدٌّ للاستخدام الداخلي الخاص بجهتي حصراً، ويُحظر تداوله أو الاستناد إليه في أي إجراء قانوني أو تجاري دون إذن كتابي مسبق من غرفة العمليات الاستراتيجية.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٦</div>
+        <div class="clause-txt">أُقرّ بأن <strong>المنهجية الكاملة</strong> لغرفة العمليات الاستراتيجية ملكية فكرية حصرية محمية قانونياً، ويُحظر نسخها أو تقليدها أو توظيفها تجارياً.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٧</div>
+        <div class="clause-txt">في حال وجود أي نزاع، <strong>يُقيَّد التعويض</strong> القابل للمطالبة به بما لا يتجاوز قيمة رسوم الجلسة الواحدة فقط، ولا يمتد إلى أضرار تبعية. يخضع أي نزاع لاختصاص <strong>المحاكم السعودية</strong> وفق أنظمة المملكة.</div>
+      </div>
+      <div class="clause">
+        <div class="clause-num">٨</div>
+        <div class="clause-txt">أُقرّ بأن توقيعي الإلكتروني على هذا النموذج يُعادل التوقيع الخطي وفق <strong>نظام التعاملات الإلكترونية السعودي</strong>، وأنه ملزِم قانونياً لي وللجهة التي أمثّلها.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: التأكيدات -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">03 · CONFIRM</span>
+      <span class="section-title">التأكيدات الإلزامية</span>
+    </div>
+    <div class="section-body">
+      <div class="checks-wrap" id="checksWrap">
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <div class="check-lbl">قرأت جميع البنود الواردة في هذا النموذج وفهمتها كاملاً، ولا غموض فيها.</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <div class="check-lbl">أُقرّ بأنني أمتلك الصلاحية القانونية الكاملة للتوقيع باسم الجهة التي أمثّلها.</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <div class="check-lbl">أوافق على <strong>جميع</strong> شروط إخلاء المسؤولية وتقييد الاستخدام وحماية الملكية الفكرية.</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"><span class="check-mark">✓</span></div>
+          <div class="check-lbl">أُقرّ بأن قراري النهائي يصدر بإرادتي الحرة الكاملة، وأن غرفة العمليات الاستراتيجية غير مسؤولة عن نتائجه.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: التوقيع الإلكتروني -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">04 · SIGNATURE</span>
+      <span class="section-title">التوقيع الإلكتروني</span>
+    </div>
+    <div class="section-body">
+      <div class="sig-label-row">
+        <span style="font-size:11px;color:var(--text3)">وقِّع داخل المربع أدناه بالماوس أو بإصبعك على الشاشة</span>
+        <button class="sig-clear-btn" onclick="clearSig()">مسح التوقيع</button>
+      </div>
+      <div class="sig-canvas-wrap" id="sigWrap">
+        <canvas id="sigCanvas" height="180"></canvas>
+        <div class="sig-placeholder" id="sigPlaceholder">
+          <div class="sig-placeholder-icon">✍️</div>
+          <div class="sig-placeholder-txt">وقِّع هنا</div>
+        </div>
+      </div>
+      <div class="sig-status">
+        <div class="sig-dot" id="sigDot"></div>
+        <span id="sigStatusTxt" style="font-size:10px;color:var(--text3);font-family:'IBM Plex Mono',monospace">في انتظار التوقيع</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: الطابع الزمني -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">05 · TIMESTAMP</span>
+      <span class="section-title">الطابع الزمني والمرجع الرقمي</span>
+    </div>
+    <div class="section-body">
+      <div class="timestamp-box">
+        <div class="ts-item">
+          <span class="ts-key">رقم الوثيقة</span>
+          <span class="ts-val" id="tsRef">—</span>
+        </div>
+        <div class="ts-item">
+          <span class="ts-key">التاريخ الميلادي</span>
+          <span class="ts-val" id="tsDate">—</span>
+        </div>
+        <div class="ts-item">
+          <span class="ts-key">التاريخ الهجري</span>
+          <span class="ts-val" id="tsHijri">—</span>
+        </div>
+        <div class="ts-item">
+          <span class="ts-key">الوقت (AST)</span>
+          <span class="ts-val" id="tsTime">—</span>
+        </div>
+        <div class="ts-item">
+          <span class="ts-key">بصمة الوثيقة</span>
+          <span class="ts-val" id="tsHash">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submitBtn" onclick="submitIqrar()">
+      ✦ اعتماد الإقرار وتوثيقه رسمياً
+    </button>
+    <div class="validation-msg" id="validMsg">
+      ⚠ يرجى إكمال جميع الحقول الإلزامية والتأكيدات والتوقيع
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon">✦</div>
+    <div class="success-title">تم اعتماد الإقرار رسمياً</div>
+    <div class="success-sub">
+      وُثِّق إقرارك الإلكتروني بنجاح وأُسند إليه رقم مرجعي فريد.<br>
+      هذا الإقرار ملزِم قانونياً وفق نظام التعاملات الإلكترونية السعودي.
+    </div>
+    <div class="success-ref" id="successRef">SOR-IQ-000000</div>
+    <div class="success-btns">
+      <button class="btn-print btn-pdf" onclick="printIqrar()">🖨 طباعة / حفظ PDF</button>
+      <button class="btn-print btn-close" onclick="document.getElementById('successOverlay').classList.remove('show')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ SIGNATURE PAD ══════════════════════════════
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, hasSig = false;
+
+function resizeCanvas(){
+  const wrap = document.getElementById('sigWrap');
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = wrap.clientWidth * ratio;
+  canvas.height = 180 * ratio;
+  canvas.style.width = wrap.clientWidth + 'px';
+  canvas.style.height = '180px';
+  ctx.scale(ratio, ratio);
+  ctx.strokeStyle = '#E8D5A0';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function getPos(e){
+  const r = canvas.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
+  if(e.touches){
+    return {
+      x: (e.touches[0].clientX - r.left),
+      y: (e.touches[0].clientY - r.top)
+    };
+  }
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+canvas.addEventListener('mousedown', e=>{ drawing=true; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+canvas.addEventListener('mousemove', e=>{ if(!drawing) return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); setSigned(); });
+canvas.addEventListener('mouseup', ()=>drawing=false);
+canvas.addEventListener('mouseleave', ()=>drawing=false);
+canvas.addEventListener('touchstart', e=>{ e.preventDefault(); drawing=true; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+canvas.addEventListener('touchmove', e=>{ e.preventDefault(); if(!drawing) return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); setSigned(); });
+canvas.addEventListener('touchend', ()=>drawing=false);
+
+function setSigned(){
+  if(!hasSig){
+    hasSig = true;
+    document.getElementById('sigPlaceholder').style.display = 'none';
+    document.getElementById('sigDot').classList.add('signed');
+    document.getElementById('sigStatusTxt').textContent = 'تم التوقيع ✓';
+    document.getElementById('sigStatusTxt').style.color = '#1AA886';
+  }
+}
+
+function clearSig(){
+  const ratio = window.devicePixelRatio || 1;
+  ctx.clearRect(0, 0, canvas.width/ratio*ratio, canvas.height/ratio*ratio);
+  hasSig = false;
+  document.getElementById('sigPlaceholder').style.display = 'flex';
+  document.getElementById('sigDot').classList.remove('signed');
+  document.getElementById('sigStatusTxt').textContent = 'في انتظار التوقيع';
+  document.getElementById('sigStatusTxt').style.color = '';
+}
+
+// ══ CHECKBOXES ══════════════════════════════════
+function toggleCheck(el){
+  el.classList.toggle('checked');
+}
+
+// ══ TIMESTAMP ═══════════════════════════════════
+function genRef(){
+  return 'SOR-IQ-' + Date.now().toString(36).toUpperCase().slice(-6);
+}
+function genHash(){
+  const str = document.getElementById('clientName').value +
+    document.getElementById('clientId').value +
+    Date.now();
+  let hash = 0;
+  for(let i=0;i<str.length;i++){ hash = ((hash<<5)-hash)+str.charCodeAt(i); hash|=0; }
+  return Math.abs(hash).toString(16).toUpperCase().padStart(8,'0');
+}
+function hijriDate(){
+  try{
+    return new Date().toLocaleDateString('ar-SA-u-ca-islamic',{
+      year:'numeric',month:'long',day:'numeric'
+    });
+  }catch(e){ return '—'; }
+}
+function updateTimestamp(){
+  const now = new Date();
+  document.getElementById('tsDate').textContent = now.toLocaleDateString('ar-SA',{
+    weekday:'long',year:'numeric',month:'long',day:'numeric'
+  });
+  document.getElementById('tsTime').textContent = now.toLocaleTimeString('ar-SA',{
+    hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false
+  }) + ' AST';
+  document.getElementById('tsHijri').textContent = hijriDate();
+}
+updateTimestamp();
+
+// ══ GENERATE REF ════════════════════════════════
+const docRef = genRef();
+document.getElementById('docRef').textContent = docRef;
+document.getElementById('tsRef').textContent = docRef;
+
+// ══ VALIDATION + SUBMIT ═════════════════════════
+function validate(){
+  const fields = ['clientName','clientId','clientRole','clientOrg','clientEmail','clientPhone','sessionType'];
+  for(let f of fields){
+    if(!document.getElementById(f).value.trim()) return false;
+  }
+  const checks = document.querySelectorAll('#checksWrap .check-item');
+  for(let c of checks){ if(!c.classList.contains('checked')) return false; }
+  if(!hasSig) return false;
+  return true;
+}
+
+function submitIqrar(){
+  updateTimestamp();
+  if(!validate()){
+    const msg = document.getElementById('validMsg');
+    msg.style.display = 'block';
+    setTimeout(()=>msg.style.display='none', 4000);
+    return;
+  }
+  // توليد hash
+  document.getElementById('tsHash').textContent = genHash();
+  // إظهار overlay
+  document.getElementById('successRef').textContent = docRef;
+  document.getElementById('successOverlay').classList.add('show');
+}
+
+function printIqrar(){
+  document.getElementById('successOverlay').classList.remove('show');
+  setTimeout(()=>window.print(), 300);
+}
+</script>
+</body>
+</html>

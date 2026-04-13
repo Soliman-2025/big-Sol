@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>فلسفة القرار الناضج · غرفة العمليات الاستراتيجية</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@300;400;600;700&display=swap');
+:root{--gold:#C49A3C;--gl:#E8C060;--ink:#07090F;--surf:#0D1118;--bdr:rgba(196,154,60,0.2);--teal:#1AA886;--red:#E24B4A;--tx:#E8D5A0;--t2:#9AABB5;--t3:#5A6A75}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-size:14px;line-height:1.85;min-height:100vh;padding:40px 20px 60px}
+.wrap{max-width:740px;margin:0 auto}
+
+.cover{text-align:center;padding:48px 24px;background:linear-gradient(135deg,#0A0C12,#111827);border:1px solid var(--bdr);border-radius:16px;margin-bottom:32px;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.cover-seal{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--gold);font-family:'Scheherazade New',serif;margin:0 auto 20px}
+.cover-org{font-family:'Scheherazade New',serif;font-size:18px;color:var(--tx);margin-bottom:4px}
+.cover-sub{font-size:10px;color:var(--t3);letter-spacing:3px;font-family:'IBM Plex Mono',monospace;margin-bottom:32px}
+.cover-title{font-family:'Scheherazade New',serif;font-size:32px;color:var(--gold);line-height:1.4;margin-bottom:16px}
+.cover-quote{font-family:'Scheherazade New',serif;font-size:18px;color:var(--tx);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:16px 0;margin:24px 0 16px;line-height:1.6}
+.cover-meta{font-size:11px;color:var(--t3);font-family:'IBM Plex Mono',monospace;line-height:1.8}
+
+.sec{margin-bottom:28px}
+.sec-num{font-size:9px;color:var(--gold);letter-spacing:3px;font-family:'IBM Plex Mono',monospace;margin-bottom:6px}
+.sec-title{font-family:'Scheherazade New',serif;font-size:22px;color:var(--tx);margin-bottom:14px}
+.body{font-size:13.5px;color:var(--t2);line-height:1.9;margin-bottom:12px}
+.body b,.body strong{color:var(--tx)}
+
+.stage-wrap{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.stage{display:flex;gap:14px;align-items:flex-start;background:rgba(196,154,60,0.05);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px}
+.stage-n{width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);font-family:'IBM Plex Mono',monospace;flex-shrink:0}
+.stage-body{flex:1}
+.stage-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.stage-desc{font-size:12px;color:var(--t2);line-height:1.7}
+
+.bias-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12.5px}
+.bias-table th{text-align:right;padding:8px 12px;font-size:10px;color:var(--gold);letter-spacing:1.5px;font-family:'IBM Plex Mono',monospace;border-bottom:1px solid var(--bdr);font-weight:400}
+.bias-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--t2);vertical-align:top;line-height:1.6}
+.bias-table td:first-child{color:var(--tx);font-weight:600;white-space:nowrap}
+.bias-table tr:last-child td{border-bottom:none}
+
+.frame-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:500px){.frame-grid{grid-template-columns:1fr}}
+.frame-item{background:rgba(55,138,221,0.05);border:1px solid rgba(55,138,221,0.2);border-radius:8px;padding:10px 12px}
+.frame-type{font-size:9px;color:#85B7EB;letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin-bottom:4px}
+.frame-name{font-size:11px;font-weight:700;color:#B5D4F4;margin-bottom:4px}
+.frame-use{font-size:11px;color:var(--t2)}
+
+.quote-box{background:rgba(196,154,60,0.05);border:1px solid var(--bdr);border-right:3px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 18px;margin:20px 0}
+.quote-txt{font-family:'Scheherazade New',serif;font-size:17px;color:var(--tx);line-height:1.6;margin-bottom:6px}
+.quote-src{font-size:10px;color:var(--t3);letter-spacing:1px}
+
+.loss-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0}
+.loss-table th{text-align:right;padding:8px 12px;font-size:10px;color:var(--gold);letter-spacing:1px;font-family:'IBM Plex Mono',monospace;border-bottom:1px solid var(--bdr);font-weight:400}
+.loss-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--t2);line-height:1.6;vertical-align:top}
+.loss-table td:first-child{color:var(--red)}
+.loss-table td:last-child{color:var(--teal)}
+.loss-table tr:last-child td{border-bottom:none}
+
+.seal-footer{text-align:center;padding:28px;background:linear-gradient(135deg,rgba(196,154,60,0.04),rgba(196,154,60,0.01));border:1px solid var(--bdr);border-radius:12px;margin-top:32px}
+.seal-quote{font-family:'Scheherazade New',serif;font-size:20px;color:var(--gold);margin-bottom:12px;line-height:1.5}
+.seal-meta{font-size:10px;color:var(--t3);font-family:'IBM Plex Mono',monospace;line-height:1.9}
+
+.print-btn{display:block;margin:20px auto 0;padding:10px 28px;background:linear-gradient(135deg,var(--gold),var(--gl));color:var(--ink);border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+
+@media print{
+  body{background:#fff;color:#1C2028;padding:0}
+  .cover{background:#f8f6f0;border:2px solid #C49A3C}
+  .cover-org,.cover-title,.cover-quote{color:#1C2028}
+  .cover-sub,.cover-meta{color:#888}
+  .sec-num{color:#C49A3C}
+  .sec-title{color:#1C2028}
+  .body{color:#333}
+  .stage{background:#f8f6f0;border:1px solid #ddd}
+  .stage-title{color:#1C2028}.stage-desc{color:#444}
+  .quote-box{background:#f8f6f0;border-right:3px solid #C49A3C}
+  .quote-txt{color:#1C2028}
+  .bias-table td,.loss-table td{color:#444}
+  .bias-table td:first-child,.loss-table td:first-child{color:#C49A3C}
+  .loss-table td:last-child{color:#0F6E56}
+  .frame-item{background:#EBF4FB;border:1px solid #B5D4F4}
+  .frame-name{color:#0C447C}.frame-use{color:#333}
+  .seal-footer{background:#f8f6f0;border:1px solid #ddd}
+  .seal-quote{color:#C49A3C}
+  .print-btn{display:none}
+  @page{size:A4;margin:14mm 18mm}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-seal">غ.ع</div>
+  <div class="cover-org">غرفة العمليات الاستراتيجية</div>
+  <div class="cover-sub">STRATEGIC OPERATIONS ROOM · 2026</div>
+  <div class="cover-title">فلسفة القرار الناضج</div>
+  <div class="cover-quote">«القرار الذي لم يُناقَش قبل اعتماده — مخاطرة مؤجَّلة»</div>
+  <div class="cover-meta">
+    ورقة توجيهية للقادة والمؤسسات<br>
+    الإصدار 1.0 · أبريل 2026 · سليمان إبراهيم آل حويس القوزي<br>
+    © 2026 جميع الحقوق محفوظة
+  </div>
+</div>
+
+<!-- 01 -->
+<div class="sec">
+  <div class="sec-num">01 · PHILOSOPHY</div>
+  <div class="sec-title">لماذا القرارات الجيدة تفشل؟</div>
+  <div class="body">القادة الذين يتخذون قرارات فاشلة ليسوا بالضرورة قادةً جاهلين. معظمهم يملكون الخبرة والذكاء والإرادة. لكنهم يفتقدون شيئاً واحداً: <b>منهجية اختبار القرار قبل تنفيذه.</b></div>
+  <div class="body">الدراسات العالمية تُظهر أن <b>70% من قرارات الاستثمار الكبرى تُحقق نتائج أقل من التوقعات</b> — ليس لأن القرار كان خاطئاً بالضرورة، بل لأنه لم يُختبَر بالأسئلة الصحيحة قبل الاعتماد.</div>
+  <div class="quote-box">
+    <div class="quote-txt">«الفرق بين قرار ناجح وقرار فاشل لا يُقاس بالنتيجة — بل بجودة المنهجية التي سبقته.»</div>
+    <div class="quote-src">مبدأ غرفة العمليات الاستراتيجية</div>
+  </div>
+</div>
+
+<!-- 02 -->
+<div class="sec">
+  <div class="sec-num">02 · ROOT CAUSES</div>
+  <div class="sec-title">أسباب فشل القرارات — ما تُخفيه الإحصاءات</div>
+  <table class="loss-table">
+    <thead><tr><th>السبب الجذري</th><th>الظاهرة المرئية</th><th>العلاج في منهجيتنا</th></tr></thead>
+    <tbody>
+      <tr><td>معلومات ناقصة</td><td>القرار مبني على بيانات غير مكتملة</td><td>المهندس يكشف الفجوات المعرفية قبل الجلسة</td></tr>
+      <tr><td>تحيز معرفي</td><td>صاحب القرار يرى ما يريد رؤيته</td><td>كشف 4 تحيزات رئيسية وتوثيقها للمجلس</td></tr>
+      <tr><td>غياب البدائل</td><td>قرار واحد يُعرض للاعتماد</td><td>إلزام بتحديد بديلَين على الأقل</td></tr>
+      <tr><td>إغفال المخاطر</td><td>التفاؤل يطغى على التقييم الواقعي</td><td>Pre-Mortem إلزامي من كل خبير في المجلس</td></tr>
+      <tr><td>عدم الامتثال التنظيمي</td><td>اكتشاف العقبات بعد التنفيذ</td><td>تشخيص الجهة التنظيمية تلقائياً قبل الجلسة</td></tr>
+      <tr><td>منظور واحد</td><td>القرار يُحلَّل من زاوية المؤسس فقط</td><td>28 خبيراً بزوايا نظر مستقلة ومختلفة</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 03 -->
+<div class="sec">
+  <div class="sec-num">03 · METHODOLOGY</div>
+  <div class="sec-title">المنهجية الخماسية — من الخام إلى الناضج</div>
+  <div class="stage-wrap">
+    <div class="stage">
+      <div class="stage-n">١</div>
+      <div class="stage-body">
+        <div class="stage-title">الحوار مع مهندس القرار</div>
+        <div class="stage-desc">خبير متخصص يجلس مع صاحب القرار في حوار إنساني ذكي — لا استمارات، لا أسئلة جامدة. يقبل الإجابات التقريبية ويُكمل ما ينقص من سياقه ومعرفته. القرار الخام يدخل — التشخيص يبدأ.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-n">٢</div>
+      <div class="stage-body">
+        <div class="stage-title">التشخيص والإثراء العلمي</div>
+        <div class="stage-desc">المهندس يُشخّص نوع القرار ويُطبّق الأطر العلمية المناسبة — NPV للاستثمار، Porter لدخول السوق، ADKAR للتحول. يكتشف التحيزات المعرفية، يُثري القرار بالسياق التنظيمي الخليجي.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-n">٣</div>
+      <div class="stage-body">
+        <div class="stage-title">صياغة وثيقة القرار الناضج</div>
+        <div class="stage-desc">المهندس يبني وثيقة قرار محكمة — 8 أبعاد مكتملة، بيانات موثقة، فجوات معرفية مُعلَنة، بدائل مُحددة، مخاطر أولية مُشخَّصة، درجة نضج من 100. الوثيقة قابلة للتعديل المباشر.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-n">٤</div>
+      <div class="stage-body">
+        <div class="stage-title">اعتماد صاحب الصلاحية</div>
+        <div class="stage-desc">الوثيقة تُعرض على صاحب الصلاحية للمراجعة والاعتماد — يقبل، يعدّل، أو يطلب استكمال نقاط محددة. لا قرار يدخل المجلس إلا بتوقيع صاحب الصلاحية. المسؤولية النهائية للإنسان دائماً.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-n">٥</div>
+      <div class="stage-body">
+        <div class="stage-title">إرسال لمجلس الـ28 خبيراً</div>
+        <div class="stage-desc">القرار الناضج المُعتمَد يدخل غرفة العمليات الاستراتيجية — 28 خبيراً متخصصاً يُحللونه بزوايا مستقلة مع Pre-Mortem وSecond Order Thinking وKill Switch. المحضر الحوكمي يخرج خلال 36 ساعة.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 -->
+<div class="sec">
+  <div class="sec-num">04 · SCIENTIFIC FRAMEWORKS</div>
+  <div class="sec-title">الأطر العلمية المُطبَّقة حسب نوع القرار</div>
+  <div class="frame-grid">
+    <div class="frame-item">
+      <div class="frame-type">استثمار رأس المال</div>
+      <div class="frame-name">NPV · IRR · Monte Carlo</div>
+      <div class="frame-use">تقييم العائد المالي بسيناريوهات متعددة</div>
+    </div>
+    <div class="frame-item">
+      <div class="frame-type">دخول سوق جديد</div>
+      <div class="frame-name">Porter · Blue Ocean · CAGE</div>
+      <div class="frame-use">قياس جاذبية السوق والمسافة التنافسية</div>
+    </div>
+    <div class="frame-item">
+      <div class="frame-type">اندماج واستحواذ</div>
+      <div class="frame-name">Synergy Analysis · Due Diligence</div>
+      <div class="frame-use">تقييم التكاملات والمخاطر ما بعد الصفقة</div>
+    </div>
+    <div class="frame-item">
+      <div class="frame-type">تحول مؤسسي</div>
+      <div class="frame-name">Kotter 8-Step · ADKAR · 7-S</div>
+      <div class="frame-use">إدارة التغيير وقياس الجاهزية التنظيمية</div>
+    </div>
+    <div class="frame-item">
+      <div class="frame-type">قرار أزمة</div>
+      <div class="frame-name">OODA Loop · Crisis Matrix · Triage</div>
+      <div class="frame-use">القرار السريع في ظل معلومات ناقصة</div>
+    </div>
+    <div class="frame-item">
+      <div class="frame-type">إطلاق منتج</div>
+      <div class="frame-name">JTBD · Lean Validation · GTM</div>
+      <div class="frame-use">التحقق من Product-Market Fit قبل الإطلاق</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 -->
+<div class="sec">
+  <div class="sec-num">05 · COGNITIVE BIASES</div>
+  <div class="sec-title">التحيزات المعرفية التي يكتشفها المهندس</div>
+  <div class="body">الدراسات تُظهر أن القادة التنفيذيين يقعون في تحيزات معرفية محددة تُقلل جودة قراراتهم بمعدل 40%. مهندس القرار مُزوَّد بقدرة الكشف التلقائي عن هذه التحيزات وتوثيقها في الوثيقة.</div>
+  <table class="bias-table">
+    <thead><tr><th>التحيز</th><th>ما تبدو عليه</th><th>السؤال الكاشف</th></tr></thead>
+    <tbody>
+      <tr><td>Confirmation Bias<br>تحيز التأكيد</td><td>ذكر الأدلة المؤيدة فقط وتجاهل المعارضة</td><td>ما أقوى حجة ضد هذا القرار؟</td></tr>
+      <tr><td>Sunk Cost Fallacy<br>التكلفة الغارقة</td><td>الاستمرار بسبب ما أُنفق لا بسبب المستقبل</td><td>لو بدأت من الصفر اليوم، هل ستتخذ نفس القرار؟</td></tr>
+      <tr><td>Overconfidence<br>الثقة المفرطة</td><td>توقعات نجاح عالية جداً بلا أساس بيانات</td><td>ما السيناريو الأسوأ واحتمالية حدوثه؟</td></tr>
+      <tr><td>Planning Fallacy<br>مغالطة التخطيط</td><td>جداول زمنية متفائلة لا تأخذ التأخير بعين الاعتبار</td><td>هل يتضمن الجدول هامش تأخير 30-50%؟</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 06 -->
+<div class="sec">
+  <div class="sec-num">06 · ZERO LOSS PRINCIPLE</div>
+  <div class="sec-title">مبدأ تقليص الخسائر إلى صفر</div>
+  <div class="body">الخسائر في القرارات لا تأتي من سوء النية — تأتي من <b>الفجوات غير المكتشفة</b>. المنهجية الخماسية تكتشف هذه الفجوات قبل التنفيذ، في المرحلة التي لا تزال التكلفة صفراً.</div>
+  <div class="quote-box">
+    <div class="quote-txt">«الوقاية من الخسارة تكلّف لحظة تفكير. علاج الخسارة يكلّف سنوات من العمل.»</div>
+    <div class="quote-src">فلسفة غرفة العمليات الاستراتيجية</div>
+  </div>
+  <div class="body">كل خطوة في المنهجية تُغلق باباً من أبواب الخسارة:</div>
+  <div class="stage-wrap">
+    <div class="stage" style="padding:10px 14px">
+      <div class="stage-n" style="width:28px;height:28px;font-size:11px">١</div>
+      <div class="stage-body"><div class="stage-title" style="font-size:12px">الحوار مع المهندس</div><div class="stage-desc">يُغلق: الفجوات المعرفية، المعلومات الناقصة</div></div>
+    </div>
+    <div class="stage" style="padding:10px 14px">
+      <div class="stage-n" style="width:28px;height:28px;font-size:11px">٢</div>
+      <div class="stage-body"><div class="stage-title" style="font-size:12px">الإثراء العلمي</div><div class="stage-desc">يُغلق: الأطر المغلوطة، التحيزات المعرفية</div></div>
+    </div>
+    <div class="stage" style="padding:10px 14px">
+      <div class="stage-n" style="width:28px;height:28px;font-size:11px">٣</div>
+      <div class="stage-body"><div class="stage-title" style="font-size:12px">صياغة الوثيقة</div><div class="stage-desc">يُغلق: الغموض، عدم التوثيق، غياب البدائل</div></div>
+    </div>
+    <div class="stage" style="padding:10px 14px">
+      <div class="stage-n" style="width:28px;height:28px;font-size:11px">٤</div>
+      <div class="stage-body"><div class="stage-title" style="font-size:12px">الاعتماد الرسمي</div><div class="stage-desc">يُغلق: تجاوز صاحب الصلاحية، المسؤولية المبهمة</div></div>
+    </div>
+    <div class="stage" style="padding:10px 14px">
+      <div class="stage-n" style="width:28px;height:28px;font-size:11px">٥</div>
+      <div class="stage-body"><div class="stage-title" style="font-size:12px">مجلس الـ28 خبيراً</div><div class="stage-desc">يُغلق: المنظور الأحادي، غياب Pre-Mortem، إغفال الامتثال</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="seal-footer">
+  <div class="seal-quote">«حيث يُصنع القرار، لا يُخمَّن»</div>
+  <div class="seal-meta">
+    غرفة العمليات الاستراتيجية · هندسة التفكير القيادي<br>
+    المؤسس: سليمان إبراهيم آل حويس القوزي · 2026م<br>
+    © 2026 جميع حقوق الملكية الفكرية محفوظة
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨 طباعة الوثيقة PDF</button>
+
+</div>
+</body>
+</html>
