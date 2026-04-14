@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>غرفة العمليات الاستراتيجية — البوابة الرئيسية</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@300;400;600;700&display=swap');
+:root{--gold:#C49A3C;--gl:#E8C060;--ink:#07090F;--surf:#0D1118;--teal:#1AA886;--red:#E24B4A;--tx:#E8D5A0;--t2:#9AABB5;--t3:#5A6A75;--bdr:rgba(196,154,60,0.18)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;min-height:100vh;direction:rtl}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0A0C12,#111827);border-bottom:1px solid var(--bdr);padding:20px 32px;position:relative}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.hdr-in{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:12px}
+.seal{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--gold);font-family:'Scheherazade New',serif}
+.org{font-family:'Scheherazade New',serif;font-size:20px;color:var(--tx);font-weight:700}
+.sub{font-size:10px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.version{font-size:10px;color:var(--gold);padding:3px 12px;border:1px solid rgba(196,154,60,0.3);border-radius:20px;font-family:'IBM Plex Mono',monospace}
+
+.main{max-width:960px;margin:0 auto;padding:32px 20px 60px}
+
+/* API SECTION */
+.api-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:24px;margin-bottom:32px;position:relative;overflow:hidden}
+.api-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.api-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.api-desc{font-size:12px;color:var(--t3);margin-bottom:16px}
+.api-row{display:flex;align-items:center;gap:10px}
+.api-dot{width:10px;height:10px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:all .3s}
+.api-dot.ok{background:var(--teal);box-shadow:0 0 8px rgba(26,168,134,0.4)}
+.api-inp{flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(196,154,60,0.2);border-radius:8px;padding:10px 14px;color:var(--tx);font-family:'IBM Plex Mono',monospace;font-size:13px;outline:none;direction:ltr;transition:border-color .2s}
+.api-inp:focus{border-color:rgba(196,154,60,0.5)}
+.api-inp::placeholder{color:var(--t3)}
+.api-status{font-size:11px;margin-top:10px;padding:8px 14px;border-radius:7px;display:flex;align-items:center;gap:8px;transition:all .3s}
+.api-status.ok{background:rgba(26,168,134,0.08);border:1px solid rgba(26,168,134,0.2);color:var(--teal)}
+.api-status.err{background:rgba(226,75,74,0.06);border:1px solid rgba(226,75,74,0.2);color:var(--red)}
+.api-status.idle{background:rgba(255,255,255,0.03);border:1px solid var(--bdr);color:var(--t3)}
+
+/* TOOLS GRID */
+.tools-title{font-size:11px;color:var(--t3);letter-spacing:3px;font-family:'IBM Plex Mono',monospace;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px}
+
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:22px;cursor:pointer;transition:all .25s;text-decoration:none;display:block;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transition:opacity .3s;opacity:0}
+.card.gold::before{background:linear-gradient(90deg,var(--gold),var(--gl))}
+.card.teal::before{background:linear-gradient(90deg,var(--teal),#2DD4BF)}
+.card.blue::before{background:linear-gradient(90deg,#378ADD,#60A5FA)}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.3);border-color:rgba(196,154,60,0.3)}
+.card:hover::before{opacity:1}
+.card-icon{font-size:28px;margin-bottom:12px}
+.card-num{font-size:9px;color:var(--t3);letter-spacing:3px;font-family:'IBM Plex Mono',monospace;margin-bottom:6px}
+.card-title{font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px}
+.card-desc{font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:14px}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:10px;padding:3px 9px;border-radius:20px;font-family:'IBM Plex Mono',monospace}
+.tag-g{background:rgba(196,154,60,0.1);color:var(--gold);border:1px solid rgba(196,154,60,0.25)}
+.tag-t{background:rgba(26,168,134,0.08);color:var(--teal);border:1px solid rgba(26,168,134,0.2)}
+.card-arrow{position:absolute;bottom:20px;left:20px;font-size:18px;color:var(--t3);transition:all .25s}
+.card:hover .card-arrow{color:var(--gold);transform:translateX(-4px)}
+
+/* DOCS GRID */
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:32px}
+.doc-card{background:rgba(255,255,255,0.02);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;transition:all .2s}
+.doc-card:hover{background:rgba(196,154,60,0.06);border-color:rgba(196,154,60,0.3)}
+.doc-icon{font-size:20px;flex-shrink:0}
+.doc-name{font-size:12px;font-weight:600;color:var(--tx)}
+.doc-sub{font-size:10px;color:var(--t3)}
+
+/* FOOTER */
+.footer{text-align:center;padding-top:24px;border-top:1px solid var(--bdr);font-size:11px;color:var(--t3)}
+.footer span{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="logo">
+      <div class="seal">غ.ع</div>
+      <div>
+        <div class="org">غرفة العمليات الاستراتيجية</div>
+        <div class="sub">STRATEGIC OPERATIONS ROOM · 2026</div>
+      </div>
+    </div>
+    <div class="version">v8.1 · 28 خبيراً</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- API KEY -->
+  <div class="api-card">
+    <div class="api-title">مفتاح Anthropic API — يُحفَظ تلقائياً لجميع الأدوات</div>
+    <div class="api-desc">أدخله مرة واحدة هنا — ينتقل لكل الصفحات تلقائياً بدون إعادة إدخال</div>
+    <div class="api-row">
+      <div class="api-dot" id="dot"></div>
+      <input class="api-inp" type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
+    </div>
+    <div class="api-status idle" id="status">
+      <span id="statusIcon">○</span>
+      <span id="statusText">أدخل مفتاحك للبدء — يُحفَظ محلياً ولا يُشارَك مع أحد</span>
+    </div>
+  </div>
+
+  <!-- MAIN TOOLS -->
+  <div class="tools-title">أدوات المنظومة الرئيسية</div>
+  <div class="grid">
+
+    <a class="card gold" href="SOR_Council.html" id="c1">
+      <div class="card-icon">⬡</div>
+      <div class="card-num">01 · MAIN</div>
+      <div class="card-title">غرفة العمليات الاستراتيجية</div>
+      <div class="card-desc">28 خبيراً بالتوازي · بحث آني · محضر حوكمي رسمي · عتبة 75%</div>
+      <div class="card-tags">
+        <span class="tag tag-g">28 خبير</span>
+        <span class="tag tag-t">بحث آني</span>
+        <span class="tag tag-g">محضر قانوني</span>
+      </div>
+      <div class="card-arrow">←</div>
+    </a>
+
+    <a class="card teal" href="assessor.html" id="c2">
+      <div class="card-icon">◎</div>
+      <div class="card-num">02 · ASSESS</div>
+      <div class="card-title">مُقيِّم القرار</div>
+      <div class="card-desc">تقييم نضج القرار 0-100 · 9 أبعاد · بحث آني · كشف التحيزات</div>
+      <div class="card-tags">
+        <span class="tag tag-t">AI + بحث آني</span>
+        <span class="tag tag-g">9 أبعاد</span>
+      </div>
+      <div class="card-arrow">←</div>
+    </a>
+
+    <a class="card blue" href="engineer.html" id="c3">
+      <div class="card-icon">◈</div>
+      <div class="card-num">03 · BUILD</div>
+      <div class="card-title">مهندس القرار</div>
+      <div class="card-desc">حوار ذكي يبني وثيقة القرار · تحديث آني · 8 أبعاد مكتملة</div>
+      <div class="card-tags">
+        <span class="tag tag-g">حوار ذكي</span>
+        <span class="tag tag-t">تحديث آني</span>
+      </div>
+      <div class="card-arrow">←</div>
+    </a>
+
+  </div>
+
+  <!-- DOCS -->
+  <div class="tools-title">الوثائق والعقود</div>
+  <div class="docs">
+    <a class="doc-card" href="philosophy.html">
+      <div class="doc-icon">📖</div>
+      <div><div class="doc-name">فلسفة القرار الناضج</div><div class="doc-sub">المرجعية الفكرية</div></div>
+    </a>
+    <a class="doc-card" href="contract-individual.html">
+      <div class="doc-icon">📄</div>
+      <div><div class="doc-name">عقد أ — فرد</div><div class="doc-sub">SOR-IND</div></div>
+    </a>
+    <a class="doc-card" href="contract-company.html">
+      <div class="doc-icon">📄</div>
+      <div><div class="doc-name">عقد ب — شركات</div><div class="doc-sub">SOR-COR</div></div>
+    </a>
+    <a class="doc-card" href="contract-government.html">
+      <div class="doc-icon">📄</div>
+      <div><div class="doc-name">عقد ج — حكومي</div><div class="doc-sub">SOR-GOV</div></div>
+    </a>
+    <a class="doc-card" href="client-acknowledgment.html">
+      <div class="doc-icon">✍</div>
+      <div><div class="doc-name">نموذج إقرار العميل</div><div class="doc-sub">توقيع رقمي</div></div>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>غرفة العمليات الاستراتيجية</span> · سليمان إبراهيم آل حويس القوزي · 2026<br>
+    <span style="color:var(--t3);margin-top:6px;display:block">المفتاح يُحفَظ محلياً على جهازك فقط · لا يُرسَل لأي خادم · PDPL متوافق</span>
+  </div>
+
+</div>
+
+<script>
+var KEY = '';
+
+// ══ تحميل المفتاح المحفوظ ══
+(function(){
+  var saved = localStorage.getItem('sor_api_key');
+  if(saved && saved.startsWith('sk-ant-') && saved.length > 20){
+    document.getElementById('apiKey').value = saved;
+    KEY = saved;
+    setStatus(true);
+  }
+})();
+
+// ══ الاستماع للإدخال ══
+document.getElementById('apiKey').addEventListener('input', function(){
+  KEY = this.value.trim();
+  var ok = KEY.startsWith('sk-ant-') && KEY.length > 20;
+  setStatus(ok);
+  if(ok){
+    localStorage.setItem('sor_api_key', KEY);
+  }
+});
+
+function setStatus(ok){
+  var dot = document.getElementById('dot');
+  var status = document.getElementById('status');
+  var icon = document.getElementById('statusIcon');
+  var text = document.getElementById('statusText');
+
+  dot.className = 'api-dot' + (ok ? ' ok' : '');
+
+  if(ok){
+    status.className = 'api-status ok';
+    icon.textContent = '✓';
+    text.textContent = 'متصل — المفتاح محفوظ · جميع الأدوات جاهزة';
+  } else if(KEY.length > 5) {
+    status.className = 'api-status err';
+    icon.textContent = '✗';
+    text.textContent = 'المفتاح غير صحيح — يجب أن يبدأ بـ sk-ant-';
+  } else {
+    status.className = 'api-status idle';
+    icon.textContent = '○';
+    text.textContent = 'أدخل مفتاحك للبدء — يُحفَظ محلياً ولا يُشارَك مع أحد';
+  }
+}
+
+// ══ فتح الأدوات مع نقل المفتاح عبر sessionStorage ══
+// localStorage يكفي — الصفحات الأخرى تقرأه تلقائياً
+</script>
+
+</body>
+</html>

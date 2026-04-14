@@ -1345,6 +1345,29 @@ async function sendChat(){
   }
 }
 readDecisionFromURL();
+
+// ══ LOCAL STORAGE — API KEY ══════════════════════════════
+(function(){
+  var saved = localStorage.getItem('sor_api_key');
+  if(saved && saved.startsWith('sk-ant-') && saved.length > 20){
+    var inp = document.getElementById('apiKeyInp');
+    if(inp){
+      inp.value = saved;
+      // trigger input event
+      setTimeout(function(){
+        var evt = new Event('input', {bubbles:true});
+        inp.dispatchEvent(evt);
+      }, 100);
+    }
+  }
+})();
+
+function saveKey(val){
+  if(val && val.startsWith('sk-ant-') && val.length > 20){
+    localStorage.setItem('sor_api_key', val);
+  }
+}
+
 </script>
 </body>
 </html>

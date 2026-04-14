@@ -72,14 +72,14 @@ body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-s
 .up-name{font-size:11px;color:var(--teal);font-family:'IBM Plex Mono',monospace;margin-top:3px;display:none}
 
 /* CHAT */
-.chat{flex:1;min-height:280px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding:4px 0}
+.chat{flex:1;min-height:280px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding:4px 0;overflow-x:hidden}
 .msg{display:flex;gap:9px;align-items:flex-start;animation:fi .3s ease}
 @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .msg-s{flex-direction:row}.msg-u{flex-direction:row-reverse}
 .av{width:33px;height:33px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
 .av-s{background:rgba(196,154,60,.15);color:var(--gold);border:1px solid rgba(196,154,60,.3);font-family:'Scheherazade New',serif}
 .av-u{background:rgba(26,168,134,.15);color:var(--teal);border:1px solid rgba(26,168,134,.3);font-size:10px}
-.bbl{max-width:82%;padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.85}
+.bbl{max-width:82%;padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.85;word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
 .bbl-s{background:var(--surf);border:1px solid var(--bdr);border-right:3px solid var(--gold);border-radius:4px 12px 12px 12px;color:var(--t2)}
 .bbl-u{background:rgba(26,168,134,.08);border:1px solid rgba(26,168,134,.2);border-radius:12px 4px 12px 12px;color:var(--tx);text-align:right}
 .bbl-s b,.bbl-s strong{color:var(--tx)}
@@ -140,6 +140,20 @@ body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-s
       </div>
     </div>
     <div class="hbadge">⬡ مهندس القرار العلمي</div>
+  </div>
+</div>
+
+
+<div id="apiBar" style="background:linear-gradient(135deg,#0A0C12,#0D1118);border-bottom:1px solid rgba(196,154,60,0.18);padding:12px 20px">
+  <div style="max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <div style="font-size:10px;color:#5A6A75;letter-spacing:2px;font-family:monospace;white-space:nowrap">مفتاح API</div>
+    <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:220px">
+      <div id="engApiDot2" style="width:8px;height:8px;border-radius:50%;background:#5A6A75;flex-shrink:0;transition:background .3s"></div>
+      <input type="password" id="engApiKeyTop" placeholder="sk-ant-api03-..." autocomplete="off"
+        oninput="onEngKeyTop(this.value)"
+        style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(196,154,60,0.2);border-radius:6px;padding:7px 12px;color:#E8D5A0;font-family:monospace;font-size:12px;outline:none;direction:ltr;max-width:420px">
+    </div>
+    <div id="engApiStatus2" style="font-size:11px;color:#5A6A75">غير متصل — يُستخدم للتحديث الآني عند إنتاج الوثيقة</div>
   </div>
 </div>
 
@@ -657,21 +671,46 @@ async function extractText(file){
       var openTag = '<w:t';
       var closeTag = '</w:t>';
       var paraEnd = '</w:p>';
+      var tableEnd = '</w:tr>';
       while(pos < xml.length){
-        var pi = xml.indexOf(paraEnd, pos);
-        var wi = xml.indexOf(openTag, pos);
+        var pi  = xml.indexOf(paraEnd, pos);
+        var tri = xml.indexOf(tableEnd, pos);
+        var wi  = xml.indexOf(openTag, pos);
         if(wi === -1) break;
-        if(pi !== -1 && pi < wi){ result.push(''); pos = pi + paraEnd.length; continue; }
+        // نهاية فقرة — أضف سطراً جديداً
+        if(pi !== -1 && pi < wi){
+          result.push('\n');
+          pos = pi + paraEnd.length;
+          continue;
+        }
+        // نهاية صف جدول — أضف مسافة فاصلة
+        if(tri !== -1 && tri < wi){
+          result.push(' | ');
+          pos = tri + tableEnd.length;
+          continue;
+        }
         var gt = xml.indexOf('>', wi);
         if(gt === -1) break;
         var ct = xml.indexOf(closeTag, gt);
         if(ct === -1) break;
         var txt = xml.substring(gt+1, ct);
-        if(txt.length > 0) result.push(txt);
+        // أضف مسافة بين runs في نفس الفقرة إذا لزم
+        if(txt.length > 0){
+          var last = result.length > 0 ? result[result.length-1] : '';
+          if(last && last !== '\n' && last !== ' | ' &&
+             !last.endsWith(' ') && !txt.startsWith(' ')){
+            // لا نضيف مسافة تلقائياً — النص العربي يتدفق بشكل صحيح
+          }
+          result.push(txt);
+        }
         pos = ct + closeTag.length;
       }
-      var text = result.join('').replace(/\s+/g,' ').trim();
-      if(text.length > 50) return text.substring(0,6000);
+      // تنظيف: جمع مع المحافظة على الأسطر
+      var text = result.join('')
+        .replace(/\n{3,}/g, '\n\n')  // تقليل الأسطر المتعددة
+        .replace(/[ \t]+/g, ' ')       // دمج المسافات
+        .trim();
+      if(text.length > 50) return text.substring(0, 8000);
       throw new Error('النص فارغ');
     }catch(err){
       return '[تعذّرت قراءة ' + file.name + ': ' + err.message + ' -- يُرجى نسخ المحتوى ولصقه في المحادثة]';
@@ -725,10 +764,12 @@ async function handleFile(input){
   ST.dims.context = readable ? 72 : 35;
   detectDecisionType(raw);
   updateMeter();
-  const preview = raw.substring(0,300).replace(/\n/g,' ');
+  // تنظيف preview — أول 3 أسطر من النص
+  var previewLines = raw.split('\n').filter(function(l){ return l.trim().length > 3; }).slice(0,5);
+  var preview = previewLines.join(' · ').substring(0,200);
   if(readable){
     const dt = ST.decType ? DECISION_TYPES[ST.decType] : null;
-    addSORMsg(`قرأت الملف بنجاح.\n\nأول ما لفت انتباهي:\n*"${preview}..."*\n\n${dt?`يبدو أن هذا **${dt.label}** — سأطبق إطار **${dt.frameworks[0]}** في التحليل.\n\n`:''}`
+    addSORMsg(`قرأت الملف بنجاح ✓\n\n**ما قرأته:**\n${preview}...\n\n${dt?`يبدو أن هذا **${dt.label}** — سأطبق إطار **${dt.frameworks[0]}** في التحليل.\n\n`:''}`
       + `**سؤالي الأول:** ما الهدف الأساسي الذي تريد أن يحلله المجلس في هذا القرار؟`);
   } else {
     addSORMsg(`الملف وصل لكن استخراج النص محدود.\n\nأفضل طريقة: **انسخ النص الرئيسي للقرار وألصقه هنا** — سأحلله كاملاً.\n\nأو أخبرني شفهياً: ما القرار الذي يحتويه الملف؟`);
@@ -837,7 +878,7 @@ function editDoc(){
 // ══════════════════════════════════════════════
 function addSORMsg(text,opts=[]){
   const d=document.createElement('div');d.className='msg msg-s';
-  const fmt=text.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+  const fmt=text.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
   const isEnrich = text.includes('إثراء علمي') || text.includes('إطار التنظيمي');
   d.innerHTML=`<div class="av av-s">غ.ع</div><div class="bbl ${isEnrich?'bbl-enrich':'bbl-s'}">${fmt}${opts.length?buildOpts(opts):''}</div>`;
   document.getElementById('chat').appendChild(d);scrollChat();
@@ -846,7 +887,7 @@ function buildOpts(opts){ return`<div class="opts">${opts.map(o=>`<button class=
 function selOpt(t){ document.getElementById('inp').value=t; send(); }
 function addUserMsg(t){
   const d=document.createElement('div');d.className='msg msg-u';
-  d.innerHTML=`<div class="av av-u">أنت</div><div class="bbl bbl-u">${t.replace(/\n/g,'<br>')}</div>`;
+  d.innerHTML=`<div class="av av-u">أنت</div><div class="bbl bbl-u">${t}</div>`;
   document.getElementById('chat').appendChild(d);scrollChat();
 }
 function addTyping(){
@@ -874,11 +915,24 @@ async function send(){
 // ══ API KEY FOR ENGINEER ═══════════════════════════
 var ENG_KEY = '';
 
+function onEngKeyTop(val){
+  onEngKey(val);
+  // مزامنة مع الحقل القديم
+  var old = document.getElementById('engApiKey');
+  if(old) old.value = val;
+}
+
 function onEngKey(val){
   ENG_KEY = val.trim();
+  saveKey(ENG_KEY);
   var ok = ENG_KEY.startsWith('sk-ant-') && ENG_KEY.length > 20;
   var dot = document.getElementById('engApiDot');
   if(dot) dot.style.background = ok ? '#1AA886' : '#5A6A75';
+  var dot2 = document.getElementById('engApiDot2');
+  if(dot2) dot2.style.background = ok ? '#1AA886' : '#5A6A75';
+  var st2 = document.getElementById('engApiStatus2');
+  if(st2){ st2.textContent = ok ? '✓ متصل — التحديث الآني جاهز' : 'غير متصل — يُستخدم للتحديث الآني عند إنتاج الوثيقة'; st2.style.color = ok ? '#1AA886' : '#5A6A75'; }
+  if(ok) saveKey(ENG_KEY);
 }
 
 // ══ WEB SEARCH ENRICHMENT ═══════════════════════════
@@ -942,6 +996,30 @@ function init(){
   }
 }
 init();
+
+// ══ LOCAL STORAGE — API KEY ══════════════════════════════
+(function(){
+  var saved = localStorage.getItem('sor_api_key');
+  if(saved && saved.startsWith('sk-ant-') && saved.length > 20){
+    // تحميل في الشريط العلوي
+    var top = document.getElementById('engApiKeyTop');
+    if(top){ top.value = saved; }
+    // تحميل في الحقل القديم
+    var old = document.getElementById('engApiKey');
+    if(old){ old.value = saved; }
+    // تفعيل
+    setTimeout(function(){
+      onEngKey(saved);
+    }, 150);
+  }
+})();
+
+function saveKey(val){
+  if(val && val.startsWith('sk-ant-') && val.length > 20){
+    localStorage.setItem('sor_api_key', val);
+  }
+}
+
 </script>
 </body>
 </html>

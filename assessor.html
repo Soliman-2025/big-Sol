@@ -250,6 +250,7 @@ var TYPES = {
 // ═══ EVENT LISTENERS ═══════════════════════════════
 document.getElementById('apiKey').addEventListener('input', function(){
   KEY = this.value.trim();
+  saveKey(KEY);
   var ok = KEY.startsWith('sk-ant-') && KEY.length > 20;
   document.getElementById('apiDot').className = 'api-dot' + (ok ? ' ok' : '');
   document.getElementById('apiSt').textContent = ok ? 'متصل ✓' : 'غير متصل';
@@ -673,6 +674,29 @@ function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
   var p=new URLSearchParams(window.location.search), dec=p.get('decision');
   if(dec){try{var d=decodeURIComponent(dec);document.getElementById('decTxt').value=d;DEC=d.trim();document.getElementById('charCnt').textContent=DEC.length+' حرف';chkReady();}catch(e){}}
 })();
+
+// ══ LOCAL STORAGE — API KEY ══════════════════════════════
+(function(){
+  var saved = localStorage.getItem('sor_api_key');
+  if(saved && saved.startsWith('sk-ant-') && saved.length > 20){
+    var inp = document.getElementById('apiKey');
+    if(inp){
+      inp.value = saved;
+      // trigger input event
+      setTimeout(function(){
+        var evt = new Event('input', {bubbles:true});
+        inp.dispatchEvent(evt);
+      }, 100);
+    }
+  }
+})();
+
+function saveKey(val){
+  if(val && val.startsWith('sk-ant-') && val.length > 20){
+    localStorage.setItem('sor_api_key', val);
+  }
+}
+
 </script>
 </body>
 </html>
