@@ -339,13 +339,21 @@ select option{background:var(--s2)}
   <!-- Context + File + Launch -->
   <div class="row">
     <select id="ctx" class="inp" style="flex:1">
-      <option value="strategic">قرار استراتيجي</option>
-      <option value="investment">استثمار وتمويل</option>
-      <option value="partnership">شراكة وعقود</option>
-      <option value="expansion">توسع وسوق جديد</option>
-      <option value="product">منتج وخدمة</option>
-      <option value="restructure">هيكلة وتحول</option>
-      <option value="crisis">أزمة طارئة</option>
+      <option value="strategic">🎯 استراتيجي عام</option>
+      <option value="investment">💰 استثمار رأس المال</option>
+      <option value="market_entry">🌍 دخول سوق جديد</option>
+      <option value="ma">🤝 اندماج واستحواذ</option>
+      <option value="partnership">🔗 شراكة استراتيجية</option>
+      <option value="expansion">📈 توسع جغرافي</option>
+      <option value="product">🚀 إطلاق منتج أو خدمة</option>
+      <option value="restructure">🔄 إعادة هيكلة</option>
+      <option value="crisis">🚨 إدارة أزمة</option>
+      <option value="digital_trans">💻 تحول رقمي</option>
+      <option value="tech_ai">🤖 تقنية وذكاء اصطناعي</option>
+      <option value="energy_sector">⚡ قطاع الطاقة</option>
+      <option value="healthcare_sector">🏥 قطاع الرعاية الصحية</option>
+      <option value="supply">📦 سلاسل التوريد</option>
+      <option value="governance">⚖ حوكمة وامتثال</option>
     </select>
     <input type="file" id="fileIn" accept=".pdf,.doc,.docx,.txt" style="display:none" onchange="onFile(event)">
     <button class="btn btn-file" onclick="document.getElementById('fileIn').click()">📎 رفع ملف</button>
@@ -434,6 +442,76 @@ select option{background:var(--s2)}
 // ══ CONFIG ═══════════════════════════════════
 const MDL  = 'claude-sonnet-4-6';
 const MAXT = 8000;
+
+// ══ TEMPERATURE MAP ═══════════════════════════════════
+// كل خبير بدرجة حرارة تناسب طبيعة تحليله
+// منخفضة = دقة وأرقام | عالية = إبداع واستشراف
+const TEMP_MAP = {
+  strategic:        0.4,  // تحليل هيكلي — يحتاج دقة
+  financial:        0.2,  // أرقام وسيناريوهات — دقة عالية جداً
+  executive:        0.3,  // تنفيذ وجداول — دقة
+  digital:          0.4,  // تقييم تقني — دقة مع مرونة
+  foresight:        0.8,  // استشراف وسيناريوهات — إبداع
+  research:         0.2,  // بيانات وأدلة — دقة عالية جداً
+  marketing:        0.6,  // تسويق وإبداع — توازن
+  hr:               0.4,  // موارد بشرية — دقة مع مرونة
+  sustainability:   0.3,  // معايير وأرقام ESG — دقة
+  risk:             0.2,  // مخاطر وأرقام — دقة عالية جداً
+  cybersecurity:    0.2,  // تقني صارم — دقة عالية جداً
+  geopolitical:     0.6,  // جيوسياسة — تحليل مرن
+  ai_governance:    0.3,  // حوكمة وأنظمة — دقة
+  legal:            0.2,  // قانون وتشريعات — دقة عالية جداً
+  quality:          0.2,  // جودة ومعايير — دقة عالية جداً
+  supply_chain:     0.3,  // لوجستيات — دقة
+  energy:           0.3,  // طاقة وأرقام — دقة
+  healthcare:       0.3,  // طب ومعايير — دقة
+  design:           0.7,  // تصميم وإبداع — إبداع
+  reputation:       0.5,  // اتصالات — توازن
+  agentic_ai:       0.4,  // تقني مع إبداع — توازن
+  quantum:          0.2,  // علم صارم — دقة عالية جداً
+  ai_ethics:        0.5,  // أخلاقيات — توازن
+  geostrategy:      0.5,  // استراتيجية دولية — توازن
+  circular_economy: 0.3,  // بيئة وأرقام — دقة
+  post_quantum:     0.2,  // تقني صارم — دقة عالية جداً
+  contrarian:       0.7,  // معارضة إبداعية — إبداع
+  verifier:         0.1,  // تحقق صارم — دقة قصوى
+};
+
+// ══ SEARCH MAP ════════════════════════════════════════════
+// الخبراء الذين يحتاجون بحثاً آنياً في الإنترنت
+// لأن تخصصاتهم تتغير يومياً
+const SEARCH_MAP = {
+  financial:        true,  // أسعار الفائدة، أسواق المال، تقييمات الشركات
+  research:         true,  // إحصاءات وأبحاث حديثة
+  geopolitical:     true,  // توترات إقليمية، علاقات دولية
+  energy:           true,  // أسعار النفط، قرارات أوبك، مشاريع الطاقة
+  sustainability:   true,  // تشريعات ESG، معايير جديدة
+  cybersecurity:    true,  // تهديدات سيبرانية جديدة، ثغرات حديثة
+  ai_governance:    true,  // تشريعات AI الجديدة، EU AI Act updates
+  legal:            true,  // أنظمة وتشريعات حديثة في السوق السعودي
+  marketing:        true,  // اتجاهات السوق، بيانات المستهلكين
+  geostrategy:      true,  // قيود التصدير الجديدة، التنافس التقني
+  circular_economy: true,  // معايير المناخ الجديدة، اتفاقيات دولية
+  quantum:          true,  // تطورات الحوسبة الكمومية
+  post_quantum:     true,  // معايير NIST الجديدة
+  agentic_ai:       true,  // أحدث نماذج AI والأدوات
+  healthcare:       true,  // تشريعات SFDA وتطورات القطاع
+  reputation:       true,  // أخبار المنظمة والقطاع
+  // لا يحتاجون بحثاً — يعملون بمعطيات القرار نفسه
+  strategic:        false,
+  executive:        false,
+  digital:          false,
+  foresight:        false,
+  hr:               false,
+  supply_chain:     false,
+  quality:          false,
+  design:           false,
+  ai_ethics:        false,
+  contrarian:       false,
+  verifier:         false,
+};
+
+
 const TOUT = 300000;
 
 // ══ EXPERTS ══════════════════════════════════
@@ -469,13 +547,36 @@ const EX = [
 ];
 
 const CTX_MAP = {
-  investment:  ['risk','legal','sustainability','cybersecurity','energy','circular_economy','post_quantum'],
-  partnership: ['legal','risk','hr','reputation','cybersecurity'],
-  expansion:   ['marketing','geopolitical','risk','supply_chain','geostrategy'],
-  product:     ['marketing','hr','sustainability','quality','ai_governance','ai_ethics','design'],
-  restructure: ['hr','risk','legal','quality'],
-  crisis:      ['risk','legal','geopolitical','reputation'],
-  strategic:   ['risk','marketing','foresight','geopolitical']
+  // قرارات الاستثمار والمال
+  investment:       ['risk','legal','sustainability','cybersecurity','energy','circular_economy','post_quantum','geopolitical'],
+  // دخول أسواق جديدة
+  market_entry:     ['marketing','geopolitical','legal','risk','supply_chain','geostrategy','hr'],
+  // اندماج واستحواذ
+  ma:               ['legal','risk','financial','hr','geopolitical','reputation','quality'],
+  // شراكات استراتيجية
+  partnership:      ['legal','risk','hr','reputation','cybersecurity','geostrategy'],
+  // توسع جغرافي
+  expansion:        ['marketing','geopolitical','risk','supply_chain','geostrategy','legal','hr'],
+  // إطلاق منتج أو خدمة
+  product:          ['marketing','hr','sustainability','quality','ai_governance','ai_ethics','design'],
+  // إعادة هيكلة
+  restructure:      ['hr','risk','legal','quality','reputation','executive'],
+  // إدارة أزمة
+  crisis:           ['risk','legal','geopolitical','reputation','hr'],
+  // تحول رقمي
+  digital_trans:    ['digital','cybersecurity','ai_governance','ai_ethics','hr','quality','agentic_ai'],
+  // قرار استراتيجي عام
+  strategic:        ['risk','marketing','foresight','geopolitical','legal'],
+  // قطاع الطاقة
+  energy_sector:    ['energy','sustainability','circular_economy','geopolitical','legal','risk'],
+  // قطاع الرعاية الصحية
+  healthcare_sector:['healthcare','legal','quality','risk','sustainability'],
+  // قطاع التقنية والذكاء الاصطناعي
+  tech_ai:          ['ai_governance','ai_ethics','cybersecurity','agentic_ai','quantum','post_quantum','legal'],
+  // سلاسل التوريد
+  supply:           ['supply_chain','risk','geopolitical','geostrategy','legal','energy'],
+  // قرار حوكمة وامتثال
+  governance:       ['legal','risk','ai_governance','quality','reputation','sustainability']
 };
 
 const SYNTH_SYS = `أنت كبير محرري المحاضر الحوكمية في غرفة العمليات الاستراتيجية. مهمتك بناء محضر حوكمي رسمي يستحق أن يُوضع أمام مجلس إدارة أو وزير أو مستثمر استراتيجي.
@@ -543,6 +644,9 @@ const SYNTH_SYS = `أنت كبير محرري المحاضر الحوكمية ف
 • اللغة: عربية فصحى رسمية واضحة — لا مصطلحات بلا شرح
 • الطول: شامل لكن غير مُطوَّل — كل جملة تُضيف قيمة
 
+══ جولة المعايرة (إن وُجدت) ══
+إذا كان في المدخلات نتيجة معايرة (_calibration) — ادمجها في القسم 02 (خريطة الاتفاق) كـ "نقطة الخلاف الجوهرية التي كشفتها جولة المعايرة" وفي القسم 09 كشرط إضافي.
+
 ══ إلزامي في الختام ══
 المسؤولية: هذه التوصية استشارية · القرار النهائي للقائد وحده · غرفة العمليات الاستراتيجية 2026`;
 
@@ -605,7 +709,7 @@ async function onFile(e){
 }
 
 // ══ CALL API ══════════════════════════════════
-async function callAPI(sys, user, retried){
+async function callAPI(sys, user, retried, temp, useSearch){
   const ctrl = new AbortController();
   const tid = setTimeout(()=>ctrl.abort(), TOUT);
   try{
@@ -620,7 +724,13 @@ async function callAPI(sys, user, retried){
       body: JSON.stringify({
         model: MDL,
         max_tokens: MAXT,
+        temperature: temp || 0.4,
         system: sys,
+        tools: useSearch ? [{
+          type: 'web_search_20250305',
+          name: 'web_search',
+          max_uses: 3
+        }] : undefined,
         messages:[{role:'user',content:user}]
       })
     });
@@ -639,7 +749,16 @@ async function callAPI(sys, user, retried){
       throw new Error(e.error?.message||'HTTP '+r.status);
     }
     const d = await r.json();
-    let txt = d.content?.[0]?.text||'';
+    // معالجة مخرج web_search — يحتوي blocks متعددة
+    let txt = '';
+    if(d.content && Array.isArray(d.content)){
+      // جمع كل text blocks (بعد البحث والتحليل)
+      d.content.forEach(function(block){
+        if(block.type === 'text') txt += block.text;
+        // تجاهل tool_use و tool_result — النموذج يعالجها داخلياً
+      });
+    }
+    if(!txt) txt = d.content?.[0]?.text || '';
     if(d.stop_reason==='max_tokens' && txt.length>100 && !retried){
       try{
         const c = await callAPI(sys, 'أكمل تقريرك من حيث توقفت بالضبط:\n'+txt.slice(-400), true);
@@ -742,46 +861,101 @@ R = هيكل تقريرك بهذا الترتيب الإلزامي:
 ⑥ KILL SWITCH: متى يجب إيقاف هذا القرار فوراً؟ (شرط واحد محدد)
 ⑦ ⚔ أقوى حجة ضد توصيتي (صراحة تامة)
 ⑧ التصويت النهائي: ✅موافقة / ⚠مشروطة / ❌رفض + ثقة★(1-5)
-⚠ الحد الأقصى للتقرير: 10 أسطر — الإيجاز فضيلة والإسهاب خطأ منهجي`;
+⚠ الحد الأقصى للتقرير: 10 أسطر — الإيجاز فضيلة والإسهاب خطأ منهجي
+
+══ إلزامي في نهاية تقريرك ══
+بحث آني إلزامي: قبل تحليلك — ابحث في الإنترنت عن أحدث المعلومات المتعلقة بهذا القرار من منظور تخصصك. استخدم نتائج البحث الحديثة كأساس لتحليلك. وضّح ما وجدته وكيف أثّر على حكمك.
+
+PRE-MORTEM من منظور تخصصك: افترض أن هذا القرار فشل فشلاً كاملاً بعد 18 شهراً — ما السببان الأكثر احتمالاً للفشل من زاوية تخصصك تحديداً؟ سمِّهما صراحة.
+ASSUMPTION الأهش: ما الافتراض الضمني في هذا القرار الذي — إذا كان خاطئاً — يُسقط كل توصيتك؟`;
   const userMsg = 'نوع القرار: '+ctx+'\n\nالقرار الاستراتيجي الكامل:\n'+dec+'\n\n'+PROT+'\n\nاكتب تقريرك الكامل المفصّل وفق تخصصك.';
 
   const analyses = {};
 
-  for(let i=0; i<experts.length; i++){
-    const e = experts[i];
+  // ══ PARALLEL CALLS — الخبراء يعملون بالتوازي معزولون عن بعضهم ══
+  // كل خبير يتلقى فقط: قراره + تعليماته الخاصة — لا يرى مخرجات الآخرين
+  // هذا يضمن استقلالية التحليل — جوهر قيمة المجلس
+
+  st('إطلاق جلسة المجلس — ' + experts.length + ' خبيراً يعملون بالتوازي...');
+
+  async function runExpert(e){
     setT(e.id);
-    st('يعمل: '+e.name+' ('+(i+1)+'/'+experts.length+')');
-    const prog = document.getElementById('progTxt');
-    if(prog) prog.textContent = Math.round((i/experts.length)*100)+'%';
     try{
-      const r = await callAPI(e.sys, userMsg);
+      const r = await callAPI(e.sys, userMsg, false, TEMP_MAP[e.id]||0.4, SEARCH_MAP[e.id]||false);
       analyses[e.id] = r||'(لم يُنتج تحليلاً)';
       setD(e.id);
       showLP(e, analyses[e.id]);
     }catch(err){
       const errMsg = err.message||'خطأ';
-      const isOverload = errMsg.includes('529') || errMsg.includes('verload') || errMsg.includes('Overloaded');
-      if(isOverload && !analyses[e.id]){
-        st('⏳ '+e.name+' — الإعادة بعد 60 ثانية...');
-        await sleep(60000);
+      const isOverload = errMsg.includes('529')||errMsg.includes('verload')||errMsg.includes('Overloaded');
+      if(isOverload){
+        st('⏳ '+e.name+' — الإعادة بعد 45 ثانية...');
+        await sleep(45000);
         try{
-          const r2 = await callAPI(e.sys, userMsg);
+          const r2 = await callAPI(e.sys, userMsg, false, TEMP_MAP[e.id]||0.4, SEARCH_MAP[e.id]||false);
           analyses[e.id] = r2||'(لم يُنتج تحليلاً)';
           setD(e.id); showLP(e, analyses[e.id]);
         }catch(err2){
-          analyses[e.id] = '⚠ تعذّر بعد الإعادة: '+(err2.message||'Overloaded') + '\n\n[مُوثَّق في المحضر — الجلسة صحيحة بالنصاب المتبقي]';
+          analyses[e.id] = '⚠ تعذّر بعد الإعادة: '+(err2.message||'Overloaded')+' \n\n[مُوثَّق في المحضر — الجلسة صحيحة بالنصاب المتبقي]';
           setE(e.id);
         }
       } else {
-        analyses[e.id] = '⚠ تعذّر: '+errMsg + '\n\n[مُوثَّق في المحضر — الجلسة صحيحة بالنصاب المتبقي]';
+        analyses[e.id] = '⚠ تعذّر: '+errMsg+'\n\n[مُوثَّق في المحضر — الجلسة صحيحة بالنصاب المتبقي]';
         setE(e.id);
       }
     }
-    if(i < experts.length-1) await sleep(6000);
+  }
+
+  // تقسيم الخبراء إلى دفعات لتجنب rate limiting
+  // دفعة 1: الدائمون الثمانية (يعملون معاً)
+  // دفعة 2: الآليون (يعملون معاً بعد 3 ثوانٍ)
+  const alwaysExperts = experts.filter(e=>e.always);
+  const autoExperts   = experts.filter(e=>!e.always);
+
+  st('دفعة 1: الخبراء الدائمون ('+alwaysExperts.length+') يعملون بالتوازي...');
+  await Promise.allSettled(alwaysExperts.map(e=>runExpert(e)));
+
+  if(autoExperts.length > 0){
+    await sleep(3000);
+    st('دفعة 2: الخبراء الآليون ('+autoExperts.length+') يعملون بالتوازي...');
+    await Promise.allSettled(autoExperts.map(e=>runExpert(e)));
+  }
+
+  // ══ CALIBRATION ROUND — جولة المعايرة بين الخبراء ══
+  // الخبراء يرون الخلافات الجوهرية ويُعلّقون عليها
+  const successNow = experts.filter(e=>analyses[e.id] && !analyses[e.id].startsWith('⚠'));
+  if(successNow.length >= 4){
+    st('⚖ جولة المعايرة — الخبراء يراجعون الخلافات الجوهرية...');
+    await sleep(2000);
+
+    // استخراج الخلافات: من وافق ومن رفض
+    const votes = {approve:[], conditional:[], reject:[]};
+    successNow.forEach(e=>{
+      const txt = analyses[e.id]||'';
+      if(/موافق|أوصي بالمضي|موافقة كاملة/i.test(txt)) votes.approve.push(e.name);
+      else if(/مشروط|موافقة مشروطة/i.test(txt)) votes.conditional.push(e.name);
+      else if(/رفض|أرفض|رفضت/i.test(txt)) votes.reject.push(e.name);
+    });
+
+    const hasConflict = votes.reject.length > 0 || votes.conditional.length >= 3;
+
+    if(hasConflict){
+      const conflictSummary = 'ملخص الخلاف: موافق '+votes.approve.length+' · مشروط '+votes.conditional.length+' · رافض '+votes.reject.length;
+      const calibSYS = 'أنت محكّم المجلس في جولة المعايرة. لديك ملخص الخلاف بين الخبراء. مهمتك: استخلاص الخلاف الجوهري الوحيد الأهم، وتحديد ما يحتاجه القرار ليتجاوز نقطة الخلاف. جملتان فقط — حادتان وصريحتان.';
+      const calibMSG = conflictSummary + '\n\nالقرار: ' + dec.substring(0,400) + '\n\nالخبراء الرافضون أو المشروطون: ' + [...votes.reject, ...votes.conditional].join('، ');
+
+      try{
+        const calibResult = await callAPI(calibSYS, calibMSG, false, 0.3);
+        if(calibResult && calibResult.length > 20){
+          analyses['_calibration'] = calibResult;
+          st('⚖ المعايرة: '+calibResult.substring(0,60)+'...');
+        }
+      }catch(e){ /* الجلسة تكمل بدون معايرة */ }
+    }
   }
 
   // Check failures
-  const failCount = experts.filter(e=>analyses[e.id]?.startsWith('تعذّر')).length;
+  const failCount = experts.filter(e=>analyses[e.id]?.startsWith('⚠ تعذّر')).length;
   if(failCount === experts.length){
     st('⚠ تعذّر الاتصال — تحقق من مفتاح API والإنترنت');
     active=false; document.getElementById('goBtn').disabled=false; return;
@@ -796,32 +970,26 @@ R = هيكل تقريرك بهذا الترتيب الإلزامي:
   
   let approveCount=0, conditionalCount=0, rejectCount=0;
   successExperts.forEach(e=>{
-    const txt = analyses[e.id]||'';
-    if(/موافقة مشروطة|مشروط/i.test(txt)) conditionalCount++;
-    else if(/✅\s*موافقة|تصويت.*موافقة/i.test(txt)) approveCount++;
-    else if(/❌\s*رفض|تصويت.*رفض/i.test(txt)) rejectCount++;
-    else conditionalCount++; // افتراضي إذا لم يُحدد
+    const txt=(analyses[e.id]||'').toLowerCase();
+    if(/موافقة كاملة|أوصي بالمضي|موافق/.test(txt)) approveCount++;
+    else if(/مشروطة|مشروط/.test(txt)) conditionalCount++;
+    else if(/رفض|أرفض/.test(txt)) rejectCount++;
+    else approveCount++;
   });
   const totalVoters = successExperts.length;
-  const agreeRate = totalVoters>0 ? Math.round(((approveCount+conditionalCount)/totalVoters)*100) : 0;
-  const votesSummary = 'إحصاء الأصوات الفعلي: '+totalVoters+' خبيراً صوّتوا | موافق: '+approveCount+' | مشروط: '+conditionalCount+' | رفض: '+rejectCount+' | نسبة الاتفاق: '+agreeRate+'% (العتبة 75%) | متعثرون: '+failedExperts.length;
-  
-  const parts = successExperts
-    .map(e=>'## '+e.name+' ('+e.role+')\n'+analyses[e.id])
-    .join('\n\n---\n\n');
-  
-  if(failedExperts.length>0){
-    const failedNote = '\n\n---\n## ملاحظة النصاب\nالخبراء المتعثرون ('+failedExperts.length+'): '+failedExperts.map(e=>e.name).join('، ')+' — مُوثَّق في المحضر، الجلسة صحيحة بالنصاب المتبقي.';
-    parts.concat(failedNote);
-  }
+  const agreeRatio  = totalVoters>0 ? Math.round(((approveCount+conditionalCount)/totalVoters)*100) : 0;
+  const votesSummary = 'إحصاء الأصوات الدقيق:\nموافقون: '+approveCount+' | مشروطون: '+conditionalCount+' | رافضون: '+rejectCount+'\nنسبة الاتفاق: '+agreeRatio+'% (عتبة الاعتماد 75%)\nحالة القرار: '+(agreeRatio>=75?'معتمد ✅':agreeRatio>=50?'مشروط ⚠':'مرفوح ❌');
 
-  let synth = '';
+  const parts = successExperts.map(e=>'=== '+e.name+' ===\n'+(analyses[e.id]||'')).join('\n\n');
+  const calibNote = analyses['_calibration'] ? '\n\n⚖ نتيجة جولة المعايرة: '+analyses['_calibration'] : '';
+
+  let synth='';
   try{
     synth = await callAPI(SYNTH_SYS,
       'القرار: '+dec.substring(0,800)+
       '\n\n'+votesSummary+
       '\n\nمخرجات كل الخبراء ('+successExperts.length+' من أصل '+experts.length+'):\n'+
-      parts.substring(0,12000)+
+      parts.substring(0,12000)+calibNote+
       (failedExperts.length>0 ? '\n\nالخبراء المتعثرون: '+failedExperts.map(e=>e.name).join('، ') : '')+
       '\n\n⚠ استخدم الإحصاء الوارد أعلاه في خريطة الاتفاق — لا تحسبه من جديد.');
   }catch(e){ synth = 'تعذّر التركيب: '+e.message; }

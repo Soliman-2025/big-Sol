@@ -199,7 +199,17 @@ body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-s
     </div>
     <div class="prev-body" id="prevBody"></div>
     <div class="prev-acts">
-      <button class="pa pa-g" onclick="sendToSOR()">⚡ إرسال للمجلس</button>
+      <div style="background:rgba(196,154,60,0.06);border:1px solid rgba(196,154,60,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+      <div style="font-size:10px;color:#5A6A75;letter-spacing:1px;font-family:monospace;margin-bottom:6px">مفتاح API للتحديث الآني (اختياري)</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div id="engApiDot" style="width:8px;height:8px;border-radius:50%;background:#5A6A75;flex-shrink:0"></div>
+        <input type="password" id="engApiKey" placeholder="sk-ant-api03-..." autocomplete="off"
+          style="flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(196,154,60,0.2);border-radius:6px;padding:7px 10px;color:#E8D5A0;font-family:monospace;font-size:11px;outline:none;direction:ltr"
+          oninput="onEngKey(this.value)">
+      </div>
+      <div style="font-size:10px;color:#5A6A75;margin-top:4px">مع المفتاح: يبحث آنياً في الإنترنت لتحديث وثيقتك بأحدث الأنظمة والبيانات</div>
+    </div>
+    <button class="pa pa-g" onclick="sendToSOR()">⚡ إرسال للمجلس</button>
       <button class="pa pa-t" onclick="window.print()">🖨 طباعة</button>
       <button class="pa pa-o" onclick="copyDoc()">📋 نسخ</button>
       <button class="pa pa-o" onclick="editDoc()">✏ تعديل</button>
@@ -517,7 +527,7 @@ function calcFinal(){
 // ══════════════════════════════════════════════
 // DOCUMENT BUILDER
 // ══════════════════════════════════════════════
-function buildDoc(){
+async function buildDoc(){
   const ref = 'SOR-DE-'+Date.now().toString(36).toUpperCase().slice(-7);
   const now = new Date();
   const dt = ST.decType ? DECISION_TYPES[ST.decType] : null;
@@ -570,6 +580,25 @@ ${buildNotes()}
   ST.decDoc = doc;
   document.getElementById('prevRef').textContent = ref;
   document.getElementById('prevBody').textContent = doc;
+
+  // ══ تحديث آني إذا كان المفتاح متاحاً ══
+  if(ENG_KEY.startsWith('sk-ant-') && ENG_KEY.length > 20){
+    var enrichNote = document.createElement('div');
+    enrichNote.style.cssText = 'font-size:11px;color:#1AA886;margin-top:8px;font-family:monospace';
+    enrichNote.textContent = '⏳ جارٍ البحث الآني عن أحدث البيانات والأنظمة...';
+    document.getElementById('prevBody').parentNode.insertBefore(enrichNote, document.getElementById('prevBody').nextSibling);
+    var enriched = await enrichWithWebSearch(doc, ST.decType);
+    if(enriched){
+      var fullDoc = doc + '\n\n' + enriched;
+      ST.decDoc = fullDoc;
+      document.getElementById('prevBody').textContent = fullDoc;
+      enrichNote.textContent = '✦ مُحدَّث بأحدث البيانات الآنية من الإنترنت';
+      enrichNote.style.color = '#1AA886';
+    } else {
+      enrichNote.textContent = 'تعذّر التحديث الآني — الوثيقة جاهزة بالمعطيات المتاحة';
+      enrichNote.style.color = '#5A6A75';
+    }
+  }
   document.getElementById('prevCard').classList.add('show');
 }
 
@@ -840,6 +869,57 @@ async function send(){
   await processInput(txt);
   document.getElementById('sndBtn').disabled=false;
   document.getElementById('inp').focus();
+}
+
+// ══ API KEY FOR ENGINEER ═══════════════════════════
+var ENG_KEY = '';
+
+function onEngKey(val){
+  ENG_KEY = val.trim();
+  var ok = ENG_KEY.startsWith('sk-ant-') && ENG_KEY.length > 20;
+  var dot = document.getElementById('engApiDot');
+  if(dot) dot.style.background = ok ? '#1AA886' : '#5A6A75';
+}
+
+// ══ WEB SEARCH ENRICHMENT ═══════════════════════════
+// يُثري الوثيقة النهائية بأحدث البيانات الآنية
+async function enrichWithWebSearch(docText, decType){
+  if(!ENG_KEY.startsWith('sk-ant-') || ENG_KEY.length < 20) return null;
+
+  var SYS_ENRICH = 'أنت مهندس قرار استراتيجي خبير. لديك وثيقة قرار مكتملة. مهمتك: استخدم البحث الآني في الإنترنت للبحث عن (1) أحدث الأنظمة والتشريعات السعودية ذات الصلة بهذا القرار، (2) أحدث بيانات السوق والمعايير القطاعية، (3) أي تطورات جيوسياسية أو اقتصادية تؤثر على القرار. ثم أضف قسماً واحداً في نهاية الوثيقة بعنوان: ══ تحديث آني — معلومات 2026 ══ يتضمن ما وجدته من معلومات حديثة مع مصادرها. لا تُغيّر باقي الوثيقة.';
+
+  try{
+    var ctrl = new AbortController();
+    var tid = setTimeout(function(){ ctrl.abort(); }, 60000);
+    var r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST', signal:ctrl.signal,
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ENG_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2000,
+        system: SYS_ENRICH,
+        tools:[{type:'web_search_20250305',name:'web_search',max_uses:4}],
+        messages:[{role:'user',content:'ابحث آنياً وأضف قسم التحديث للوثيقة التالية:\n\n'+docText.substring(0,4000)+'\n\nنوع القرار: '+(decType||'عام')}]
+      })
+    });
+    clearTimeout(tid);
+    if(r.status === 529 || r.status === 500){
+      await new Promise(function(res){ setTimeout(res, 20000); });
+      return enrichWithWebSearch(docText, decType);
+    }
+    if(!r.ok) return null;
+    var d = await r.json();
+    var txt = '';
+    if(d.content && Array.isArray(d.content)){
+      d.content.forEach(function(b){ if(b.type==='text') txt+=b.text; });
+    }
+    return txt.length > 50 ? txt : null;
+  }catch(e){ return null; }
 }
 
 // URL params

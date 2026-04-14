@@ -343,7 +343,7 @@ async function startAssess(){
   goPhase(2);
   var bar = document.getElementById('loadBar');
   var step = document.getElementById('loadStep');
-  var STEPS = ['قراءة القرار وتحديد نوعه...','تقييم الأبعاد التسعة...','كشف الثغرات والتحيزات...','صياغة توصيات المجلس...','بناء تقرير النضج...'];
+  var STEPS = ['البحث الآني عن أحدث الأنظمة والبيانات...','تقييم الأبعاد التسعة...','كشف الثغرات والتحيزات...','صياغة توصيات المجلس...','بناء تقرير النضج...'];
   var si = 0, bw = 10;
   bar.style.width = '10%';
   step.textContent = STEPS[0];
@@ -398,20 +398,36 @@ async function callAPI(text){
     throw new Error((ed.error && ed.error.message) || 'HTTP ' + resp.status);
   }
   var data = await resp.json();
-  var raw = (data.content && data.content[0]) ? data.content[0].text : '';
+  // web_search يُرجع array — نجمع text blocks فقط
+  var raw = '';
+  if(data.content && Array.isArray(data.content)){
+    data.content.forEach(function(block){
+      if(block.type === 'text') raw += block.text;
+    });
+  }
+  if(!raw && data.content && data.content[0]) raw = data.content[0].text || '';
   return parseJSON(raw);
 }
 
 function buildBody(text){
   var SYS = buildSYS();
+  var userContent = WEB_SEARCH_INSTRUCTION + 'Decision text to assess. Search for latest relevant Saudi regulations, market data, and sector benchmarks before scoring:\n\n' + text.substring(0, 6000);
   var payload = {
     model: 'claude-sonnet-4-6',
     max_tokens: 4000,
     system: SYS,
-    messages: [{ role: 'user', content: 'Decision text to assess:\n\n' + text.substring(0, 6000) }]
+    tools: [{
+      type: 'web_search_20250305',
+      name: 'web_search',
+      max_uses: 3
+    }],
+    messages: [{ role: 'user', content: userContent }]
   };
   return JSON.stringify(payload);
 }
+
+// ══ WEB SEARCH CONTEXT ══
+var WEB_SEARCH_INSTRUCTION = 'Before assessing, use web search to find: (1) latest regulations in Saudi Arabia relevant to this decision (SAMA/CMA/SDAIA/ZATCA/NCA), (2) current market data and benchmarks for this sector, (3) recent geopolitical or economic developments affecting this decision. Incorporate these findings into your assessment scores and recommendations.\n\n';
 
 function buildSYS(){
   var lines = [
