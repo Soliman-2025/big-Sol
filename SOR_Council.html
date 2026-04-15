@@ -269,7 +269,7 @@ select option{background:var(--s2)}
   .hdr,.card:not(#s3),.chat-modal,.bio-modal,.print-btn{display:none!important}
   body{background:white;color:#1C2028;padding:0}
   .rpt-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  @page{size:A4;margin:12mm 15mm}
+  @page{size:A4;margin:15mm 14mm}
 }
 
 /* ══ SCROLL ════════════════════════════════════ */
@@ -393,7 +393,7 @@ select option{background:var(--s2)}
     </div>
     <div style="display:flex;gap:6px">
       <button class="btn btn-ghost" onclick="copyRpt()" style="font-size:11px;padding:5px 12px">📋 نسخ</button>
-      <button class="btn btn-ghost" onclick="window.print()" style="font-size:11px;padding:5px 12px">🖨 عربي PDF</button>
+      <button class="btn btn-ghost" onclick="generateProfessionalPDF()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(196,154,60,0.2),rgba(196,154,60,0.05));border-color:rgba(196,154,60,0.4);color:#E8D5A0">⬡ محضر احترافي PDF</button>
       <button class="btn btn-ghost" onclick="printEn()" style="font-size:11px;padding:5px 12px">🖨 English PDF</button>
     </div>
   </div>
@@ -1402,6 +1402,278 @@ function saveKey(val){
   if(val && val.startsWith('sk-ant-') && val.length > 20){
     localStorage.setItem('sor_api_key', val);
   }
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// PROFESSIONAL PDF GENERATOR — غرفة العمليات الاستراتيجية v8.1
+// ══════════════════════════════════════════════════════════════
+function generateProfessionalPDF(){
+  if(!_ca || Object.keys(_ca).length === 0){
+    alert('يرجى تشغيل المجلس أولاً');
+    return;
+  }
+
+  var experts = _ce || [];
+  var analyses = _ca || {};
+  var dec = (_cd || '').substring(0,300);
+  var sid = (document.getElementById('sessionRef') ?
+    document.getElementById('sessionRef').textContent : 'SOR-' + Date.now().toString(36).toUpperCase().slice(-6));
+  var today = new Date().toLocaleDateString('ar-SA',{
+    weekday:'long',year:'numeric',month:'long',day:'numeric',
+    calendar:'gregory'
+  });
+
+  // حساب الأصوات
+  var approve=0, cond=0, reject=0;
+  var successExp = experts.filter(function(e){
+    return analyses[e.id] && !analyses[e.id].startsWith('⚠');
+  });
+  successExp.forEach(function(e){
+    var t = (analyses[e.id]||'').toLowerCase();
+    if(/موافقة كاملة|أوصي بالمضي/.test(t)) approve++;
+    else if(/مشروط|مشروطة/.test(t)) cond++;
+    else if(/رفض|أرفض/.test(t)) reject++;
+    else cond++;
+  });
+  var total = successExp.length || 1;
+  var agreeRatio = Math.round(((approve+cond)/total)*100);
+  var statusText = agreeRatio>=75 ? 'معتمد ✅' : agreeRatio>=50 ? 'مشروط ⚠' : 'مرفوح ❌';
+  var statusClass = agreeRatio>=75 ? 'status-approved' : agreeRatio>=50 ? 'status-conditional' : 'status-rejected';
+
+  // استخراج المحضر من rptWrap
+  var rptEl = document.getElementById('rptWrap');
+  var synth_html = rptEl ? rptEl.innerHTML : '<p>لم يُنتج محضر بعد</p>';
+
+  // بناء بطاقات الخبراء
+  var expertCards = successExp.slice(0,12).map(function(e,i){
+    var txt = (analyses[e.id]||'').substring(0,500);
+    // استخراج الحكم من السطر الأول
+    var lines = txt.split('\n').filter(function(l){ return l.trim().length > 3; });
+    var verdict = lines[0] ? lines[0].replace(/[*#①②③④⑤⑥⑦⑧]/g,'').trim().substring(0,80) : '—';
+    var vote = /موافقة كاملة|أوصي بالمضي/.test(txt) ? '✅ موافق' :
+               /مشروط|مشروطة/.test(txt) ? '⚠ مشروط' :
+               /رفض|أرفض/.test(txt) ? '❌ رافض' : '⚠ مشروط';
+    var trust = /★★★★★/.test(txt)?'★★★★★':/★★★★/.test(txt)?'★★★★☆':/★★★/.test(txt)?'★★★☆☆':'★★★☆☆';
+    var bg = i%2===0 ? '#FDF8EE' : '#F4F2EC';
+    return '<tr style="background:'+bg+'">'+
+      '<td style="font-weight:700;font-size:9pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2)">'+e.name+'<br/><span style="font-size:7.5pt;color:#888;font-weight:400">'+e.role+'</span></td>'+
+      '<td style="font-size:8.5pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2)">'+verdict+'</td>'+
+      '<td style="text-align:center;font-size:9pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2)">'+vote+'</td>'+
+      '<td style="text-align:center;font-size:8pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2);color:#C49A3C">'+trust+'</td>'+
+    '</tr>';
+  }).join('');
+
+  // بناء HTML المحضر الكامل
+  var html = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+:root{--gold:#C49A3C;--dark:#1C2028;--teal:#0F6E56;--red:#A32D2D;--light:#FDF8EE;--gray:#F4F2EC;--muted:#666}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo','Arial',sans-serif;font-size:10pt;color:var(--dark);background:white;direction:rtl}
+@page{size:A4;margin:15mm 14mm 15mm 14mm}
+@page:first{margin-top:10mm}
+
+/* HEADER FOOTER */
+@media print{
+  .no-print{display:none!important}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page-break{page-break-before:always}
+  .no-break{page-break-inside:avoid}
+}
+
+/* COVER */
+.cover{min-height:260mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15mm 10mm;page-break-after:always}
+.cover-line{width:70mm;height:3pt;background:linear-gradient(to left,transparent,#C49A3C,transparent);margin:6mm auto}
+.cover-seal{width:24mm;height:24mm;border:2pt solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18pt;font-weight:700;color:var(--gold);margin:0 auto 6mm}
+.cover-org{font-size:20pt;font-weight:700;color:var(--gold);margin-bottom:2mm}
+.cover-en{font-size:8pt;color:var(--muted);letter-spacing:2pt;margin-bottom:8mm}
+.cover-divider{width:100%;height:1pt;background:linear-gradient(to left,transparent,var(--gold),transparent);margin:4mm 0}
+.cover-type{font-size:8pt;color:var(--gold);letter-spacing:2pt;margin-bottom:3mm}
+.cover-title{font-size:22pt;font-weight:700;color:var(--dark);line-height:1.4;margin-bottom:3mm}
+.cover-sub{font-size:12pt;color:var(--teal);font-weight:600;margin-bottom:10mm}
+.meta-box{width:100%;background:var(--light);border:1pt solid rgba(196,154,60,0.3);border-radius:4pt;padding:5mm 6mm;margin-bottom:8mm}
+.meta-row{display:flex;justify-content:space-between;padding:2pt 0;border-bottom:0.5pt solid rgba(196,154,60,0.15);font-size:8.5pt}
+.meta-row:last-child{border-bottom:none}
+.meta-lbl{color:var(--muted);font-weight:600}
+.meta-val{font-weight:700}
+.cover-quote{font-size:10pt;color:var(--gold);font-style:italic;border-right:3pt solid var(--gold);border-left:3pt solid var(--gold);padding:4mm 6mm;background:rgba(196,154,60,0.04);border-radius:2pt;margin:0 0 8mm}
+
+/* PAGE HEADER FOOTER SIMULATION */
+.page-hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:3pt;border-bottom:1.5pt solid var(--gold);margin-bottom:5mm;font-size:8pt;color:var(--muted)}
+.page-hdr .ph-title{color:var(--gold);font-weight:700}
+.page-ftr{display:flex;justify-content:space-between;align-items:center;padding-top:3pt;border-top:1pt solid rgba(196,154,60,0.3);margin-top:5mm;font-size:7.5pt;color:var(--muted)}
+
+/* SECTIONS */
+.sec-hdr{display:flex;align-items:center;gap:3mm;margin:6mm 0 3mm;page-break-after:avoid}
+.sec-num{min-width:8mm;height:8mm;background:var(--gold);color:white;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;border-radius:2pt;flex-shrink:0}
+.sec-title{font-size:12pt;font-weight:700;color:var(--dark);border-bottom:2pt solid var(--gold);padding-bottom:1.5pt;flex:1}
+
+/* VERDICT */
+.verdict-box{border:2pt solid var(--gold);border-radius:4pt;background:var(--light);padding:4mm 5mm;margin:3mm 0;position:relative;overflow:hidden}
+.verdict-box::before{content:'';position:absolute;top:0;right:0;left:0;height:2pt;background:linear-gradient(to left,var(--gold),#E8C060,var(--gold))}
+.verdict-lbl{font-size:7.5pt;color:var(--gold);font-weight:700;letter-spacing:1.5pt;margin-bottom:1.5mm}
+.verdict-txt{font-size:10pt;font-weight:700;line-height:1.6}
+
+/* STATS */
+.stats-row{display:flex;gap:2mm;margin:3mm 0}
+.stat{flex:1;text-align:center;border:1pt solid rgba(196,154,60,0.3);border-radius:2pt;padding:2mm;background:var(--light)}
+.stat-n{font-size:16pt;font-weight:700;color:var(--gold);line-height:1}
+.stat-l{font-size:7pt;color:var(--muted);margin-top:1mm}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:8.5pt}
+th{background:var(--gold);color:white;padding:3pt 5pt;text-align:right;font-weight:700}
+td{padding:3pt 5pt;border-bottom:0.5pt solid rgba(196,154,60,0.18);vertical-align:top;line-height:1.5}
+tr:nth-child(even) td{background:var(--gray)}
+tr:last-child td{border-bottom:none}
+table.kill th{background:var(--red)}
+table.kill tr:nth-child(even) td{background:#FFF5F5}
+
+/* THINKING */
+.think{background:rgba(196,154,60,0.05);border-right:2.5pt solid rgba(196,154,60,0.35);padding:2.5mm 3.5mm;margin:2.5mm 0;font-size:8pt;color:var(--muted);font-style:italic;border-radius:0 2pt 2pt 0}
+
+/* TAGS */
+.tag-f{background:#FFEBEB;color:var(--red);border:0.5pt solid var(--red);padding:1pt 4pt;border-radius:2pt;font-size:7.5pt;font-weight:700}
+.tag-a{background:#FFF8E0;color:#7A5510;border:0.5pt solid var(--gold);padding:1pt 4pt;border-radius:2pt;font-size:7.5pt}
+.tag-s{background:#E8F5F0;color:var(--teal);border:0.5pt solid var(--teal);padding:1pt 4pt;border-radius:2pt;font-size:7.5pt}
+
+/* HUMAN Q */
+.hq{display:flex;gap:2.5mm;margin:2mm 0;align-items:flex-start}
+.hq-n{min-width:5.5mm;height:5.5mm;border-radius:50%;border:1.5pt solid var(--teal);color:var(--teal);font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* REC */
+.rec{border:2pt solid var(--teal);border-radius:4pt;padding:4mm 5mm;background:rgba(15,110,86,0.04);margin:3mm 0}
+.rec-lbl{font-size:7.5pt;color:var(--teal);font-weight:700;letter-spacing:1.5pt;margin-bottom:1.5mm}
+.rec-v{font-size:11pt;font-weight:700;color:var(--teal);margin-bottom:2.5mm}
+.rec-c{font-size:9pt;line-height:1.6}
+
+/* SEAL + SIG */
+.seal-row{display:flex;justify-content:space-between;align-items:flex-end;border-top:1pt solid var(--gold);padding-top:5mm;margin-top:10mm}
+.seal-circle{width:26mm;height:26mm;border:2pt solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+.seal-t{font-size:6.5pt;color:var(--gold);font-weight:700;line-height:1.3}
+.sig-ln{width:45mm;border-top:1pt solid var(--dark);margin:0 auto 2mm}
+.sig-n{font-size:11pt;font-weight:700;text-align:center}
+.sig-s{font-size:7.5pt;color:var(--muted);text-align:center}
+.disclaimer{background:var(--gray);border-top:1pt solid rgba(196,154,60,0.3);padding:3mm 4mm;font-size:7pt;color:var(--muted);line-height:1.6;margin-top:7mm;border-radius:2pt}
+
+p{margin:1.5mm 0;line-height:1.65;font-size:9pt}
+.bold{font-weight:700} .gold{color:var(--gold)} .teal{color:var(--teal)} .red{color:var(--red)} .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-line"></div>
+  <div class="cover-seal">غ.ع</div>
+  <div class="cover-org">غرفة العمليات الاستراتيجية</div>
+  <div class="cover-en">STRATEGIC OPERATIONS ROOM · v8.1</div>
+  <div class="cover-divider"></div>
+  <div class="cover-type">OFFICIAL GOVERNANCE REPORT · محضر حوكمي رسمي · سري للاطلاع المحدود</div>
+  <div class="cover-title">${dec.substring(0,60)}${dec.length>60?'...':''}</div>
+  <div class="cover-sub">مجلس الخبراء الاستراتيجيين — ${successExp.length} خبيراً</div>
+  <div class="meta-box">
+    <div class="meta-row"><span class="meta-lbl">رقم الجلسة</span><span class="meta-val" style="font-family:monospace">${sid}</span></div>
+    <div class="meta-row"><span class="meta-lbl">التاريخ</span><span class="meta-val">${today}</span></div>
+    <div class="meta-row"><span class="meta-lbl">حجم المجلس</span><span class="meta-val">${successExp.length} خبيراً نشطاً</span></div>
+    <div class="meta-row"><span class="meta-lbl">نسبة الاتفاق</span><span class="meta-val">${agreeRatio}%</span></div>
+    <div class="meta-row"><span class="meta-lbl">الحالة</span><span class="meta-val">${statusText}</span></div>
+  </div>
+  <div class="cover-quote">«حيث يُصنع القرار، لا يُخمَّن»</div>
+  <div class="cover-line"></div>
+</div>
+
+<!-- PAGE 2+ -->
+<div class="page-hdr">
+  <div class="ph-title">غرفة العمليات الاستراتيجية · المحضر الحوكمي الرسمي</div>
+  <div style="font-family:monospace;color:var(--gold)">${sid} · ${today}</div>
+</div>
+
+<!-- SYNTH OUTPUT — المحضر الحوكمي الكامل -->
+<div id="synth-content">
+${synth_html}
+</div>
+
+<!-- EXPERT TABLE -->
+<div class="page-break"></div>
+<div class="page-hdr">
+  <div class="ph-title">غرفة العمليات الاستراتيجية · المحضر الحوكمي الرسمي</div>
+  <div style="font-family:monospace;color:var(--gold)">${sid}</div>
+</div>
+
+<div class="sec-hdr">
+  <div class="sec-num">م</div>
+  <div class="sec-title">ملخص مخرجات الخبراء — ${successExp.length} خبيراً</div>
+</div>
+
+<div class="stats-row">
+  <div class="stat"><div class="stat-n">${agreeRatio}%</div><div class="stat-l">نسبة الاتفاق</div></div>
+  <div class="stat"><div class="stat-n">${approve}</div><div class="stat-l">موافقون</div></div>
+  <div class="stat"><div class="stat-n">${cond}</div><div class="stat-l">مشروطون</div></div>
+  <div class="stat"><div class="stat-n">${reject}</div><div class="stat-l">رافضون</div></div>
+  <div class="stat"><div class="stat-n">${successExp.length}</div><div class="stat-l">خبير نشط</div></div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:20%">الخبير</th>
+      <th style="width:38%">الحكم المباشر</th>
+      <th style="width:14%">التصويت</th>
+      <th style="width:14%">الثقة</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${expertCards}
+  </tbody>
+</table>
+
+<!-- SEAL & SIGNATURE -->
+<div class="seal-row">
+  <div class="seal-circle">
+    <div class="seal-t">غرفة<br/>العمليات<br/>الاستراتيجية<br/><span style="font-size:6pt">2026م</span></div>
+  </div>
+  <div>
+    <p style="font-size:8pt;color:var(--muted);text-align:center;margin-bottom:4mm">اعتماد المحضر</p>
+    <div class="sig-ln"></div>
+    <div class="sig-n">سليمان إبراهيم آل حويس القوزي</div>
+    <div class="sig-s">مؤسس غرفة العمليات الاستراتيجية · ${today}</div>
+  </div>
+  <div>
+    <p style="font-size:8pt;color:var(--muted);text-align:center;margin-bottom:4mm">توقيع صاحب الصلاحية</p>
+    <div class="sig-ln"></div>
+    <div class="sig-s" style="margin-top:2mm">القرار للقائد وحده</div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <span class="bold">إخلاء المسؤولية:</span> يُقدَّم هذا المحضر كخدمة استشارية تحليلية باستخدام تقنيات الذكاء الاصطناعي (Claude من Anthropic) ومنهجية غرفة العمليات الاستراتيجية. التوصيات تعتمد على البيانات المقدمة من العميل ولا تشكل ضماناً. يتوافق مع مبادئ SDAIA وPDPL. 
+  <span class="gold bold">المسؤولية البشرية مرجع نهائي دائماً · القرار الأخير للقائد وحده</span> · 
+  سليمان إبراهيم آل حويس القوزي · ${sid} · 2026
+</div>
+
+<div class="page-ftr">
+  <div class="teal">سري · للاطلاع المحدود · غرفة العمليات الاستراتيجية 2026</div>
+  <div style="font-family:monospace">${sid}</div>
+  <div>المسؤولية البشرية مرجع نهائي دائماً</div>
+</div>
+
+<script>window.onload=function(){window.print();}</script>
+</body>
+</html>`;
+
+  // فتح في نافذة جديدة
+  var win = window.open('','_blank','width=900,height=700');
+  if(!win){
+    alert('يرجى السماح بالنوافذ المنبثقة لهذا الموقع');
+    return;
+  }
+  win.document.write(html);
+  win.document.close();
 }
 
 </script>
