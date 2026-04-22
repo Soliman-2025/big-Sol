@@ -239,6 +239,59 @@ select option{background:var(--s2)}
   z-index:9999;align-items:center;justify-content:center;padding:16px}
 .chat-modal.open{display:flex}
 .chat-box{max-width:600px!important}
+
+/* ══ VOICE CHAT ══ */
+.voice-btn{
+  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:all .25s;flex-shrink:0;
+  background:rgba(255,255,255,0.05);color:var(--t2);
+}
+.voice-btn:hover{background:rgba(196,154,60,0.15);color:var(--gold)}
+.voice-btn.recording{
+  background:rgba(226,75,74,0.2)!important;
+  color:#E24B4A!important;
+  animation:voicePulse 1s ease-in-out infinite;
+  border:1.5px solid rgba(226,75,74,0.4);
+}
+.voice-btn.speaking{
+  background:rgba(26,168,134,0.15)!important;
+  color:var(--teal)!important;
+  animation:voicePulse 0.7s ease-in-out infinite;
+}
+@keyframes voicePulse{
+  0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1}
+  50%{box-shadow:0 0 0 8px transparent;opacity:0.8}
+}
+.voice-status{
+  font-size:9.5px;color:var(--t3);font-family:monospace;
+  padding:2px 8px;border-radius:10px;transition:all .2s;
+  white-space:nowrap;
+}
+.voice-status.active{color:var(--red);background:rgba(226,75,74,0.1)}
+.voice-status.speaking{color:var(--teal);background:rgba(26,168,134,0.1)}
+.voice-bar{
+  display:flex;align-items:center;gap:2px;height:18px;
+  opacity:0;transition:opacity .2s;
+}
+.voice-bar.show{opacity:1}
+.voice-bar span{
+  width:3px;border-radius:2px;background:var(--red);
+  animation:vbar 0.6s ease-in-out infinite;
+}
+.voice-bar span:nth-child(2){animation-delay:.1s;height:8px}
+.voice-bar span:nth-child(3){animation-delay:.2s;height:14px}
+.voice-bar span:nth-child(4){animation-delay:.3s;height:10px}
+.voice-bar span:nth-child(5){animation-delay:.4s;height:6px}
+@keyframes vbar{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
+.tts-btn{
+  width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,0.04);color:var(--t3);font-size:12px;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.tts-btn:hover{background:rgba(26,168,134,0.15);color:var(--teal)}
+.tts-btn.playing{color:var(--teal);animation:voicePulse 0.8s infinite}
+.msg-voice-row{display:flex;align-items:center;gap:6px;margin-top:4px}
 .msg-council-hdr{font-size:10px;color:var(--gold);font-family:monospace;letter-spacing:1px;margin:8px 0 3px;padding-right:4px;border-right:2px solid var(--gold)}
 .msg-council-resp{background:rgba(196,154,60,0.04);border:1px solid rgba(196,154,60,0.12);border-radius:8px;padding:10px 12px;margin:4px 0;font-size:12px;line-height:1.7}
 .msg-council-resp .exp-name{font-size:10px;font-weight:700;color:var(--gold);margin-bottom:4px}
@@ -403,6 +456,7 @@ select option{background:var(--s2)}
     <div style="display:flex;gap:6px">
       <button class="btn btn-ghost" onclick="copyRpt()" style="font-size:11px;padding:5px 12px">📋 نسخ</button>
       <button class="btn btn-ghost" onclick="generateProfessionalPDF()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(196,154,60,0.2),rgba(196,154,60,0.05));border-color:rgba(196,154,60,0.4);color:#E8D5A0">⬡ محضر احترافي PDF</button>
+      <button class="btn btn-ghost" onclick="openSignPage()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(26,168,134,0.2),rgba(26,168,134,0.05));border-color:rgba(26,168,134,0.35);color:#7ECFC0">✦ محضر + توقيع</button>
       <button class="btn btn-ghost" onclick="printEn()" style="font-size:11px;padding:5px 12px">🖨 English PDF</button>
     </div>
   </div>
@@ -448,8 +502,14 @@ select option{background:var(--s2)}
     </div>
     <div class="chat-msgs" id="chatMsgs"></div>
     <div class="chat-foot">
+      <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="تحدث مع الخبير">
+        🎤
+      </button>
+      <div class="voice-bar" id="voiceBar">
+        <span style="height:6px"></span><span></span><span></span><span></span><span style="height:6px"></span>
+      </div>
       <input class="chat-inp" id="chatInp"
-        placeholder="اسأل الخبير حول تقريره..."
+        placeholder="اسأل الخبير حول تقريره... أو اضغط 🎤 للكلام"
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}">
       <button class="chat-send" id="chatSendBtn" onclick="sendChat()">إرسال</button>
     </div>
@@ -1803,6 +1863,214 @@ function generateProfessionalPDF(){
   win.document.write(html);
   win.document.close();
 }
+
+// ══ فتح صفحة التوقيع مع بيانات الجلسة ══
+function openSignPage(){
+  if(!_ca || Object.keys(_ca).length === 0){
+    alert('يرجى تشغيل المجلس أولاً ثم فتح صفحة التوقيع');
+    return;
+  }
+
+  var experts = _ce || [];
+  var analyses = _ca || {};
+
+  // حساب الأصوات
+  var approve=0, cond=0, reject=0;
+  var successExp = experts.filter(function(e){
+    return analyses[e.id] && !analyses[e.id].startsWith('⚠');
+  });
+  successExp.forEach(function(e){
+    var t = (analyses[e.id]||'').toLowerCase();
+    if(/موافقة كاملة|أوصي بالمضي|موافق/.test(t)) approve++;
+    else if(/مشروطة|مشروط/.test(t)) cond++;
+    else if(/رفض|أرفض/.test(t)) reject++;
+    else cond++;
+  });
+  var total = successExp.length || 1;
+  var ratio = Math.round(((approve+cond)/total)*100);
+
+  // استخراج نص المحضر
+  var rptEl = document.getElementById('rptWrap');
+  var synthText = rptEl ? (rptEl.innerText || rptEl.textContent) : '';
+
+  // رقم الجلسة
+  var sid = document.getElementById('sessionRef') ?
+    document.getElementById('sessionRef').textContent :
+    'SOR-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+  // بناء payload
+  var payload = {
+    sid: sid,
+    decision: (_cd||'').substring(0, 600),
+    synth: synthText.substring(0, 8000),
+    ratio: ratio,
+    approve: approve,
+    cond: cond,
+    reject: reject,
+    experts: successExp.length,
+    timestamp: new Date().toISOString()
+  };
+
+  // حفظ في sessionStorage
+  sessionStorage.setItem('sor_session_data', JSON.stringify(payload));
+
+  // فتح صفحة التوقيع
+  var url = 'minutes_sign.html?sid=' + encodeURIComponent(sid);
+  var win = window.open(url, '_blank', 'width=1000,height=800');
+
+  // إرسال بيانات عبر postMessage بعد تحميل الصفحة
+  if(win){
+    setTimeout(function(){
+      try{
+        win.postMessage({type:'SOR_SESSION', payload: payload}, '*');
+      }catch(e){}
+    }, 1500);
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// VOICE SYSTEM — إدخال صوتي + استجابة صوتية
+// ══════════════════════════════════════════════════════════════
+
+var _voiceRec = null;        // SpeechRecognition instance
+var _voiceActive = false;    // هل الميكروفون شغّال؟
+var _ttsQueue = [];          // طابور النصوص للقراءة
+var _ttsSpeaking = false;    // هل يتكلم الآن؟
+var _voiceSupported = false; // هل المتصفح يدعم؟
+var _ttsSupported = false;   // هل TTS مدعوم؟
+var _currentLang = 'ar-SA';  // لغة التعرف
+
+// تهيئة نظام الصوت
+function initVoiceSystem(){
+  // فحص دعم SpeechRecognition
+  var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  _voiceSupported = !!SpeechRec;
+  _ttsSupported = !!window.speechSynthesis;
+
+  if(!_voiceSupported){
+    var btn = document.getElementById('voiceBtn');
+    if(btn){ btn.title = 'المتصفح لا يدعم الإدخال الصوتي — استخدم Chrome'; btn.style.opacity='0.35'; btn.style.cursor='not-allowed'; }
+    return;
+  }
+
+  // بناء Recognition
+  _voiceRec = new SpeechRec();
+  _voiceRec.lang = _currentLang;
+  _voiceRec.continuous = false;
+  _voiceRec.interimResults = true;
+  _voiceRec.maxAlternatives = 1;
+
+  _voiceRec.onstart = function(){
+    _voiceActive = true;
+    var btn = document.getElementById('voiceBtn');
+    var bar = document.getElementById('voiceBar');
+    var inp = document.getElementById('chatInp');
+    if(btn){ btn.classList.add('recording'); btn.textContent = '🔴'; }
+    if(bar) bar.classList.add('show');
+    if(inp) inp.placeholder = 'جارٍ الاستماع... تحدث الآن';
+  };
+
+  _voiceRec.onresult = function(e){
+    var transcript = '';
+    for(var i = e.resultIndex; i < e.results.length; i++){
+      transcript += e.results[i][0].transcript;
+    }
+    var inp = document.getElementById('chatInp');
+    if(inp) inp.value = transcript;
+    // إذا كانت النتيجة نهائية — أرسل تلقائياً
+    if(e.results[e.results.length-1].isFinal && transcript.trim().length > 2){
+      setTimeout(function(){ sendChat(); }, 400);
+    }
+  };
+
+  _voiceRec.onerror = function(e){
+    stopVoice();
+    var msgs = {
+      'no-speech': 'لم أسمعك — اضغط مرة أخرى وتحدث',
+      'not-allowed': 'يرجى السماح للمتصفح باستخدام الميكروفون',
+      'network': 'خطأ في الشبكة',
+    };
+    var inp = document.getElementById('chatInp');
+    if(inp) inp.placeholder = msgs[e.error] || 'خطأ في الاستماع — حاول مجدداً';
+  };
+
+  _voiceRec.onend = function(){
+    stopVoice();
+  };
+}
+
+function toggleVoiceInput(){
+  if(!_voiceSupported){
+    alert('المتصفح لا يدعم الإدخال الصوتي.\nيرجى استخدام Google Chrome أو Microsoft Edge.');
+    return;
+  }
+  if(_voiceActive){
+    _voiceRec.stop();
+    stopVoice();
+  } else {
+    try{
+      _voiceRec.lang = _currentLang;
+      _voiceRec.start();
+    }catch(e){
+      // إذا كان شغّالاً بالفعل
+      _voiceRec.stop();
+      setTimeout(function(){ _voiceRec.start(); }, 300);
+    }
+  }
+}
+
+function stopVoice(){
+  _voiceActive = false;
+  var btn = document.getElementById('voiceBtn');
+  var bar = document.getElementById('voiceBar');
+  var inp = document.getElementById('chatInp');
+  if(btn){ btn.classList.remove('recording'); btn.textContent = '🎤'; }
+  if(bar) bar.classList.remove('show');
+  if(inp && !inp.value) inp.placeholder = 'اسأل الخبير حول تقريره... أو اضغط 🎤 للكلام';
+}
+
+// ══ TTS — تحويل نص الخبير لصوت ══
+function speakText(text, expertName){
+  if(!_ttsSupported || !text) return;
+  var nl = String.fromCharCode(10);
+  var clean = text
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/^#{1,3}\s+/gm, '')
+    .replace(/[\u2605\u2606\u2705\u26a0\u274c\u25c6\u25c7\u2bc1]/g, '')
+    .split(nl+nl).join('. ')
+    .split(nl).join(' ')
+    .trim()
+    .substring(0, 800);
+  if(!clean || clean.length < 5) return;
+  window.speechSynthesis.cancel();
+  var utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'ar-SA';
+  utt.rate = 0.95;
+  utt.pitch = 1.0;
+  utt.volume = 1.0;
+  var voices = window.speechSynthesis.getVoices();
+  var arVoice = voices.find(function(v){ return v.lang.startsWith('ar'); });
+  if(arVoice) utt.voice = arVoice;
+  utt.onstart = function(){ _ttsSpeaking = true; };
+  utt.onend   = function(){ _ttsSpeaking = false; };
+  utt.onerror = function(){ _ttsSpeaking = false; };
+  window.speechSynthesis.speak(utt);
+}
+function stopSpeaking(){
+  if(_ttsSupported) window.speechSynthesis.cancel();
+  _ttsSpeaking = false;
+}
+
+// تهيئة عند التحميل
+window.addEventListener('load', function(){
+  initVoiceSystem();
+  // تحميل الأصوات (يحتاج تأخير في بعض المتصفحات)
+  if(_ttsSupported && window.speechSynthesis.onvoiceschanged !== undefined){
+    window.speechSynthesis.onvoiceschanged = function(){};
+  }
+});
+
 </script>
 </body>
 </html>
