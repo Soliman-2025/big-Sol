@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>فلسفة القرار الناضج — غرفة العمليات الاستراتيجية</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Cairo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C49A3C;--gl:#E8C060;--gd:#7A5510;
+  --ink:#05080E;--surf:#0C0F1A;--surf2:#111827;
+  --teal:#1AA886;--red:#E24B4A;--blue:#378ADD;
+  --tx:#EAD8A0;--t2:#8A9BB0;--t3:#4A5568;
+  --bdr:rgba(196,154,60,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;overflow-x:hidden}
+
+/* HEADER */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,8,14,0.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr)}
+.hdr::after{content:'';position:absolute;bottom:-1px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.seal{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Scheherazade New',serif;font-size:14px;font-weight:700;color:var(--gold)}
+.org{font-family:'Scheherazade New',serif;font-size:17px;color:var(--tx);font-weight:700}
+.org-sub{font-size:9px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.nav{display:flex;gap:6px}
+.nav a{font-size:12px;color:var(--t3);padding:6px 14px;border-radius:20px;text-decoration:none;border:1px solid transparent;transition:all .2s;font-family:'IBM Plex Mono',monospace}
+.nav a:hover{color:var(--gold);border-color:var(--bdr)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gl))!important;color:var(--ink)!important;font-weight:700!important;border:none!important}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(196,154,60,0.06) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(196,154,60,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(196,154,60,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
+.hero-in{max-width:820px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--gold);padding:6px 16px;border:1px solid rgba(196,154,60,0.3);border-radius:24px;background:rgba(196,154,60,0.06);font-family:'IBM Plex Mono',monospace;letter-spacing:1px;margin-bottom:32px}
+.hero-badge::before{content:'⬡';font-size:14px}
+.hero-title{font-family:'Scheherazade New',serif;font-size:clamp(42px,7vw,80px);font-weight:900;color:var(--tx);line-height:1.2;margin-bottom:16px}
+.hero-title span{background:linear-gradient(135deg,var(--gold),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(15px,2.5vw,20px);color:var(--t2);margin-bottom:20px;font-weight:300;line-height:1.7}
+.hero-en{font-size:13px;color:var(--t3);font-family:'IBM Plex Mono',monospace;letter-spacing:3px;margin-bottom:48px}
+.hero-quote{font-family:'Scheherazade New',serif;font-size:clamp(16px,2.5vw,22px);color:var(--gold);font-style:italic;padding:20px 40px;border-right:3px solid var(--gold);border-left:3px solid var(--gold);background:rgba(196,154,60,0.04);border-radius:4px;margin-bottom:40px;line-height:1.8}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-g{padding:13px 28px;background:linear-gradient(135deg,var(--gold),var(--gl));color:var(--ink);border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-g:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(196,154,60,.3)}
+.btn-o{padding:13px 28px;background:transparent;color:var(--tx);border:1px solid var(--bdr);border-radius:8px;font-family:'Cairo',sans-serif;font-size:15px;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-o:hover{border-color:var(--gold);color:var(--gold)}
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--t3);font-size:11px;letter-spacing:2px;font-family:'IBM Plex Mono',monospace;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* SECTIONS */
+section{padding:100px 24px;position:relative}
+.max{max-width:1000px;margin:0 auto}
+.sec-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--gold);padding:4px 14px;border:1px solid rgba(196,154,60,0.25);border-radius:20px;font-family:'IBM Plex Mono',monospace;letter-spacing:2px;margin-bottom:20px}
+.sec-title{font-family:'Scheherazade New',serif;font-size:clamp(26px,4vw,42px);font-weight:700;color:var(--tx);margin-bottom:12px;line-height:1.3}
+.sec-desc{font-size:15px;color:var(--t2);max-width:640px;line-height:1.85}
+
+/* PROBLEM */
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:48px}
+.prob-card{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:24px;position:relative;overflow:hidden;transition:all .3s}
+.prob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent)}
+.prob-card:hover{transform:translateY(-3px);border-color:rgba(226,75,74,0.3)}
+.prob-pct{font-size:36px;font-weight:900;color:var(--red);font-family:'IBM Plex Mono',monospace;line-height:1;margin-bottom:8px}
+.prob-lbl{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.prob-src{font-size:11px;color:var(--t3);font-family:'IBM Plex Mono',monospace}
+
+/* PHILOSOPHY */
+.phi-divider{display:flex;align-items:center;gap:20px;margin:60px 0}
+.phi-divider::before,.phi-divider::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.phi-divider span{font-size:10px;color:var(--t3);letter-spacing:3px;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin-top:48px;border:1px solid var(--bdr);border-radius:14px;overflow:hidden}
+.compare-col{padding:0}
+.compare-hdr{padding:16px 20px;text-align:center;font-size:12px;font-weight:700;letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.compare-hdr.old{background:rgba(255,255,255,0.02);color:var(--t3)}
+.compare-hdr.new{background:rgba(196,154,60,0.08);color:var(--gold)}
+.compare-mid-hdr{padding:16px 20px;text-align:center;font-size:12px;color:var(--t3);font-family:'IBM Plex Mono',monospace;background:rgba(255,255,255,0.01)}
+.compare-row{display:contents}
+.compare-cell{padding:14px 20px;font-size:13px;border-top:1px solid var(--bdr);line-height:1.6}
+.compare-cell.old{background:rgba(255,255,255,0.01);color:var(--t2);text-align:right}
+.compare-cell.new{background:rgba(196,154,60,0.04);color:var(--tx);text-align:right;font-weight:500}
+.compare-cell.arrow{background:var(--surf2);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:16px}
+.compare-cell.old:hover{background:rgba(255,255,255,0.03)}
+.compare-cell.new:hover{background:rgba(196,154,60,0.07)}
+
+/* METHODOLOGY */
+.steps{margin-top:48px;display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:80px 1fr;gap:0;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;top:80px;right:39px;width:2px;height:calc(100% - 30px);background:linear-gradient(to bottom,var(--gold),transparent)}
+.step-num-wrap{display:flex;flex-direction:column;align-items:center;padding-top:12px}
+.step-circle{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Scheherazade New',serif;font-size:22px;font-weight:700;color:var(--gold);background:var(--ink);position:relative;z-index:1;flex-shrink:0}
+.step-circle.special{background:linear-gradient(135deg,rgba(196,154,60,0.2),rgba(196,154,60,0.05));border-width:2px;box-shadow:0 0 20px rgba(196,154,60,0.2)}
+.step-body{padding:12px 0 40px 0 ;padding-right:24px}
+.step-tag{font-size:9px;color:var(--t3);letter-spacing:3px;font-family:'IBM Plex Mono',monospace;margin-bottom:6px}
+.step-title{font-size:20px;font-weight:700;color:var(--tx);margin-bottom:6px;font-family:'Scheherazade New',serif}
+.step-sub{font-size:12px;color:var(--gold);font-family:'IBM Plex Mono',monospace;margin-bottom:12px}
+.step-desc{font-size:14px;color:var(--t2);line-height:1.85}
+.step-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.stag{font-size:10px;padding:3px 10px;border-radius:20px;font-family:'IBM Plex Mono',monospace}
+.stag-g{background:rgba(196,154,60,0.1);color:var(--gold);border:1px solid rgba(196,154,60,0.2)}
+.stag-t{background:rgba(26,168,134,0.08);color:var(--teal);border:1px solid rgba(26,168,134,0.2)}
+.stag-b{background:rgba(55,138,221,0.08);color:var(--blue);border:1px solid rgba(55,138,221,0.2)}
+.stag-new{background:linear-gradient(135deg,rgba(196,154,60,0.15),rgba(26,168,134,0.1));color:var(--tx);border:1px solid rgba(196,154,60,0.3);font-weight:600}
+
+/* VS McKINSEY */
+.vs-section{background:linear-gradient(135deg,#080B14,#0C0F1A);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.vs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:48px}
+.vs-card{border-radius:14px;padding:24px;position:relative;overflow:hidden}
+.vs-card.sor{background:linear-gradient(135deg,rgba(196,154,60,0.1),rgba(196,154,60,0.04));border:1px solid rgba(196,154,60,0.25)}
+.vs-card.sor::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gl))}
+.vs-card.mck{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06)}
+.vs-title{font-size:14px;font-weight:700;margin-bottom:16px}
+.vs-title.sor{color:var(--gold)}
+.vs-title.mck{color:var(--t2)}
+.vs-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px}
+.vs-row:last-child{border-bottom:none}
+.vs-label{color:var(--t2)}
+.vs-val.win{color:var(--teal);font-weight:700;font-family:'IBM Plex Mono',monospace}
+.vs-val.lose{color:var(--t3);font-family:'IBM Plex Mono',monospace}
+.vs-val.tie{color:var(--gold);font-family:'IBM Plex Mono',monospace}
+.vs-win-badge{position:absolute;top:16px;left:16px;font-size:10px;background:var(--teal);color:'white';padding:3px 10px;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#fff}
+.vs-unique{margin-top:32px;background:rgba(196,154,60,0.06);border:1px solid rgba(196,154,60,0.2);border-radius:12px;padding:20px}
+.vs-unique-title{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:14px;font-family:'IBM Plex Mono',monospace;letter-spacing:1px}
+.vs-unique-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(196,154,60,0.08);font-size:13px;color:var(--t2)}
+.vs-unique-item:last-child{border-bottom:none}
+.vs-unique-item::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:2px}
+
+/* COUNCIL */
+.council-wrap{margin-top:48px}
+.council-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.expert-card{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:14px;transition:all .25s;cursor:default}
+.expert-card:hover{background:var(--surf2);border-color:rgba(196,154,60,0.3);transform:translateY(-2px)}
+.expert-card.always{border-right:3px solid var(--gold)}
+.expert-card.auto{border-right:3px solid var(--teal)}
+.expert-type{font-size:9px;letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin-bottom:5px}
+.expert-type.always{color:var(--gold)}
+.expert-type.auto{color:var(--teal)}
+.expert-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.expert-spec{font-size:11px;color:var(--t3)}
+.council-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.cstat{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:16px;text-align:center}
+.cstat-num{font-size:32px;font-weight:900;font-family:'IBM Plex Mono',monospace;color:var(--gold);line-height:1}
+.cstat-lbl{font-size:11px;color:var(--t3);margin-top:4px}
+
+/* MINUTES */
+.minutes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:40px}
+.min-card{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:16px}
+.min-num{font-size:10px;color:var(--gold);font-family:'IBM Plex Mono',monospace;margin-bottom:6px}
+.min-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.min-desc{font-size:12px;color:var(--t3);line-height:1.6}
+
+/* COVENANT */
+.covenant{background:linear-gradient(135deg,rgba(196,154,60,0.06),rgba(196,154,60,0.02));border:1px solid rgba(196,154,60,0.2);border-radius:16px;padding:48px;margin-top:48px;text-align:center;position:relative;overflow:hidden}
+.covenant::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gl),var(--gold),transparent)}
+.covenant-title{font-family:'Scheherazade New',serif;font-size:32px;color:var(--gold);margin-bottom:16px;font-weight:700}
+.covenant-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:32px;text-align:right}
+.cov-item{background:rgba(255,255,255,0.02);border:1px solid var(--bdr);border-radius:10px;padding:16px}
+.cov-icon{font-size:20px;margin-bottom:8px}
+.cov-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.cov-desc{font-size:12px;color:var(--t3);line-height:1.6}
+
+/* CTA */
+.cta-section{padding:120px 24px;text-align:center;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(196,154,60,0.06) 0%,transparent 70%)}
+.cta-title{font-family:'Scheherazade New',serif;font-size:clamp(28px,5vw,52px);color:var(--tx);margin-bottom:16px;font-weight:700}
+.cta-sub{font-size:17px;color:var(--t2);max-width:540px;margin:0 auto 40px;line-height:1.8}
+.cta-quote{font-family:'Scheherazade New',serif;font-size:18px;color:var(--gold);font-style:italic;margin-bottom:40px}
+
+/* FOOTER */
+footer{padding:40px 24px;border-top:1px solid var(--bdr);text-align:center}
+footer::before{content:'';display:block;width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 32px}
+.ft-logo{font-family:'Scheherazade New',serif;font-size:22px;color:var(--gold);font-weight:700;margin-bottom:6px}
+.ft-sub{font-size:11px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin-bottom:24px}
+.ft-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.ft-links a{font-size:12px;color:var(--t3);text-decoration:none;font-family:'IBM Plex Mono',monospace;transition:color .2s}
+.ft-links a:hover{color:var(--gold)}
+.ft-copy{font-size:12px;color:var(--t3)}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.2,.8,.2,1)}
+.fade-up.visible{opacity:1;transform:none}
+
+@media(max-width:768px){
+  .hdr{padding:12px 20px}.nav{display:none}
+  .compare{grid-template-columns:1fr}.compare-cell.arrow{display:none}.compare-cell.old{border-left:3px solid rgba(255,255,255,0.1)}.compare-cell.new{border-left:3px solid var(--gold)}
+  .council-stats{grid-template-columns:repeat(2,1fr)}
+  .step{grid-template-columns:60px 1fr}
+  .covenant{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <a class="logo" href="index.html">
+    <div class="seal">غ.ع</div>
+    <div>
+      <div class="org">غرفة العمليات الاستراتيجية</div>
+      <div class="org-sub">STRATEGIC OPERATIONS ROOM</div>
+    </div>
+  </a>
+  <nav class="nav">
+    <a href="#problem">الإشكالية</a>
+    <a href="#philosophy">الفلسفة</a>
+    <a href="#methodology">المنهجية</a>
+    <a href="#vs">vs McKinsey</a>
+    <a href="#council">المجلس</a>
+    <a href="SOR_Council.html" class="nav-cta">ابدأ الجلسة ⬡</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-in fade-up visible">
+    <div class="hero-badge">الإصدار الأول · أبريل 2026 · v8.1</div>
+    <h1 class="hero-title">فلسفة <span>القرار الناضج</span></h1>
+    <p class="hero-sub">المنهجية السداسية — من الخام إلى المحضر الحوكمي</p>
+    <p class="hero-en">THE MATURE DECISION PHILOSOPHY</p>
+    <div class="hero-quote">«القرار الذي لم يُناقَش قبل اعتماده — مخاطرة مقنّعة»</div>
+    <div class="hero-btns">
+      <a href="SOR_Council.html" class="btn-g">⬡ ابدأ جلستك الآن</a>
+      <a href="#methodology" class="btn-o">اكتشف المنهجية</a>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ &nbsp; اكتشف</div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+<div class="max fade-up">
+  <div class="sec-badge">⬡ الإشكالية</div>
+  <h2 class="sec-title">لماذا تفشل القرارات الكبرى؟</h2>
+  <p class="sec-desc">القادة لا يفشلون لأنهم يجهلون — بل لأن منهجية اتخاذ القرار لديهم معطوبة بشكل صامت.</p>
+  <div class="prob-grid">
+    <div class="prob-card">
+      <div class="prob-pct">99%</div>
+      <div class="prob-lbl">من المنظمات تستخدم AI</div>
+      <div class="prob-src">McKinsey 2026 — لكن 1% فقط تعتبر نفسها ناضجة في توظيفه قرارياً</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-pct">40%+</div>
+      <div class="prob-lbl">من مشاريع AI ستُلغى قبل 2027</div>
+      <div class="prob-src">Gartner — السبب الأول: غياب الحوكمة والمنهجية</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-pct">88%</div>
+      <div class="prob-lbl">من إثباتات المفهوم لا تصل للإنتاج</div>
+      <div class="prob-src">IDC 2026 — المشكلة في المنهجية لا التقنية</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-pct">70%</div>
+      <div class="prob-lbl">من القرارات الكبرى تُخيّب التوقعات</div>
+      <div class="prob-src">Harvard Business Review — قرار بلا حوكمة = مخاطرة مؤجّلة</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy" style="background:var(--surf)">
+<div class="max fade-up">
+  <div class="sec-badge">⬡ الفلسفة</div>
+  <h2 class="sec-title">الانتقال الجوهري</h2>
+  <p class="sec-desc">من الذكاء الاصطناعي أداةً للإجابات — إلى الذكاء الاصطناعي مسرح تفكير مهيكل متعدد المناظير.</p>
+
+  <div class="compare">
+    <div class="compare-hdr old">النموذج التقليدي</div>
+    <div class="compare-mid-hdr">←</div>
+    <div class="compare-hdr new">غرفة العمليات</div>
+
+    <div class="compare-cell old">AI = أداة إجابات سريعة</div>
+    <div class="compare-cell arrow">⬡</div>
+    <div class="compare-cell new">AI = مسرح تفكير مهيكل متعدد المناظير</div>
+
+    <div class="compare-cell old">قرار = رأي القائد + بيانات</div>
+    <div class="compare-cell arrow">⬡</div>
+    <div class="compare-cell new">قرار = تركيب زوايا نظر منضبطة وموثقة</div>
+
+    <div class="compare-cell old">نموذج AI واحد يجيب على كل شيء</div>
+    <div class="compare-cell arrow">⬡</div>
+    <div class="compare-cell new">28 خبيراً بأدوار مستقلة حقيقية بالتوازي</div>
+
+    <div class="compare-cell old">لا معيار موضوعي للقبول</div>
+    <div class="compare-cell arrow">⬡</div>
+    <div class="compare-cell new">عتبة اتفاق 75% للتوصية المعتمدة</div>
+
+    <div class="compare-cell old">المسؤولية ضبابية بين الإنسان والآلة</div>
+    <div class="compare-cell arrow">⬡</div>
+    <div class="compare-cell new">المسؤولية البشرية صريحة ومُعلنة دائماً</div>
+
+    <div class="compare-cell old">قرار بلا سند حوكمي</div>
+    <div class="compare-cell arrow">⬡</div>
+    <div class="compare-cell new">محضر قانوني يحمي القائد والمنظمة</div>
+  </div>
+</div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+<div class="max fade-up">
+  <div class="sec-badge">⬡ المنهجية</div>
+  <h2 class="sec-title">المنهجية السداسية</h2>
+  <p class="sec-desc">من الخام إلى المحضر الحوكمي — ست مراحل متكاملة لا تُتجاوز.</p>
+
+  <div class="steps" style="margin-top:52px">
+
+    <div class="step">
+      <div class="step-num-wrap"><div class="step-circle">١</div></div>
+      <div class="step-body">
+        <div class="step-tag">STAGE 01 · DIALOGUE</div>
+        <div class="step-title">الحوار مع مهندس القرار</div>
+        <div class="step-sub">التشخيص الأولي والبناء المعرفي</div>
+        <div class="step-desc">خبير متخصص يجلس مع صاحب القرار في حوار إنساني ذكي — لا استمارات، لا أسئلة جامدة. يقبل الإجابات التقريبية ويُكمل ما ينقص من سياقه ومعرفته. القرار الخام يدخل — التشخيص يبدأ.</div>
+        <div class="step-tags"><span class="stag stag-g">حوار ذكي</span><span class="stag stag-t">بحث آني</span><span class="stag stag-b">8 أبعاد</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap"><div class="step-circle">٢</div></div>
+      <div class="step-body">
+        <div class="step-tag">STAGE 02 · ENRICHMENT</div>
+        <div class="step-title">التشخيص والإثراء العلمي</div>
+        <div class="step-sub">الأطر العالمية والسياق الخليجي</div>
+        <div class="step-desc">المهندس يُشخّص نوع القرار ويُطبّق الأطر العلمية المناسبة — NPV+IRR للاستثمار، Porter+CAGE لدخول السوق، Kotter+ADKAR للتحول المؤسسي. يكتشف التحيزات المعرفية ويُثري القرار بالسياق التنظيمي الخليجي: SAMA · CMA · SDAIA · رؤية 2030.</div>
+        <div class="step-tags"><span class="stag stag-g">Porter · NPV · ADKAR</span><span class="stag stag-t">رؤية 2030</span><span class="stag stag-b">كشف التحيزات</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap"><div class="step-circle">٣</div></div>
+      <div class="step-body">
+        <div class="step-tag">STAGE 03 · DOCUMENT</div>
+        <div class="step-title">صياغة وثيقة القرار الناضج</div>
+        <div class="step-sub">8 أبعاد مكتملة · قابلة للتعديل</div>
+        <div class="step-desc">المهندس يبني وثيقة قرار محكمة — 8 أبعاد مكتملة، بيانات موثقة، فجوات معرفية مُعلَنة، بدائل مُحددة، مخاطر أولية مُشخَّصة. الوثيقة قابلة للتعديل المباشر قبل انتقالها للمرحلة التالية.</div>
+        <div class="step-tags"><span class="stag stag-g">وثيقة محكمة</span><span class="stag stag-b">فجوات مُعلَنة</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap"><div class="step-circle special" style="border-color:var(--teal);color:var(--teal)">٤</div></div>
+      <div class="step-body">
+        <div class="step-tag">STAGE 04 · ASSESSMENT · جديد</div>
+        <div class="step-title">تقييم النضج — مُقيِّم القرار</div>
+        <div class="step-sub" style="color:var(--teal)">درجة 0-100 · 9 أبعاد · كشف التحيزات الضمنية</div>
+        <div class="step-desc">المُقيِّم يُصدر حكماً موضوعياً على الوثيقة المُنتجة — درجة نضج علمية من 100 عبر 9 أبعاد، كشف التحيزات المعرفية الضمنية، تحديد الثغرات الحرجة. لا قرار يتقدم بدرجة أقل من 75 إلا بقرار واعٍ من صاحب الصلاحية.</div>
+        <div class="step-tags"><span class="stag stag-new">★ مرحلة حصرية</span><span class="stag stag-t">درجة/100</span><span class="stag stag-g">9 أبعاد</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap"><div class="step-circle" style="border-color:#378ADD;color:#378ADD">٥</div></div>
+      <div class="step-body">
+        <div class="step-tag">STAGE 05 · APPROVAL</div>
+        <div class="step-title">اعتماد صاحب الصلاحية</div>
+        <div class="step-sub" style="color:#378ADD">توقيع رسمي · مسؤولية بشرية صريحة</div>
+        <div class="step-desc">الوثيقة تُعرض على صاحب الصلاحية للمراجعة والاعتماد — يقبل، يعدّل، أو يطلب استكمال نقاط محددة. لا قرار يدخل المجلس إلا بتوقيعه. المسؤولية النهائية للإنسان دائماً — الذكاء الاصطناعي يُضيء، القائد يُقرر.</div>
+        <div class="step-tags"><span class="stag stag-b">توقيع رسمي</span><span class="stag stag-g">حماية قانونية</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap"><div class="step-circle special">٦</div></div>
+      <div class="step-body">
+        <div class="step-tag">STAGE 06 · COUNCIL</div>
+        <div class="step-title">مجلس الـ28 خبيراً — المحضر الحوكمي</div>
+        <div class="step-sub">Pre-Mortem · Second Order · Kill Switch · 36 ساعة</div>
+        <div class="step-desc">القرار الناضج المُعتمَد يدخل غرفة العمليات الاستراتيجية — 28 خبيراً متخصصاً يُحللونه بزوايا مستقلة بالتوازي، مع بحث آني في الإنترنت، وجولة معايرة لكشف الخلافات الجوهرية، ومحضر حوكمي رسمي بتسعة أقسام يخرج خلال 36 ساعة.</div>
+        <div class="step-tags"><span class="stag stag-g">28 خبيراً</span><span class="stag stag-t">بحث آني</span><span class="stag stag-g">محضر قانوني</span><span class="stag stag-b">36 ساعة</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- VS McKINSEY -->
+<section id="vs" class="vs-section">
+<div class="max fade-up">
+  <div class="sec-badge">⬡ المقارنة</div>
+  <h2 class="sec-title">غرفة العمليات vs McKinsey</h2>
+  <p class="sec-desc">مقارنة موضوعية بلا مجاملة — أين نتفوق، وأين نعمل على تضييق الفجوة.</p>
+
+  <div class="vs-grid">
+
+    <div class="vs-card sor">
+      <div class="vs-win-badge">الأقوى</div>
+      <div class="vs-title sor">⬡ غرفة العمليات الاستراتيجية</div>
+      <div class="vs-row"><span class="vs-label">السياق الخليجي</span><span class="vs-val win">95% ✦</span></div>
+      <div class="vs-row"><span class="vs-label">سرعة المخرج</span><span class="vs-val win">92% ✦</span></div>
+      <div class="vs-row"><span class="vs-label">الحوكمة الموثقة</span><span class="vs-val win">88% ✦</span></div>
+      <div class="vs-row"><span class="vs-label">تعدد المناظير</span><span class="vs-val win">85% ✦</span></div>
+      <div class="vs-row"><span class="vs-label">التحديث الآني</span><span class="vs-val win">نعم ✦</span></div>
+      <div class="vs-row"><span class="vs-label">المحضر القانوني</span><span class="vs-val win">نعم ✦</span></div>
+      <div class="vs-row"><span class="vs-label">عمق التحليل</span><span class="vs-val tie">78%</span></div>
+      <div class="vs-row"><span class="vs-label">التكلفة للعميل</span><span class="vs-val win">5K-15K ريال ✦</span></div>
+    </div>
+
+    <div class="vs-card mck">
+      <div class="vs-title mck">McKinsey & BCG</div>
+      <div class="vs-row"><span class="vs-label">السياق الخليجي</span><span class="vs-val lose">40%</span></div>
+      <div class="vs-row"><span class="vs-label">سرعة المخرج</span><span class="vs-val lose">60% (أسابيع)</span></div>
+      <div class="vs-row"><span class="vs-label">الحوكمة الموثقة</span><span class="vs-val lose">50%</span></div>
+      <div class="vs-row"><span class="vs-label">تعدد المناظير</span><span class="vs-val lose">70% (3-5 أشخاص)</span></div>
+      <div class="vs-row"><span class="vs-label">التحديث الآني</span><span class="vs-val lose">لا</span></div>
+      <div class="vs-row"><span class="vs-label">المحضر القانوني</span><span class="vs-val lose">جزئي</span></div>
+      <div class="vs-row"><span class="vs-label">عمق التحليل</span><span class="vs-val tie">95%</span></div>
+      <div class="vs-row"><span class="vs-label">التكلفة للعميل</span><span class="vs-val lose">500K-5M ريال</span></div>
+    </div>
+
+  </div>
+
+  <div class="vs-unique">
+    <div class="vs-unique-title">ما لا يملكه أحد في السوق العربي</div>
+    <div class="vs-unique-item">الوحيد بمنهجية حوكمة قرار موثقة — السوق العربي مليء بأدوات AI لكن لا أحد يُقدّم منهجية قرار حوكمية متكاملة</div>
+    <div class="vs-unique-item">التخصيص الخليجي الحقيقي — مبني من رؤية 2030 والأنظمة السعودية، ليس ترجمة لنموذج غربي</div>
+    <div class="vs-unique-item">28 عقلاً مستقلاً بالتوازي — لا نموذج واحد بأقنعة متعددة، استقلالية تحليل حقيقية</div>
+    <div class="vs-unique-item">16 خبيراً يبحثون آنياً في الإنترنت — معلومات اليوم لا الأمس، McKinsey تعمل بتقارير مُعدّة قبل أسابيع</div>
+    <div class="vs-unique-item">الذاكرة المؤسسية المتراكمة — بعد 100 جلسة، لا منافس يستطيع بناء ما بنيناه من سياق وخبرة محلية</div>
+  </div>
+
+</div>
+</section>
+
+<!-- COUNCIL -->
+<section id="council">
+<div class="max fade-up">
+  <div class="sec-badge">⬡ المجلس</div>
+  <h2 class="sec-title">مجلس الـ28 خبيراً</h2>
+  <p class="sec-desc">ثمانية وعشرون خبيراً متخصصاً — ثمانية دائمون في كل جلسة، وعشرون يُستدعون تلقائياً بحسب طبيعة القرار.</p>
+
+  <div class="council-wrap">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin-bottom:12px">الخبراء الدائمون — في كل جلسة</div>
+    <div class="council-grid">
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">الخبير الاستراتيجي</div><div class="expert-spec">Porter · Blue Ocean · VRIO</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">الخبير المالي</div><div class="expert-spec">DCF · IRR · Monte Carlo</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">الخبير التنفيذي</div><div class="expert-spec">OKRs · FMEA · Six Sigma</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">خبير التحول الرقمي</div><div class="expert-spec">Gartner Maturity · AI Readiness</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">خبير الاستشراف</div><div class="expert-spec">Shell Scenarios · STEEP</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">الخبير البحثي</div><div class="expert-spec">Evidence-Based · TAM/SAM/SOM</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">محكّم المجلس</div><div class="expert-spec">Pre-Mortem · Devil's Advocate</div></div>
+      <div class="expert-card always"><div class="expert-type always">دائم</div><div class="expert-name">ضمير المجلس</div><div class="expert-spec">★★★★★ تحقق من كل رقم</div></div>
+    </div>
+
+    <div style="font-size:11px;color:var(--teal);letter-spacing:2px;font-family:'IBM Plex Mono',monospace;margin:24px 0 12px">الخبراء الآليون العشرون — يُستدعون تلقائياً بحسب القرار</div>
+    <div class="council-grid">
+      <div class="expert-card auto"><div class="expert-type auto">آلي 09</div><div class="expert-name">خبير التسويق</div><div class="expert-spec">JTBD · STP · GTM · PESO</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 10</div><div class="expert-name">خبير الموارد البشرية</div><div class="expert-spec">ADKAR · Kotter · SHRM</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 11</div><div class="expert-name">خبير الاستدامة</div><div class="expert-spec">GRI · TCFD · ESG · SBTi</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 12</div><div class="expert-name">خبير المخاطر</div><div class="expert-spec">ISO 31000 · COSO ERM · KRIs</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 13</div><div class="expert-name">خبير الأمن السيبراني</div><div class="expert-spec">NCA-ECC · PDPL · NIST CSF</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 14</div><div class="expert-name">خبير الجيوسياسة</div><div class="expert-spec">PESTLE · CAGE Distance</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 15</div><div class="expert-name">خبير حوكمة AI</div><div class="expert-spec">EU AI Act · NIST AI RMF · ISO 42001</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 16</div><div class="expert-name">المستشارة القانونية</div><div class="expert-spec">نظام الشركات · PDPL · CMA · ZATCA</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 17</div><div class="expert-name">خبير الجودة الشاملة</div><div class="expert-spec">ISO 9001 · Six Sigma · EFQM</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 18</div><div class="expert-name">خبير سلاسل التوريد</div><div class="expert-spec">Kraljic · SCOR · TCO</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 19</div><div class="expert-name">خبير قطاع الطاقة</div><div class="expert-spec">LCOE · Vision 2030 Energy</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 20</div><div class="expert-name">خبير الرعاية الصحية</div><div class="expert-spec">CBAHI · JCI · SFDA · CPHQ</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 21</div><div class="expert-name">خبير تصميم الخدمات</div><div class="expert-spec">Design Thinking · HCD · UX</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 22</div><div class="expert-name">خبير إدارة السمعة</div><div class="expert-spec">RepTrak · PESO · SCCT</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 23</div><div class="expert-name">خبير Agentic AI</div><div class="expert-spec">LangGraph · CrewAI · MCP</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 24</div><div class="expert-name">خبير الحوسبة الكمومية</div><div class="expert-spec">NIST PQC · ML-KEM · HNDL Risk</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 25</div><div class="expert-name">خبير أخلاقيات AI</div><div class="expert-spec">UNESCO AI Ethics · IEEE EAD</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 26</div><div class="expert-name">خبير السيادة التقنية</div><div class="expert-spec">EAR/ITAR · Tech Dependency</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 27</div><div class="expert-name">خبير الاقتصاد الدائري</div><div class="expert-spec">LCA · Ellen MacArthur · SBTi</div></div>
+      <div class="expert-card auto"><div class="expert-type auto">آلي 28</div><div class="expert-name">خبير أمن ما بعد الكم</div><div class="expert-spec">PQC Migration · IEC 62443</div></div>
+    </div>
+
+    <div class="council-stats">
+      <div class="cstat"><div class="cstat-num">28</div><div class="cstat-lbl">خبيراً متخصصاً</div></div>
+      <div class="cstat"><div class="cstat-num">75%</div><div class="cstat-lbl">عتبة الاعتماد</div></div>
+      <div class="cstat"><div class="cstat-num">36h</div><div class="cstat-lbl">أقصى وقت للمحضر</div></div>
+      <div class="cstat"><div class="cstat-num">9</div><div class="cstat-lbl">أقسام في المحضر</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MINUTES -->
+<section style="background:var(--surf);padding:80px 24px">
+<div class="max fade-up">
+  <div class="sec-badge">⬡ المحضر</div>
+  <h2 class="sec-title">المحضر الحوكمي — 9 أقسام</h2>
+  <div class="minutes-grid">
+    <div class="min-card"><div class="min-num">01</div><div class="min-title">الملخص التنفيذي</div><div class="min-desc">حكم موحد من إجماع المجلس في 3 أسطر حادة</div></div>
+    <div class="min-card"><div class="min-num">02</div><div class="min-title">خريطة الاتفاق والخلاف</div><div class="min-desc">نسبة التوافق بكل محور مع عتبة 75%</div></div>
+    <div class="min-card"><div class="min-num">03</div><div class="min-title">مخرجات الخبراء</div><div class="min-desc">حكم كل خبير وتصويته ودرجة ثقته</div></div>
+    <div class="min-card"><div class="min-num">04</div><div class="min-title">Pre-Mortem الجماعي</div><div class="min-desc">أسباب الفشل المحتملة مرتبة بالاحتمالية</div></div>
+    <div class="min-card"><div class="min-num">05</div><div class="min-title">Second Order Thinking</div><div class="min-desc">التداعيات من الدرجة الثانية والثالثة</div></div>
+    <div class="min-card"><div class="min-num">06</div><div class="min-title">Kill Switch الجماعي</div><div class="min-desc">متى يجب إيقاف القرار بمؤشرات قابلة للقياس</div></div>
+    <div class="min-card"><div class="min-num">07</div><div class="min-title">الافتراضات الضمنية</div><div class="min-desc">ما يُفترض ولا يُقال — مكشوفاً ومُعلَناً</div></div>
+    <div class="min-card"><div class="min-num">08</div><div class="min-title">نقاط الحسم البشري</div><div class="min-desc">الأسئلة التي تحتاج حكم القائد وحده</div></div>
+    <div class="min-card"><div class="min-num">09</div><div class="min-title">التوصية النهائية</div><div class="min-desc">حكم صريح: يُوصى بالمضي / التوقف / الرفض</div></div>
+  </div>
+</div>
+</section>
+
+<!-- COVENANT -->
+<section>
+<div class="max fade-up">
+  <div class="covenant">
+    <div class="covenant-title">ميثاق الشراكة</div>
+    <p style="font-size:15px;color:var(--t2);max-width:560px;margin:0 auto">نعاهدك على ستة مبادئ لا نحيد عنها — لأن الثقة هي أساس كل قرار صائب.</p>
+    <div class="covenant-items">
+      <div class="cov-item"><div class="cov-title">الموضوعية المطلقة</div><div class="cov-desc">نُخبرك بما تحتاج معرفته — لا بما تريد سماعه</div></div>
+      <div class="cov-item"><div class="cov-title">الشفافية في الحدود</div><div class="cov-desc">نُعلنك بما تعرفه المنظومة وما لا تعرفه</div></div>
+      <div class="cov-item"><div class="cov-title">السرية التامة</div><div class="cov-desc">كل جلسة سرية بالكامل — لا مشاركة مع أي طرف</div></div>
+      <div class="cov-item"><div class="cov-title">المسؤولية البشرية</div><div class="cov-desc">التوصية استشارية دائماً — القرار لك أنت وحدك</div></div>
+      <div class="cov-item"><div class="cov-title">التحسين المستمر</div><div class="cov-desc">نراجع دقة توصياتنا كل 6 أشهر ونُشارك النتائج</div></div>
+      <div class="cov-item"><div class="cov-title">الاستقلالية التامة</div><div class="cov-desc">لا إعلانات ولا مصالح تؤثر على التحليل</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+<div class="max fade-up" style="text-align:center">
+  <div class="sec-badge" style="margin:0 auto 24px">⬡ ابدأ الآن</div>
+  <h2 class="cta-title">قرارك القادم يستحق أكثر من رأي واحد</h2>
+  <p class="cta-sub">28 خبيراً متخصصاً · بحث آني · محضر حوكمي قانوني · 36 ساعة</p>
+  <div class="cta-quote">«حيث يُصنع القرار، لا يُخمَّن»</div>
+  <div class="hero-btns">
+    <a href="SOR_Council.html" class="btn-g">⬡ ابدأ جلستك الآن</a>
+    <a href="assessor.html" class="btn-o">◎ قيّم قرارك أولاً</a>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-logo">غرفة العمليات الاستراتيجية</div>
+  <div class="ft-sub">STRATEGIC OPERATIONS ROOM · 2026</div>
+  <div class="ft-links">
+    <a href="SOR_Council.html">الغرفة</a>
+    <a href="assessor.html">المُقيِّم</a>
+    <a href="engineer.html">المهندس</a>
+    <a href="contract-individual.html">العقود</a>
+    <a href="philosophy.html">الفلسفة</a>
+  </div>
+  <div class="ft-copy">© جميع حقوق الفكر محفوظة · سليمان إبراهيم آل حويس القوزي · 2026</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

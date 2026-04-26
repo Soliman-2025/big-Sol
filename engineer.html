@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="author" content="سليمان إبراهيم آل حويس القوزي">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>مهندس القرار الاستراتيجي v4 · غرفة العمليات</title>
+<title>مهندس القرار الاستراتيجي v8.1 · غرفة العمليات · سليمان إبراهيم آل حويس القوزي</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@300;400;600;700&display=swap');
 :root{
@@ -136,7 +137,7 @@ body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-s
       <div class="seal">غ.ع</div>
       <div>
         <div class="org">غرفة العمليات الاستراتيجية</div>
-        <div class="sub">DECISION ENGINEER v4.0 · SCIENTIFIC FRAMEWORK</div>
+        <div class="sub">DECISION ENGINEER v8.1 · SCIENTIFIC FRAMEWORK</div>
       </div>
     </div>
     <div class="hbadge">⬡ مهندس القرار العلمي</div>
@@ -224,6 +225,7 @@ body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;font-s
       <div style="font-size:10px;color:#5A6A75;margin-top:4px">مع المفتاح: يبحث آنياً في الإنترنت لتحديث وثيقتك بأحدث الأنظمة والبيانات</div>
     </div>
     <button class="pa pa-g" onclick="sendToSOR()">⚡ إرسال للمجلس</button>
+          <button onclick="openPrintDirect()" style="padding:8px 16px;background:rgba(26,168,134,0.15);border:1px solid rgba(26,168,134,0.35);color:#1AA886;border-radius:6px;font-family:Cairo,sans-serif;font-size:12px;font-weight:700;cursor:pointer">📄 معاينة المحضر</button>
       <button class="pa pa-t" onclick="window.print()">🖨 طباعة</button>
       <button class="pa pa-o" onclick="copyDoc()">📋 نسخ</button>
       <button class="pa pa-o" onclick="editDoc()">✏ تعديل</button>
@@ -861,10 +863,34 @@ function buildFinalMsg(sc){
 // ACTIONS
 // ══════════════════════════════════════════════
 function sendToSOR(){
-  const doc = encodeURIComponent(ST.decDoc);
-  const url = `https://soliman-2025.github.io/big-Sol/SOR_Council.html?decision=${doc}`;
-  window.open(url,'_blank');
-  addSORMsg(`تم إرسال القرار للمجلس. ✦\n\nستجد النص جاهزاً — أدخل مفتاح API وأطلق الجلسة.`);
+  // ✅ SOR-FIXED | ENGINEER-TRANSFER | v8.1 | يُمرَّر القرار عبر sessionStorage + URL
+  var doc = ST.decDoc || '';
+  if(!doc){ alert('يرجى إنجاز وثيقة القرار أولاً'); return; }
+
+  // حفظ في sessionStorage للقراءة المباشرة
+  var payload = {
+    from:     'engineer_v8.1',
+    decision: doc.substring(0, 2000),
+    timestamp: new Date().toISOString(),
+    engineerRef: 'ENG-' + Date.now().toString(36).toUpperCase().slice(-6),
+  };
+  try{ sessionStorage.setItem('sor_engineer_payload', JSON.stringify(payload)); }catch(e){}
+
+  // فتح الغرفة مع القرار في URL
+  var encoded = encodeURIComponent(doc.substring(0, 1000));
+  var url = 'SOR_Council.html?decision=' + encoded;
+  var win = window.open(url, '_blank');
+
+  // إرسال عبر postMessage بعد التحميل
+  if(win){
+    var attempts = 0;
+    var iv = setInterval(function(){
+      attempts++;
+      try{ win.postMessage({ type:'ENG_DECISION', payload: payload }, '*'); }catch(e){}
+      if(attempts >= 6) clearInterval(iv);
+    }, 800);
+  }
+  addSORMsg('✔ تم إرسال القرار لمجلس الخبراء. ❆\n\nالمرجع: ' + payload.engineerRef + '\nأدخل مفتاح API وأطلق الجلسة.');
 }
 function copyDoc(){ navigator.clipboard.writeText(ST.decDoc||'').then(()=>alert('✓ تم النسخ')).catch(()=>alert('حدد النص يدوياً')); }
 function editDoc(){
@@ -955,7 +981,8 @@ async function enrichWithWebSearch(docText, decType){
       },
       body: JSON.stringify({
         model:'claude-sonnet-4-6',
-        max_tokens:2000,
+        max_tokens:8000,
+        temperature:0.4,
         system: SYS_ENRICH,
         tools:[{type:'web_search_20250305',name:'web_search',max_uses:4}],
         messages:[{role:'user',content:'ابحث آنياً وأضف قسم التحديث للوثيقة التالية:\n\n'+docText.substring(0,4000)+'\n\nنوع القرار: '+(decType||'عام')}]
@@ -1018,6 +1045,25 @@ function saveKey(val){
   if(val && val.startsWith('sk-ant-') && val.length > 20){
     localStorage.setItem('sor_api_key', val);
   }
+}
+
+
+// ✅ SOR-ADDED | PRINT-DIRECT | v8.1 | فتح governance_print مع بيانات المهندس
+function openPrintDirect(){
+  var doc = ST.decDoc || '';
+  if(!doc){ alert('يرجى إنجاز وثيقة القرار أولاً'); return; }
+  var payload = {
+    sid: 'ENG-' + Date.now().toString(36).toUpperCase().slice(-6),
+    decision: doc.substring(0, 1000),
+    synth: doc,
+    ratio: 0, approve: 0, cond: 0, reject: 0, experts: 0,
+    company: localStorage.getItem('sor_company_name') || '',
+    expertsList: [], analyses: {},
+    from: 'engineer',
+    timestamp: new Date().toISOString(),
+  };
+  try{ sessionStorage.setItem('sor_print_data', JSON.stringify(payload)); }catch(e){}
+  window.open('governance_print.html?sid=' + payload.sid, '_blank');
 }
 
 </script>

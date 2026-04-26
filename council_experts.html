@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مجلس الـ28 خبيراً — غرفة العمليات الاستراتيجية</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Cairo:wght@200;300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C49A3C;--gl:#E8C060;--ink:#04070D;--navy:#070C1A;--s1:#080C16;--s2:#0D1220;
+  --teal:#1AA886;--red:#E24B4A;--purple:#8B5CF6;--tx:#EAD8A0;--t2:#8A9BB0;--t3:#4A5568;
+  --bdr:rgba(196,154,60,0.15);--bdr2:rgba(255,255,255,0.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;direction:rtl;overflow-x:hidden;cursor:none}
+.cur{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen}
+.cur-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(196,154,60,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .1s ease}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;transition:all .4s}
+nav.scrolled{background:rgba(4,6,12,.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr)}
+.nav-seal{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Scheherazade New',serif;font-size:13px;color:var(--gold);font-weight:700}
+.nav-title{font-family:'Scheherazade New',serif;font-size:15px;font-weight:700;color:var(--tx)}
+.nav-sub{font-size:8px;color:var(--t3);letter-spacing:2px;font-family:'IBM Plex Mono',monospace}
+.nav-badge{font-size:11px;padding:5px 14px;border-radius:20px;
+  background:rgba(196,154,60,0.08);border:1px solid rgba(196,154,60,0.25);color:var(--gold);
+  font-family:'IBM Plex Mono',monospace}
+.btn-nav{padding:9px 22px;background:linear-gradient(135deg,var(--gold),var(--gl));
+  color:var(--ink);border:none;border-radius:4px;
+  font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:none;transition:all .25s}
+.btn-nav:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(196,154,60,.35)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:90px 32px 40px;position:relative;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(196,154,60,0.06) 0%,transparent 65%)}
+
+/* CANVAS WRAP */
+.canvas-wrap{position:relative;margin:0 auto 32px;flex-shrink:0}
+#orbitCanvas{display:block;border-radius:50%}
+.orbit-center-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;pointer-events:none;
+}
+.orbit-n{font-size:38px;font-weight:900;color:var(--gold);
+  font-family:'IBM Plex Mono',monospace;line-height:1;
+  text-shadow:0 0 20px rgba(196,154,60,0.5)}
+.orbit-l{font-size:9px;color:var(--t3);letter-spacing:2px;
+  font-family:'IBM Plex Mono',monospace;margin-top:3px}
+
+/* HERO TEXT */
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;
+  border:1px solid rgba(196,154,60,0.28);border-radius:30px;
+  background:rgba(196,154,60,0.05);margin-bottom:24px}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.badge-txt{font-size:11px;color:var(--gold);font-family:'IBM Plex Mono',monospace;letter-spacing:1.5px}
+.hero-title{font-family:'Scheherazade New',serif;font-size:clamp(38px,7vw,76px);
+  font-weight:900;color:var(--tx);line-height:1.1;margin-bottom:12px}
+.hero-title .g{background:linear-gradient(135deg,var(--gold),var(--gl));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:17px;color:var(--t2);margin-bottom:10px;line-height:1.7;max-width:600px}
+.hero-quote{font-family:'Scheherazade New',serif;font-size:15px;color:var(--gold);font-style:italic;
+  margin-bottom:32px;border-right:3px solid var(--gold);border-left:3px solid var(--gold);
+  padding:10px 20px;background:rgba(196,154,60,0.04);display:inline-block}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:20px;flex-wrap:wrap}
+.hs{padding:16px 28px;text-align:center;border-right:1px solid var(--bdr)}
+.hs:last-child{border-right:none}
+.hs-n{font-size:32px;font-weight:900;color:var(--gold);font-family:'IBM Plex Mono',monospace;line-height:1}
+.hs-l{font-size:10px;color:var(--t3);margin-top:4px;letter-spacing:1px}
+
+/* TOOLTIP */
+.tt{position:fixed;background:var(--s2);border:1px solid var(--bdr);border-radius:8px;
+  padding:10px 14px;font-size:12px;color:var(--tx);pointer-events:none;z-index:500;
+  opacity:0;transition:opacity .15s;max-width:210px;text-align:right;direction:rtl;
+  box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.tt.show{opacity:1}
+.tt-name{font-weight:700;color:var(--gold);margin-bottom:3px;font-size:13px}
+.tt-role{font-size:11px;color:var(--t2)}
+.tt-type{font-size:10px;margin-top:5px;padding:2px 8px;border-radius:10px;display:inline-block}
+.tt-always{background:rgba(196,154,60,0.12);color:var(--gold)}
+.tt-auto{background:rgba(26,168,134,0.1);color:var(--teal)}
+
+/* GOLD LINE */
+.gold-line{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 32px}
+
+/* SECTIONS */
+.sec{padding:72px 0;position:relative;z-index:2}
+.sec-inner{max-width:1200px;margin:0 auto;padding:0 32px}
+.sec-badge{display:inline-block;padding:5px 16px;border:1px solid rgba(196,154,60,0.25);
+  border-radius:20px;font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:18px;
+  font-family:'IBM Plex Mono',monospace}
+.sec-title{font-family:'Scheherazade New',serif;font-size:clamp(26px,4vw,44px);
+  font-weight:700;color:var(--tx);line-height:1.25;margin-bottom:10px}
+.sec-sub{font-size:15px;color:var(--t2);line-height:1.8;max-width:660px}
+
+/* FILTER TABS */
+.cat-tabs{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.cat-tab{padding:8px 20px;border-radius:4px;border:1px solid var(--bdr2);
+  font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;
+  cursor:none;transition:all .2s;background:transparent;color:var(--t3)}
+.cat-tab.active{background:rgba(196,154,60,0.1);border-color:rgba(196,154,60,0.35);color:var(--gold)}
+.cat-tab.active-teal{background:rgba(26,168,134,0.08);border-color:rgba(26,168,134,0.3);color:var(--teal)}
+
+/* EXPERTS GRID */
+.experts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:32px}
+.exp-card{background:var(--s1);border:1px solid var(--bdr2);border-radius:10px;padding:20px;
+  position:relative;overflow:hidden;transition:all .3s;cursor:none}
+.exp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--card-c,var(--gold)),transparent);opacity:0;transition:opacity .3s}
+.exp-card:hover{transform:translateY(-4px);border-color:rgba(196,154,60,0.3);
+  box-shadow:0 14px 36px rgba(0,0,0,.3)}
+.exp-card:hover::before{opacity:1}
+.exp-card.always{--card-c:var(--gold)}.exp-card.auto{--card-c:var(--teal)}
+.exp-hdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.exp-av{width:46px;height:46px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;border:1px solid rgba(196,154,60,0.2)}
+.exp-card.always .exp-av{background:rgba(196,154,60,0.08)}
+.exp-card.auto .exp-av{background:rgba(26,168,134,0.07)}
+.exp-name{font-size:13px;font-weight:700;color:var(--tx);line-height:1.3}
+.exp-role{font-size:11px;color:var(--t3);margin-top:2px;line-height:1.4}
+.exp-badge{font-size:9px;padding:2px 8px;border-radius:10px;display:inline-block;
+  margin-top:4px;letter-spacing:.5px;font-family:'IBM Plex Mono',monospace}
+.b-always{background:rgba(196,154,60,0.1);color:var(--gold);border:1px solid rgba(196,154,60,0.2)}
+.b-auto{background:rgba(26,168,134,0.08);color:var(--teal);border:1px solid rgba(26,168,134,0.2)}
+.exp-methods{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.mtag{font-size:9px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.03);
+  border:1px solid var(--bdr2);color:var(--t3);font-family:'IBM Plex Mono',monospace}
+.exp-spec{font-size:11.5px;color:var(--t2);line-height:1.65;border-top:1px solid var(--bdr2);padding-top:10px}
+.exp-trigger{font-size:10.5px;color:var(--gold);margin-top:6px;opacity:.7}
+
+/* HOW */
+.flow-wrap{margin-top:40px}
+.flow-step{display:flex;gap:20px;padding:20px;border:1px solid var(--bdr2);border-radius:9px;
+  margin-bottom:10px;transition:all .2s;background:var(--s1)}
+.flow-step:hover{border-color:rgba(196,154,60,0.28);background:rgba(196,154,60,0.03)}
+.flow-num{width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(196,154,60,0.15),rgba(196,154,60,0.04));
+  border:1px solid rgba(196,154,60,0.28);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0}
+.flow-title{font-size:13.5px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.flow-text{font-size:12px;color:var(--t3);line-height:1.7}
+
+/* METHOD GRID */
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;
+  background:var(--bdr);border:1px solid var(--bdr);border-radius:4px;overflow:hidden;margin-top:40px}
+.method-box{background:var(--navy);padding:28px 24px;transition:background .25s}
+.method-box:hover{background:rgba(196,154,60,0.04)}
+.method-num{font-size:36px;font-weight:900;color:rgba(196,154,60,0.07);
+  font-family:'IBM Plex Mono',monospace;line-height:1;margin-bottom:10px}
+.method-icon{font-size:22px;margin-bottom:8px}
+.method-title{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:5px}
+.method-text{font-size:12px;color:var(--t3);line-height:1.7}
+
+/* CTA */
+.cta-wrap{padding:90px 32px;text-align:center;position:relative;z-index:2;
+  background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(196,154,60,0.05),transparent 70%)}
+.cta-wrap::before{content:'';position:absolute;inset:0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.cta-hex{font-size:90px;color:rgba(196,154,60,0.05);position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);font-family:'Scheherazade New',serif;pointer-events:none}
+.btn-cta{padding:15px 42px;background:linear-gradient(135deg,var(--gold),var(--gl));
+  color:var(--ink);border:none;border-radius:4px;font-family:'Cairo',sans-serif;
+  font-size:15px;font-weight:700;cursor:none;transition:all .3s;margin:0 7px 10px;
+  display:inline-flex;align-items:center;gap:8px}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(196,154,60,.4)}
+.btn-ghost{padding:14px 34px;background:transparent;border:1px solid rgba(196,154,60,0.3);
+  color:var(--tx);border-radius:4px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:600;
+  cursor:none;transition:all .3s;margin:0 7px 10px;display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* FOOTER */
+footer{padding:28px 32px;border-top:1px solid var(--bdr);position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-l{font-size:12px;color:var(--t3)}
+.footer-l strong{color:var(--gold)}
+.footer-r{font-size:10px;color:var(--t4);font-family:'IBM Plex Mono',monospace;letter-spacing:1px}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.show{opacity:1;transform:none}
+
+@media(max-width:768px){
+  nav{padding:12px 16px}
+  .hero{padding:80px 16px 40px}
+  .hs{padding:12px 16px}
+  .hs-n{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+<div class="tt" id="tt"><div class="tt-name" id="ttN"></div><div class="tt-role" id="ttR"></div><div id="ttT"></div></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nav-seal">غ.ع</div>
+    <div><div class="nav-title">غرفة العمليات الاستراتيجية</div>
+    <div class="nav-sub">STRATEGIC OPERATIONS ROOM · v8.1</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <span class="nav-badge">28 خبيراً · v8.1</span>
+    <a href="SOR_Council.html" class="btn-nav">⬡ أطلق الجلسة</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- CANVAS -->
+  <div class="canvas-wrap" id="canvasWrap">
+    <canvas id="orbitCanvas"></canvas>
+    <div class="orbit-center-label">
+      <div class="orbit-n">28</div>
+      <div class="orbit-l">EXPERTS</div>
+    </div>
+  </div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    <span class="badge-txt">المجلس التاسع · 28 عقلاً لرؤية واحدة</span>
+  </div>
+  <h1 class="hero-title">مجلس <span class="g">الخبراء</span> الاستراتيجيين</h1>
+  <p class="hero-sub">28 خبيراً متخصصاً يعملون بعزل تام بالتوازي الكامل<br>لا نموذج واحد يُجيب بأقنعة — تعدد حقيقي لا وهمي</p>
+  <div class="hero-quote">«كل قرار بلا تعددية منظور — مخاطرة مُقنَّعة»</div>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n">28</div><div class="hs-l">خبير متخصص</div></div>
+    <div class="hs"><div class="hs-n" style="color:var(--teal)">8</div><div class="hs-l">دائمون</div></div>
+    <div class="hs"><div class="hs-n" style="color:var(--purple)">20</div><div class="hs-l">آليون</div></div>
+    <div class="hs"><div class="hs-n" style="color:#378ADD">16</div><div class="hs-l">يبحثون آنياً</div></div>
+  </div>
+</section>
+
+<div class="gold-line"></div>
+
+<!-- EXPERTS -->
+<section class="sec">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-badge">الخبراء</div>
+      <h2 class="sec-title">28 خبيراً متخصصاً</h2>
+      <p class="sec-sub">8 دائمون في كل جلسة · 20 يُستدعَون تلقائياً حسب طبيعة القرار.</p>
+    </div>
+    <div class="cat-tabs reveal">
+      <button class="cat-tab active" onclick="filterExp('all',this)">الكل (28)</button>
+      <button class="cat-tab" onclick="filterExp('always',this)">الدائمون (8)</button>
+      <button class="cat-tab" onclick="filterExp('auto',this)">الآليون (20)</button>
+    </div>
+    <div class="experts-grid reveal" id="expGrid"></div>
+  </div>
+</section>
+
+<div class="gold-line"></div>
+
+<!-- HOW -->
+<section class="sec" style="background:var(--navy)">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-badge">آلية العمل</div>
+      <h2 class="sec-title">كيف يعمل المجلس؟</h2>
+    </div>
+    <div class="flow-wrap reveal">
+      <div class="flow-step"><div class="flow-num">1</div><div><div class="flow-title">وكيل التشكيل يُحلّل القرار</div><div class="flow-text">يختار الخبراء الآليين المناسبين تلقائياً. لا تدخل بشري. المجلس يُشكّل نفسه.</div></div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div><div class="flow-title">28 خبيراً بعزل تام بالتوازي</div><div class="flow-text">كل خبير يُنجز تحليله من منظور تخصصه فقط — بلا تنسيق مع الآخرين.</div></div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div><div class="flow-title">16 خبيراً يبحثون آنياً</div><div class="flow-text">بحث حي في أحدث البيانات قبل كل تحليل. لا تقارير مبنية على معرفة قديمة.</div></div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div><div class="flow-title">Calibration — جولة المعايرة</div><div class="flow-text">جولة ثانية لمعايرة التصويت وضمان الاتساق. الخبير المتحيز يُكشف ويُصحَّح.</div></div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div><div class="flow-title">SYNTH v3 — تركيب المحضر</div><div class="flow-text">Chain-of-Thought يُركّب 28 تقريراً في محضر حوكمي. 9 أقسام كاملة.</div></div></div>
+      <div class="flow-step"><div class="flow-num">6</div><div><div class="flow-title">المحضر الحوكمي الموقَّع</div><div class="flow-text">توقيع رقمي · شهادة اعتماد · أرشفة. القرار الأخير للقائد وحده.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-line"></div>
+
+<!-- METHODOLOGY -->
+<section class="sec">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-badge">المنهجيات</div>
+      <h2 class="sec-title">ما يستند إليه كل خبير</h2>
+    </div>
+    <div class="method-grid reveal">
+      <div class="method-box"><div class="method-num">01</div><div class="method-icon">🧠</div><div class="method-title">الاستراتيجية</div><div class="method-text">Porter · Blue Ocean · VRIO · BSC · McKinsey 7-S · OKRs</div></div>
+      <div class="method-box"><div class="method-num">02</div><div class="method-icon">💰</div><div class="method-title">التمويل</div><div class="method-text">IFRS · DCF · WACC · Monte Carlo · NPV · IRR · EVA</div></div>
+      <div class="method-box"><div class="method-num">03</div><div class="method-icon">🛡</div><div class="method-title">المخاطر</div><div class="method-text">COSO ERM · ISO 31000 · NIST CSF · PDPL · SDAIA</div></div>
+      <div class="method-box"><div class="method-num">04</div><div class="method-icon">🔮</div><div class="method-title">الاستشراف</div><div class="method-text">Scenario Planning · TCFD · Delphi · Second Order Thinking</div></div>
+      <div class="method-box"><div class="method-num">05</div><div class="method-icon">⚡</div><div class="method-title">الذكاء الاصطناعي</div><div class="method-text">AI Governance · Agentic AI · NIST AI RMF · IEEE EAD</div></div>
+      <div class="method-box"><div class="method-num">06</div><div class="method-icon">♻</div><div class="method-title">الاستدامة</div><div class="method-text">GRI · TCFD · ISO 14001 · ESG · Circular Economy</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-wrap">
+  <div class="cta-hex">⬡</div>
+  <div style="position:relative;z-index:1">
+    <div class="sec-badge" style="margin-bottom:20px">ابدأ الآن</div>
+    <h2 style="font-family:'Scheherazade New',serif;font-size:clamp(26px,5vw,50px);
+      font-weight:900;color:var(--tx);line-height:1.2;margin-bottom:14px">
+      قرارك القادم يستحق 28 منظوراً
+    </h2>
+    <p style="font-size:15px;color:var(--t2);margin-bottom:32px;line-height:1.75">
+      المجلس جاهز. أدخل قرارك وأطلق الجلسة خلال 60 ثانية.
+    </p>
+    <div>
+      <a href="SOR_Council.html" class="btn-cta">⬡ أطلق جلسة المجلس</a>
+      <a href="engineer.html" class="btn-ghost">← مهندس القرار أولاً</a>
+    </div>
+    <div style="margin-top:20px;font-size:12px;color:var(--t3)">
+      المسؤولية البشرية مرجع نهائي · التوصيات استشارية · القرار للقائد وحده
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-l">
+    <strong>غرفة العمليات الاستراتيجية</strong><br>
+    سليمان إبراهيم آل حويس القوزي · المؤسس<br>
+    متوافق مع SDAIA · PDPL · © جميع حقوق الفكر محفوظة 2026م
+  </div>
+  <div class="footer-r">SOR v8.1 · 28 EXPERTS · SAUDI ARABIA</div>
+</footer>
+
+<script>
+'use strict';
+
+var EXPERTS = [
+  // ── الدائمون
+  {id:'strategic', name:'د. أحمد الشريف',    role:'مستشار استراتيجية مؤسسية',       icon:'🧠', always:true,  methods:['Porter','Blue Ocean','VRIO'],       spec:'يُشخّص الهيكل لا الظاهرة. يربط القرار بنموذج الأعمال والميزة التنافسية المستدامة.',trigger:''},
+  {id:'financial', name:'د. لينا الغامدي',   role:'خبيرة تمويل وتقييم واندماج',      icon:'💰', always:true,  methods:['DCF','IFRS','WACC'],              spec:'تُحوّل القرار لأرقام. تُحلّل الجدوى المالية وتُقيّم العوائد والمخاطر المالية.',trigger:''},
+  {id:'operations',name:'د. خالد العتيبي',   role:'خبير عمليات وكفاءة تشغيلية',     icon:'⚙',  always:true,  methods:['Lean','Six Sigma','OKRs'],        spec:'يحوّل الرؤية إلى خطة تنفيذية. يُحدّد مراحل التنفيذ والموارد والمؤشرات.',trigger:''},
+  {id:'digital',   name:'د. سارة الزهراني', role:'خبيرة تحول رقمي وذكاء اصطناعي',  icon:'💻', always:true,  methods:['AI Governance','Cloud','Agile'],   spec:'تُحلّل الأثر التقني والرقمي. تُقيّم المخاطر التقنية وفرص الذكاء الاصطناعي.',trigger:''},
+  {id:'foresight', name:'د. لمى القحطاني',  role:'خبيرة استشراف وابتكار استراتيجي', icon:'🔮', always:true,  methods:['Scenario Planning','TCFD','Delphi'],spec:'ترى ما لا يراه الآخرون. تستكشف المستقبليات وتُحدّد الفرص والمخاطر بعيدة المدى.',trigger:''},
+  {id:'economics', name:'د. ريم العتيبي',   role:'خبيرة اقتصاد وتحليلات كمية',     icon:'📊', always:true,  methods:['Econometrics','TAM/SAM','PESTLE'],  spec:'ترسّخ القرار في الواقع الاقتصادي. تُقدّم بيانات السوق والاتجاهات الكمية.',trigger:''},
+  {id:'devil',     name:'محكّم المجلس',      role:'خبير المعارضة الاستراتيجية',     icon:'⚔',  always:true,  methods:['Pre-Mortem','Devil\'s Advocate','Stress Test'],spec:'يرى ما يتجنّب الآخرون قوله. يُحدّ التفكير الجماعي ويكشف نقاط الضعف الخفية.',trigger:''},
+  {id:'verifier',  name:'ضمير المجلس',       role:'المدقق الحي للمعلومات',          icon:'🔍', always:true,  methods:['Fact-Check','Source Validation','RAG'],spec:'يتحقق من صحة كل ادعاء. يكشف الفجوات المعرفية ويُحذّر من الافتراضات الزائفة.',trigger:''},
+  // ── الآليون
+  {id:'marketing', name:'د. محمد الدوسري',  role:'خبير تسويق ومبيعات وCX',         icon:'📈', always:false, methods:['AIDA','NPS','CLV'],               spec:'يُحلّل أثر القرار على العميل والسوق والمنافسين.',trigger:'تسويق · عميل · منتج'},
+  {id:'hr',        name:'د. نورة الشمري',   role:'خبيرة موارد بشرية وتحول ثقافي',  icon:'👥', always:false, methods:['ADKAR','OKRs','9-Box'],            spec:'تُقيّم الأثر الإنساني والتنظيمي. تُحلّل متطلبات التغيير الثقافي.',trigger:'موظفون · هيكل · اندماج'},
+  {id:'esg',       name:'د. فيصل باقر',     role:'خبير استدامة وESG وطاقة متجددة', icon:'♻',  always:false, methods:['GRI','TCFD','ISO 14001'],         spec:'يُقيّم الأثر البيئي والاجتماعي وحوكمة ESG. يضمن التوافق مع معايير الاستدامة.',trigger:'استثمار · بيئة · ESG'},
+  {id:'risk',      name:'د. عمر الجدعان',   role:'خبير إدارة مخاطر وحوكمة',        icon:'🛡',  always:false, methods:['COSO ERM','ISO 31000','FMEA'],     spec:'يُحدّد مخاطر القرار ويضع Kill Switch وخطط الطوارئ.',trigger:'استثمار · شراكة · توسع'},
+  {id:'cyber',     name:'د. ياسر الزهراني', role:'خبير أمن سيبراني ومخاطر AI',    icon:'🔐', always:false, methods:['NIST CSF','ISO 27001','MITRE'],    spec:'يُقيّم مخاطر البيانات والأمن السيبراني وتهديدات AI.',trigger:'تقنية · بيانات · رقمنة'},
+  {id:'geopolitics',name:'د. عبدالله الفقيه',role:'خبير جيوسياسة واقتصاد كلي',    icon:'🌐', always:false, methods:['PESTLE','Country Risk','Macro'],   spec:'يُحلّل البيئة الجيوسياسية والاقتصاد الكلي وأثرهما على القرار.',trigger:'توسع · دولي · استثمار'},
+  {id:'ai_gov',    name:'د. فهد الشمري',    role:'خبير حوكمة الذكاء الاصطناعي',   icon:'🤖', always:false, methods:['IEEE EAD','NIST AI RMF','OECD AI'],spec:'يُقيّم مخاطر AI والامتثال لمتطلبات SDAIA وحوكمة النماذج.',trigger:'AI · ذكاء اصطناعي · تقنية'},
+  {id:'legal',     name:'د. ميساء الحربي',  role:'مستشارة قانونية وامتثال تنظيمي', icon:'⚖',  always:false, methods:['نظام الشركات','PDPL','CMA','SAMA'], spec:'تُقيّم الأثر القانوني والتنظيمي. تضمن الامتثال للأنظمة السعودية.',trigger:'عقد · شراكة · ترخيص'},
+  {id:'pm',        name:'د. بدر العتيبي',   role:'خبير إدارة المشاريع والجودة',    icon:'✅', always:false, methods:['Stage-Gate','ISO 9001','PMBoK'],   spec:'يُحوّل القرار إلى خطة مشروع قابلة للتنفيذ مع مؤشرات واضحة.',trigger:'مشروع · إطلاق · تنفيذ'},
+  {id:'supply',    name:'د. منى الدوسري',   role:'خبيرة سلاسل التوريد المتقدمة',   icon:'🔗', always:false, methods:['Supply Chain 4.0','JIT','Lean'],    spec:'تُحلّل تأثير القرار على سلاسل الإمداد والموردين والخدمات اللوجستية.',trigger:'صناعة · توريد · إنتاج'},
+  {id:'energy',    name:'د. طارق الشمراني', role:'خبير الطاقة والانتقال الطاقي',   icon:'⚡', always:false, methods:['Energy Transition','IEA','IRENA'], spec:'يُقيّم مخاطر الطاقة وفرص الانتقال نحو الطاقة المتجددة.',trigger:'طاقة · بيئة · صناعة'},
+  {id:'health',    name:'د. هند البراهيم',  role:'خبيرة الرعاية الصحية والعلوم الحياتية',icon:'🏥',always:false,methods:['HIPAA','FDA','GCP'],          spec:'تُقيّم المتطلبات التنظيمية والأثر الصحي والامتثال الطبي.',trigger:'صحة · بيوتك · دواء'},
+  {id:'design',    name:'د. لارا الشهري',   role:'خبيرة التصميم والابتكار الإنساني',icon:'🎨', always:false, methods:['Design Thinking','HCD','Jobs-to-be-Done'],spec:'تُقيّم تجربة المستخدم والجانب الإنساني للقرار.',trigger:'منتج · تجربة · ابتكار'},
+  {id:'comms',     name:'د. فاطمة المنصوري',role:'خبيرة إدارة السمعة والتواصل',    icon:'📢', always:false, methods:['Crisis Comm','Media','Reputation'],spec:'تُقيّم أثر القرار على السمعة المؤسسية والتواصل الخارجي.',trigger:'علاقات عامة · أزمة · إعلام'},
+  {id:'agentic',   name:'د. مازن الشهري',   role:'خبير Agentic AI وأنظمة الوكلاء', icon:'🕸',  always:false, methods:['Multi-Agent','CrewAI','LangGraph'], spec:'يُقيّم إمكانية أتمتة القرار وبناء وكلاء AI لتنفيذه.',trigger:'AI · أتمتة · تقنية'},
+  {id:'quantum',   name:'د. أنس الغامدي',   role:'خبير الحوسبة الكمومية',          icon:'⚛',  always:false, methods:['Post-Quantum','QKD','Cryptography'],spec:'يُقيّم مخاطر ما بعد الكم وتأثيرها على الأمن والتشفير.',trigger:'تقنية · أمن · مستقبل'},
+  {id:'ai_ethics', name:'د. هالة الفقيه',   role:'خبيرة أخلاقيات AI والحوكمة المسؤولة',icon:'🧭',always:false,methods:['IEEE EAD','AI Ethics','Responsible AI'],spec:'تُقيّم الأبعاد الأخلاقية لقرارات AI والتحيزات المحتملة.',trigger:'AI · بيانات · مجتمع'},
+  {id:'sovereignty',name:'د. سلمان الجدعان',role:'خبير السيادة التقنية الجيوسياسية',icon:'🏛', always:false, methods:['Tech Sovereignty','Digital Policy'],spec:'يُحلّل مخاطر الاعتماد التقني الأجنبي وفرص السيادة الرقمية.',trigger:'تقنية · حكومة · استراتيجية'},
+  {id:'circular',  name:'د. رغد الشمراني',  role:'خبيرة الاقتصاد الدائري والمناخ', icon:'🌱', always:false, methods:['Circular Economy','Carbon','CDP'],  spec:'تُقيّم التزامات المناخ والانتقال للاقتصاد الدائري.',trigger:'استدامة · بيئة · ESG'},
+  {id:'pq_ai',     name:'د. يوسف البراهيم', role:'خبير أمن ما بعد الكم وسلاسل إمداد AI',icon:'🔒',always:false,methods:['Post-Quantum','Supply Chain AI'],spec:'يُقيّم مخاطر ما بعد الكم على سلاسل إمداد AI والبنية التحتية.',trigger:'أمن · AI · تقنية متقدمة'},
+];
+// ══ CANVAS ORBIT ══════════════════════════════════════════════
+var canvas = document.getElementById('orbitCanvas');
+var ctx    = canvas.getContext('2d');
+
+// حجم Canvas — مربع
+var SIZE = 440;
+canvas.width  = SIZE;
+canvas.height = SIZE;
+document.getElementById('canvasWrap').style.width  = SIZE + 'px';
+document.getElementById('canvasWrap').style.height = SIZE + 'px';
+
+// Responsive
+function resizeCanvas(){
+  var maxW = Math.min(window.innerWidth - 48, 440);
+  if(maxW < 300) maxW = 300;
+  canvas.style.width  = maxW + 'px';
+  canvas.style.height = maxW + 'px';
+  document.getElementById('canvasWrap').style.width  = maxW + 'px';
+  document.getElementById('canvasWrap').style.height = maxW + 'px';
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+var CX = SIZE/2, CY = SIZE/2;
+
+// فصل الخبراء
+var alwaysExp = EXPERTS.filter(function(e){ return e.always; });  // 8
+var autoExp   = EXPERTS.filter(function(e){ return !e.always; }); // 20
+
+// بناء nodes بيانات فقط — بدون DOM elements
+var NODES = [];
+
+// الدائمون: على حلقة R=175 موزّعون بالتساوي
+alwaysExp.forEach(function(e, i){
+  NODES.push({
+    exp:    e,
+    R:      175,
+    offset: (i / alwaysExp.length) * Math.PI * 2 - Math.PI/2,
+    spd:    0.005,
+    color:  '#C49A3C',
+    size:   22,
+  });
+});
+
+// الآليون الزوجيون: R=132
+// الآليون الفرديون: R=94
+autoExp.forEach(function(e, i){
+  var isEven = (i % 2 === 0);
+  var group  = Math.floor(i/2);
+  var total  = 10;
+  NODES.push({
+    exp:    e,
+    R:      isEven ? 132 : 94,
+    offset: (group / total) * Math.PI * 2 - Math.PI/2 + (isEven ? 0 : Math.PI/total),
+    spd:    isEven ? 0.004 : 0.007,
+    color:  '#1AA886',
+    size:   19,
+  });
+});
+
+// ── الرسم
+var startTime = null;
+var hoveredNode = null;
+
+function draw(ts){
+  if(!startTime) startTime = ts;
+  var elapsed = (ts - startTime) / 1000;
+
+  ctx.clearRect(0, 0, SIZE, SIZE);
+
+  // ── حلقات خلفية
+  var rings = [
+    {r:175, a:0.18, w:1},
+    {r:132, a:0.13, w:1},
+    {r:94,  a:0.10, w:1},
+    {r:56,  a:0.08, w:1, dash:true},
+  ];
+  rings.forEach(function(rg){
+    ctx.beginPath();
+    ctx.arc(CX, CY, rg.r, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(196,154,60,' + rg.a + ')';
+    ctx.lineWidth   = rg.w;
+    if(rg.dash){ ctx.setLineDash([4,8]); } else { ctx.setLineDash([]); }
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // ── توهج المركز
+  var grd = ctx.createRadialGradient(CX,CY,0, CX,CY,60);
+  grd.addColorStop(0,'rgba(196,154,60,0.10)');
+  grd.addColorStop(1,'rgba(196,154,60,0)');
+  ctx.beginPath();
+  ctx.arc(CX,CY,60,0,Math.PI*2);
+  ctx.fillStyle = grd;
+  ctx.fill();
+
+  // ── دائرة المركز
+  ctx.beginPath();
+  ctx.arc(CX,CY,54,0,Math.PI*2);
+  ctx.strokeStyle = 'rgba(196,154,60,0.55)';
+  ctx.lineWidth   = 1.5;
+  ctx.stroke();
+
+  // ── Nodes
+  NODES.forEach(function(nd){
+    var angle = nd.offset + elapsed * nd.spd;
+    nd._x = CX + Math.cos(angle) * nd.R;
+    nd._y = CY + Math.sin(angle) * nd.R;
+    var r  = nd.size;
+
+    var isHov = (hoveredNode === nd);
+
+    // توهج عند hover
+    if(isHov){
+      var hg = ctx.createRadialGradient(nd._x,nd._y,0, nd._x,nd._y,r*2.5);
+      hg.addColorStop(0,'rgba(196,154,60,0.25)');
+      hg.addColorStop(1,'rgba(196,154,60,0)');
+      ctx.beginPath();
+      ctx.arc(nd._x,nd._y,r*2.5,0,Math.PI*2);
+      ctx.fillStyle = hg;
+      ctx.fill();
+    }
+
+    // دائرة الخلفية
+    ctx.beginPath();
+    ctx.arc(nd._x, nd._y, r, 0, Math.PI*2);
+    ctx.fillStyle = isHov
+      ? (nd.exp.always ? 'rgba(196,154,60,0.25)' : 'rgba(26,168,134,0.2)')
+      : 'rgba(8,12,22,0.85)';
+    ctx.fill();
+
+    // حد الدائرة
+    ctx.beginPath();
+    ctx.arc(nd._x, nd._y, r, 0, Math.PI*2);
+    ctx.strokeStyle = isHov ? nd.color : (nd.exp.always ? 'rgba(196,154,60,0.6)' : 'rgba(26,168,134,0.5)');
+    ctx.lineWidth   = isHov ? 1.8 : 1.2;
+    ctx.stroke();
+
+    // Emoji
+    ctx.font         = (r * 0.95) + 'px serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle    = 'rgba(255,255,255,0.92)';
+    ctx.fillText(nd.exp.icon, nd._x, nd._y);
+  });
+
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+// ── Hover detection على Canvas
+var tt  = document.getElementById('tt');
+var ttN = document.getElementById('ttN');
+var ttR = document.getElementById('ttR');
+var ttT = document.getElementById('ttT');
+
+canvas.addEventListener('mousemove', function(ev){
+  var rect = canvas.getBoundingClientRect();
+  // تحويل إحداثيات الشاشة لإحداثيات Canvas الحقيقية
+  var scaleX = SIZE / rect.width;
+  var scaleY = SIZE / rect.height;
+  var mx = (ev.clientX - rect.left) * scaleX;
+  var my = (ev.clientY - rect.top)  * scaleY;
+
+  var found = null;
+  NODES.forEach(function(nd){
+    if(nd._x === undefined) return;
+    var dx = mx - nd._x;
+    var dy = my - nd._y;
+    if(Math.sqrt(dx*dx + dy*dy) <= nd.size + 4){
+      found = nd;
+    }
+  });
+
+  if(found){
+    hoveredNode = found;
+    canvas.style.cursor = 'none';
+    ttN.textContent = found.exp.name;
+    ttR.textContent = found.exp.role;
+    ttT.innerHTML   = found.exp.always
+      ? '<span class="tt-always">\u062f\u0627\u0626\u0645 \u00b7 \u0643\u0644 \u062c\u0644\u0633\u0629</span>'
+      : '<span class="tt-auto">\u0622\u0644\u064a \u00b7 '+(found.exp.trigger||'\u062d\u0633\u0628 \u0627\u0644\u0642\u0631\u0627\u0631')+'</span>';
+    tt.classList.add('show');
+    tt.style.left = (ev.clientX + 16) + 'px';
+    tt.style.top  = (ev.clientY - 10) + 'px';
+  } else {
+    hoveredNode = null;
+    tt.classList.remove('show');
+  }
+});
+canvas.addEventListener('mouseleave', function(){
+  hoveredNode = null;
+  tt.classList.remove('show');
+});
+
+// ══ EXPERTS GRID ══════════════════════════════════════════════
+function renderExperts(filter){
+  var grid = document.getElementById('expGrid');
+  var list = filter === 'all' ? EXPERTS :
+             filter === 'always' ? EXPERTS.filter(function(e){return e.always;}) :
+             EXPERTS.filter(function(e){return !e.always;});
+
+  grid.innerHTML = list.map(function(e){
+    var ms = e.methods.map(function(m){ return '<span class="mtag">'+m+'</span>'; }).join('');
+    var badge = e.always
+      ? '<span class="exp-badge b-always">\u062f\u0627\u0626\u0645 \u00b7 \u0643\u0644 \u062c\u0644\u0633\u0629</span>'
+      : '<span class="exp-badge b-auto">\u0622\u0644\u064a \u00b7 \u062d\u0633\u0628 \u0627\u0644\u0642\u0631\u0627\u0631</span>';
+    return '<div class="exp-card '+(e.always?'always':'auto')+'">' +
+      '<div class="exp-hdr">' +
+        '<div class="exp-av">'+e.icon+'</div>' +
+        '<div><div class="exp-name">'+e.name+'</div>' +
+        '<div class="exp-role">'+e.role+'</div>'+badge+'</div>' +
+      '</div>' +
+      '<div class="exp-methods">'+ms+'</div>' +
+      '<div class="exp-spec">'+e.spec+
+        (e.trigger?'<div class="exp-trigger">\u064a\u064f\u0633\u062a\u062f\u0639\u0649 \u0639\u0646\u062f: '+e.trigger+'</div>':'') +
+      '</div></div>';
+  }).join('');
+}
+renderExperts('all');
+
+function filterExp(type, btn){
+  document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active','active-teal');});
+  btn.classList.add(type==='auto'?'active-teal':'active');
+  renderExperts(type);
+  document.querySelectorAll('#expGrid .exp-card').forEach(function(el,i){
+    el.style.opacity='0';el.style.transform='translateY(16px)';
+    setTimeout(function(){ el.style.transition='all .35s ease';el.style.opacity='1';el.style.transform='none'; },i*25);
+  });
+}
+
+// ══ CURSOR ══
+var cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  tt.style.left=(mx+16)+'px';tt.style.top=(my-10)+'px';
+});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('button,a,.exp-card').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.width='18px';cur.style.height='18px';ring.style.transform='translate(-50%,-50%) scale(1.5)';});
+  el.addEventListener('mouseleave',function(){cur.style.width='8px';cur.style.height='8px';ring.style.transform='translate(-50%,-50%) scale(1)';});
+});
+
+// ══ NAV SCROLL ══
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// ══ SCROLL REVEAL ══
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('show');obs.unobserve(en.target);}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+</script>
+</body>
+</html>

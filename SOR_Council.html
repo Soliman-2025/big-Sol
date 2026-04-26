@@ -355,7 +355,7 @@ select option{background:var(--s2)}
   </div>
   <div class="hdr-right">
     <span class="badge" id="cBadge">28 خبيراً</span>
-    <span class="badge">v6.0</span>
+    <span class="badge">v8.1</span>
     <div class="status-dot"></div>
     <span class="status-txt" id="stTxt">جاهز</span>
   </div>
@@ -371,7 +371,7 @@ select option{background:var(--s2)}
     <button onclick="document.getElementById('pdplNotice').style.display='none'" title="إغلاق"
       style="background:none;border:none;color:rgba(26,168,134,0.5);cursor:pointer;font-size:14px;line-height:1;padding:0 2px">✕</button>
   </div>
-  <div>تعمل هذه المنظومة وفق <b style="color:var(--teal)">نظام حماية البيانات الشخصية (PDPL)</b> ومبادئ أخلاقيات الذكاء الاصطناعي الصادرة عن <b style="color:var(--teal)">SDAIA</b>. لا تُدخل بيانات شخصية حساسة أو معلومات سرية لا تُجيز مشاركتها مع خدمات الذكاء الاصطناعي. مفتاح API يُستخدم محليًا ولا يُحفظ.</div>
+  
 </div>
 
 <div class="card" id="s1">
@@ -455,7 +455,7 @@ select option{background:var(--s2)}
     </div>
     <div style="display:flex;gap:6px">
       <button class="btn btn-ghost" onclick="copyRpt()" style="font-size:11px;padding:5px 12px">📋 نسخ</button>
-      <button class="btn btn-ghost" onclick="generateProfessionalPDF()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(196,154,60,0.2),rgba(196,154,60,0.05));border-color:rgba(196,154,60,0.4);color:#E8D5A0">⬡ محضر احترافي PDF</button>
+      <button class="btn btn-ghost" onclick="openPrintRoom()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(196,154,60,0.25),rgba(196,154,60,0.08));border-color:rgba(196,154,60,0.5);color:#E8D5A0;font-weight:700">🖨 طباعة المحضر</button>
       <button class="btn btn-ghost" onclick="openSignPage()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(26,168,134,0.2),rgba(26,168,134,0.05));border-color:rgba(26,168,134,0.35);color:#7ECFC0">✦ محضر + توقيع</button>
       <button class="btn btn-ghost" onclick="printEn()" style="font-size:11px;padding:5px 12px">🖨 English PDF</button>
     </div>
@@ -525,7 +525,8 @@ const MAXT = 8000;
 // ══ TEMPERATURE MAP ═══════════════════════════════════
 // كل خبير بدرجة حرارة تناسب طبيعة تحليله
 // منخفضة = دقة وأرقام | عالية = إبداع واستشراف
-const TEMP_MAP = {
+const // ✅ SOR-LOCKED | TEMP_MAP | v8.1 | درجات الحرارة مُعايَرة لكل خبير — لا تعدّل
+TEMP_MAP = {
   strategic:        0.4,  // تحليل هيكلي — يحتاج دقة
   financial:        0.2,  // أرقام وسيناريوهات — دقة عالية جداً
   executive:        0.3,  // تنفيذ وجداول — دقة
@@ -558,7 +559,8 @@ const TEMP_MAP = {
 
 // ══ MAXT_MAP — max_tokens مُصمَّم لكل خبير ══
 // الخبراء الرقميون يحتاجون tokens أكثر للجداول والسيناريوهات
-const MAXT_MAP = {
+const // ✅ SOR-LOCKED | MAXT_MAP | v8.1 | رُفعت tokens لكل خبير حسب تخصصه — لا تعدّل القيم دون مراجعة CHANGELOG
+MAXT_MAP = {
   financial:        12000, // DCF + IRR + 3 سيناريوهات + Monte Carlo + جداول
   risk:             10000, // Risk Matrix 5×5 + COSO + Kill Switch مفصّل
   legal:            10000, // خريطة تنظيمية + جدول امتثال
@@ -580,9 +582,20 @@ const MAXT_MAP = {
 // ══ SEARCH MAP ════════════════════════════════════════════
 // الخبراء الذين يحتاجون بحثاً آنياً في الإنترنت
 // لأن تخصصاتهم تتغير يومياً
-const SEARCH_MAP = {
+const // ✅ SOR-LOCKED | SEARCH_MAP | v8.1 | 16 خبير ببحث آني — لا تعدّل
+SEARCH_MAP = {
   financial:        true,  // أسعار الفائدة، أسواق المال، تقييمات الشركات
   research:         true,  // إحصاءات وأبحاث حديثة
+
+// ══════════════════════════════════════════════════════════════
+// SOR-PENDING | قائمة ما لم يُصلَح بعد
+// ══════════════════════════════════════════════════════════════
+// ✅ FIXED | SYNTH-MAX-TOKENS | v8.1 | رُفع إلى 16000 — callAPI(..., false, 0.3, false, 16000)
+// ✅ FIXED | EXPERT-MEMORY-INJECTION | v8.1 | _sysWithMem يُحقن في runExpert
+// ✅ FIXED | SESSION-CONTEXT-IN-SYNTH | v8.1 | memBuildSessionContext() مُضاف لـ SYNTH
+// ── لا توجد PENDING بعد هذه الإصلاحات ──
+// ══════════════════════════════════════════════════════════════
+
   geopolitical:     true,  // توترات إقليمية، علاقات دولية
   energy:           true,  // أسعار النفط، قرارات أوبك، مشاريع الطاقة
   sustainability:   true,  // تشريعات ESG، معايير جديدة
@@ -679,7 +692,8 @@ const CTX_MAP = {
   governance:       ['legal','risk','ai_governance','quality','reputation','sustainability']
 };
 
-const SYNTH_SYS = `أنت كبير محرري المحاضر الحوكمية في غرفة العمليات الاستراتيجية — المستوى التنفيذي الأعلى.
+const // ✅ SOR-LOCKED | SYNTH_SYS | v3.0 | Chain-of-Thought + 9 أقسام — لا تعدّل البنية
+SYNTH_SYS = `أنت كبير محرري المحاضر الحوكمية في غرفة العمليات الاستراتيجية — المستوى التنفيذي الأعلى.
 مهمتك: بناء محضر حوكمي يستحق أن يُوضع أمام مجلس إدارة أو وزير أو مستثمر استراتيجي.
 
 ══ منهجية Chain-of-Thought — إلزامية قبل كل قسم ══
@@ -961,7 +975,8 @@ async function launch(){
     formTxt.textContent = 'المجلس الدائم ('+always.length+' خبير) + خبراء مُستدعون لنوع القرار "'+ctx+'" ('+auto.length+' خبير): '+auto.map(e=>e.name).join('، ');
   }
 
-  const PROT = `منهجية COSTAR إلزامية:
+  // ✅ SOR-LOCKED | PROT | v8.1 | COSTAR + 8 عناصر إلزامية — لا تعدّل
+const PROT = `منهجية COSTAR إلزامية:
 C = حلّل في السياق الجغرافي والقطاعي المحدد تحديداً دقيقاً
 O = حقق هدفك التحليلي المتخصص لا غير — لا تتجاوز تخصصك
 S = McKinsey Pyramid: الحكم أولاً ثم الأدلة
@@ -996,7 +1011,10 @@ ASSUMPTION الأهش: ما الافتراض الضمني في هذا القرا
   async function runExpert(e){
     setT(e.id);
     try{
-      const r = await callAPI(e.sys, userMsg, false, TEMP_MAP[e.id]||0.4, SEARCH_MAP[e.id]||false, MAXT_MAP[e.id]||MAXT);
+      // ✅ SOR-FIXED | EXPERT-MEMORY-INJECTION | v8.1 | ذاكرة الخبير تُحقن في sys prompt
+    const _memCtx = (typeof memBuildExpertContext==='function') ? memBuildExpertContext(e.id) : '';
+    const _sysWithMem = _memCtx ? e.sys + _memCtx : e.sys;
+    const r = await callAPI(_sysWithMem, userMsg, false, TEMP_MAP[e.id]||0.4, SEARCH_MAP[e.id]||false, MAXT_MAP[e.id]||MAXT);
       analyses[e.id] = r||'(لم يُنتج تحليلاً)';
       setD(e.id);
       showLP(e, analyses[e.id]);
@@ -1095,18 +1113,35 @@ ASSUMPTION الأهش: ما الافتراض الضمني في هذا القرا
   const agreeRatio  = totalVoters>0 ? Math.round(((approveCount+conditionalCount)/totalVoters)*100) : 0;
   const votesSummary = 'إحصاء الأصوات الدقيق:\nموافقون: '+approveCount+' | مشروطون: '+conditionalCount+' | رافضون: '+rejectCount+'\nنسبة الاتفاق: '+agreeRatio+'% (عتبة الاعتماد 75%)\nحالة القرار: '+(agreeRatio>=75?'معتمد ✅':agreeRatio>=50?'مشروط ⚠':'مرفوح ❌');
 
-  const parts = successExperts.map(e=>'=== '+e.name+' ===\n'+(analyses[e.id]||'')).join('\n\n');
+  // بناء parts ذكي: الحكم كاملاً + ملخص التحليل
+  const parts = successExperts.map(e=>{
+    const txt = analyses[e.id]||'';
+    // استخراج الحكم والتصويت (أول 400 حرف)
+    const verdict = txt.substring(0,400);
+    // استخراج Pre-Mortem وKill Switch إن وُجدا
+    const pmIdx = txt.indexOf('Pre-Mortem');
+    const pm = pmIdx>0 ? txt.substring(pmIdx,pmIdx+300) : '';
+    const ksIdx = txt.indexOf('Kill Switch');
+    const ks = ksIdx>0 ? txt.substring(ksIdx,ksIdx+200) : '';
+    // ملخص الوسط
+    const mid = txt.length>800 ? txt.substring(400,800) : '';
+    const combined = verdict + (mid?'\n'+mid:'') + (pm?'\n[Pre-Mortem] '+pm:'') + (ks?'\n[Kill Switch] '+ks:'');
+    return '=== '+e.name+' ('+e.role+') ===\n'+combined;
+  }).join('\n\n');
   const calibNote = analyses['_calibration'] ? '\n\n⚖ نتيجة جولة المعايرة: '+analyses['_calibration'] : '';
 
   let synth='';
   try{
-    synth = await callAPI(SYNTH_SYS,
-      'القرار: '+dec.substring(0,800)+
+    // ✅ SOR-FIXED | SYNTH-TOKENS+CONTEXT | v8.1 | 16000 tokens + session memory
+  synth = await callAPI(SYNTH_SYS,
+      'القرار: '+dec.substring(0,800)+(typeof memBuildSessionContext==="function"?memBuildSessionContext():"")+
+      
       '\n\n'+votesSummary+
       '\n\nمخرجات كل الخبراء ('+successExperts.length+' من أصل '+experts.length+'):\n'+
-      parts.substring(0,12000)+calibNote+
+      // ✅ SOR-FIXED | PARTS-LIMIT | v8.1 | رُفع من 12000 إلى 28000 — لا تخفّض
+parts.substring(0,28000)+calibNote+
       (failedExperts.length>0 ? '\n\nالخبراء المتعثرون: '+failedExperts.map(e=>e.name).join('، ') : '')+
-      '\n\n⚠ استخدم الإحصاء الوارد أعلاه في خريطة الاتفاق — لا تحسبه من جديد.');
+      '\n\n⚠ استخدم الإحصاء الوارد أعلاه في خريطة الاتفاق — لا تحسبه من جديد.', false, 0.3, false, 16000);
   }catch(e){ synth = 'تعذّر التركيب: '+e.message; }
 
   // Store for chat
@@ -1187,7 +1222,7 @@ ASSUMPTION الأهش: ما الافتراض الضمني في هذا القرا
     <div class="rpt-hdr">
       <div class="rpt-label">محضر حوكمي رسمي · OFFICIAL GOVERNANCE REPORT · سري للاطلاع المحدود</div>
       <div class="rpt-title">غرفة العمليات الاستراتيجية</div>
-      <div class="rpt-sub">هندسة التفكير القيادي · Strategic Operations Room · v6.0</div>
+      <div class="rpt-sub">هندسة التفكير القيادي · Strategic Operations Room · v8.1</div>
       <div class="meta-grid">
         <div><div class="ml">رقم الجلسة</div><div class="mv" style="font-size:9px;letter-spacing:1px;font-family:'IBM Plex Mono',monospace">${sid}</div></div>
         <div><div class="ml">التاريخ</div><div class="mv" style="font-size:9px">${ts}</div></div>
@@ -1495,7 +1530,8 @@ async function sendExpertChat(q, msgs){
       },
       body: JSON.stringify({
         model: MDL,
-        max_tokens: 1500,
+        // ✅ SOR-FIXED | CHAT-EXPERT-TOKENS | v8.1 | رُفع من 1500 إلى 3000 — لا تخفّض
+max_tokens: 3000,
         temperature: TEMP_MAP[e.id] || 0.5,
         system: sysFull,
         messages: messages
@@ -1554,15 +1590,18 @@ async function sendCouncilChat(q, msgs){
 
   async function askExpert(e){
     try{
-      var ctx = (_ca[e.id]||'').substring(0,1500);
+      var ctx = (_ca[e.id]||'').substring(0,2500);
       var sys = e.sys +
-        '\n\nتقريرك في هذه الجلسة:\n' + ctx +
+        '\n\n══ سياق الجلسة الحالية ══\n' +
+        'القرار: ' + (_cd||'').substring(0,300) +
+        '\n\nتقريرك الكامل للمجلس:\n' + ctx +
         '\n\n══ تعليمات الحوار الجماعي ══\n' +
-        'القائد يسأل المجلس كله. أجب في 3-4 أسطر فقط من منظور تخصصك تحديداً. ' +
-        'الحكم المباشر أولاً ثم المبرر الواحد الأهم. لا تكرر ما قاله غيرك.';
+        'القائد يسأل المجلس كله. أجب بـ 5-7 أسطر من منظور تخصصك تحديداً. ' +
+        'الحكم الصريح أولاً + المبررات الجوهرية + أي تحفظ مهم. ' +
+        'اذكر إذا كان رأيك مختلفاً عمّا توقعه أحد.';
 
       var ctrl = new AbortController();
-      var tout = setTimeout(function(){ ctrl.abort(); }, 45000);
+      var tout = setTimeout(function(){ ctrl.abort(); }, 90000);
       var resp = await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST', signal:ctrl.signal,
         headers:{
@@ -1573,10 +1612,11 @@ async function sendCouncilChat(q, msgs){
         },
         body: JSON.stringify({
           model: MDL,
-          max_tokens: 300,
+          // ✅ SOR-FIXED | CHAT-COUNCIL-TOKENS | v8.1 | رُفع من 300 إلى 600 — لا تخفّض
+max_tokens: 600,
           temperature: TEMP_MAP[e.id] || 0.5,
           system: sys,
-          messages:[{role:'user', content:'القرار: '+(_cd||'').substring(0,200)+'\n\nسؤال القائد للمجلس: '+q}]
+          messages:[{role:'user', content:'القرار: '+(_cd||'').substring(0,300)+'\n\nسؤال القائد للمجلس: '+q}]
         })
       });
       clearTimeout(tout);
@@ -1643,9 +1683,9 @@ async function sendCouncilChat(q, msgs){
       },
       body: JSON.stringify({
         model: MDL,
-        max_tokens: 400,
+        max_tokens: 800,
         temperature: 0.3,
-        system: 'أنت محرر المحضر في غرفة العمليات الاستراتيجية. مهمتك: استخلاص خلاصة جماعية من ردود الخبراء في 3 أسطر فقط. الحكم الغالب + أبرز خلاف + الشرط الأهم إن وُجد. لا تكرر ما قيل.',
+        system: 'أنت محرر المحضر في غرفة العمليات الاستراتيجية. مهمتك: استخلاص خلاصة جماعية شاملة من ردود الخبراء. اكتب: ① الحكم الغالب ② أبرز نقطة خلاف ③ الشرط أو Kill Switch الأهم ④ توصية نهائية قابلة للتنفيذ. كن واضحاً ومفيداً.',
         messages:[{role:'user',content:'سؤال القائد: '+q+'\n\nردود الخبراء:\n'+allAnswers.substring(0,3000)}]
       })
     });
@@ -1724,7 +1764,10 @@ function generateProfessionalPDF(){
   var statusText = agreeRatio>=75 ? '\u0645\u0639\u062a\u0645\u062f \u2705' : agreeRatio>=50 ? '\u0645\u0634\u0631\u0648\u0637 \u26a0' : '\u0645\u0631\u0641\u0648\u062d \u274c';
 
   var rptEl = document.getElementById('rptWrap');
-  var synth_content = rptEl ? rptEl.innerHTML : '<p>\u0644\u0645 \u064a\u064f\u0646\u062a\u062c \u0645\u062d\u0636\u0631 \u0628\u0639\u062f</p>';
+  // استخدام innerHTML للحفاظ على التنسيق الكامل
+  var synth_content = rptEl && rptEl.innerHTML && rptEl.innerHTML.trim().length > 100
+    ? rptEl.innerHTML
+    : (typeof synth !== 'undefined' && synth ? '<div style="font-size:9.5pt;line-height:1.8;direction:rtl">'+synth.replace(/\n/g,'<br>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>')+'</div>' : '<p style="color:#888;text-align:center">لم يُنتج محضر بعد</p>');
 
   var expertRows = successExp.map(function(e,i){
     var txt = (analyses[e.id]||'').substring(0,400);
@@ -1865,6 +1908,7 @@ function generateProfessionalPDF(){
 }
 
 // ══ فتح صفحة التوقيع مع بيانات الجلسة ══
+// ✅ SOR-ADDED | SIGN-PAGE | v8.1 | يفتح minutes_sign.html للتوقيع الرقمي
 function openSignPage(){
   if(!_ca || Object.keys(_ca).length === 0){
     alert('يرجى تشغيل المجلس أولاً ثم فتح صفحة التوقيع');
@@ -1942,6 +1986,7 @@ var _ttsSupported = false;   // هل TTS مدعوم؟
 var _currentLang = 'ar-SA';  // لغة التعرف
 
 // تهيئة نظام الصوت
+// ✅ SOR-ADDED | VOICE-SYSTEM | v8.1 | إدخال صوتي + TTS عربي — Web Speech API
 function initVoiceSystem(){
   // فحص دعم SpeechRecognition
   var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2070,6 +2115,306 @@ window.addEventListener('load', function(){
     window.speechSynthesis.onvoiceschanged = function(){};
   }
 });
+
+
+// ══ INSTITUTIONAL MEMORY SYSTEM v1.0 ══════════════════════════
+var MEM={gistId:localStorage.getItem('sor_gist_id')||'',
+  gistToken:localStorage.getItem('sor_gist_token')||'',
+  localKey:'sor_mem_v1',maxS:50,maxE:20};
+
+function freshMem(){return{v:'1.0',
+  co:{name:'',dc:0,ta:0,tc:0,tr:0,aa:0,lu:null},
+  sessions:[],experts:{},patterns:[]};}
+
+var _mem=null;
+
+// ✅ SOR-ADDED | MEMORY-SYSTEM | v1.0 | ذاكرة مؤسسية: localStorage + GitHub Gist
+async function memLoad(){
+  try{var raw=localStorage.getItem(MEM.localKey);_mem=raw?JSON.parse(raw):freshMem();}
+  catch(e){_mem=freshMem();}
+  if(MEM.gistId&&MEM.gistToken){
+    try{var cloud=await gistLoad();
+      if(cloud&&(cloud.sessions||[]).length>=(_mem.sessions||[]).length){
+        _mem=cloud;localStorage.setItem(MEM.localKey,JSON.stringify(_mem));}}
+    catch(e){console.warn('gist-load:',e.message);}}
+  var cn=localStorage.getItem('sor_company_name');
+  if(cn&&_mem&&_mem.co)_mem.co.name=cn;
+  memBadge();return _mem;}
+
+async function memSave(){
+  if(!_mem)return;
+  _mem.co.lu=new Date().toISOString();
+  localStorage.setItem(MEM.localKey,JSON.stringify(_mem));
+  if(MEM.gistId&&MEM.gistToken)try{await gistSave(_mem);}catch(e){console.warn(e.message);}
+}
+
+function memRecord(data){
+  if(!_mem)_mem=freshMem();
+  var ratio=data.ratio||0;
+  var verd=ratio>=75?'approved':ratio>=50?'conditional':'rejected';
+  var rec={sid:data.sid||'SOR-'+Date.now().toString(36).toUpperCase().slice(-6),
+    date:new Date().toLocaleDateString('ar-SA'),ts:new Date().toISOString(),
+    dec:(data.decision||'').substring(0,200),ratio:ratio,
+    ap:data.approve||0,co:data.cond||0,re:data.reject||0,
+    ec:data.expertsCount||0,verd:verd,
+    ss:(data.synthSummary||'').substring(0,500),ev:{}};
+  if(data.experts&&data.analyses){
+    data.experts.forEach(function(e){
+      var txt=(data.analyses[e.id]||'').substring(0,300);
+      var v=/\u0645\u0648\u0627\u0641\u0642\u0629 \u0643\u0627\u0645\u0644\u0629|\u0623\u0648\u0635\u064a/.test(txt)?'approve':
+             /\u0645\u0634\u0631\u0648\u0637/.test(txt)?'conditional':
+             /\u0631\u0641\u0636|\u0623\u0631\u0641\u0636/.test(txt)?'reject':'conditional';
+      var cn=(txt.match(/\u2605{1,5}/)||['\u2605\u2605\u2605'])[0].length;
+      var kp=(txt.split('\n').filter(function(l){return l.trim().length>15;})[0]||'').substring(0,100);
+      rec.ev[e.id]={v:v,cn:cn,kp:kp};
+      memUpdExpert(e,v,cn,kp,rec.sid,data.decision||'');});}
+  _mem.sessions.unshift(rec);
+  if(_mem.sessions.length>MEM.maxS)_mem.sessions=_mem.sessions.slice(0,MEM.maxS);
+  _mem.co.dc++;
+  if(verd==='approved')_mem.co.ta++;
+  else if(verd==='conditional')_mem.co.tc++;
+  else _mem.co.tr++;
+  if(_mem.sessions.length){var s=_mem.sessions.map(function(x){return x.ratio;});
+    _mem.co.aa=Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);}
+  memPatterns();memSave();memBadge();return rec;}
+
+// للتوافق مع الكود القديم
+var memRecordSession = memRecord;
+
+function memUpdExpert(ex,vote,conf,kp,sid,dec){
+  if(!_mem.experts[ex.id])_mem.experts[ex.id]={name:ex.name,role:ex.role||ex.id,
+    pos:[],ac:0,cc:0,rc:0,avgC:0,cs:100};
+  var e=_mem.experts[ex.id];
+  e.pos.unshift({sid:sid,date:new Date().toLocaleDateString('ar-SA'),
+    ds:dec.substring(0,60),v:vote,c:conf,kp:kp.substring(0,100)});
+  if(e.pos.length>MEM.maxE)e.pos=e.pos.slice(0,MEM.maxE);
+  if(vote==='approve')e.ac++;else if(vote==='conditional')e.cc++;else e.rc++;
+  var tot=e.ac+e.cc+e.rc;
+  var ac=e.pos.map(function(p){return p.c;});
+  e.avgC=Math.round(ac.reduce(function(a,b){return a+b;},0)/ac.length);
+  e.cs=Math.round((Math.max(e.ac,e.cc,e.rc)/tot)*100);}
+
+function memPatterns(){
+  if(!_mem||_mem.sessions.length<3)return;
+  var pts=[];var avg=_mem.co.aa;
+  if(avg<60)pts.push('\u0645\u062a\u0648\u0633\u0637 \u0627\u0644\u0627\u062a\u0641\u0627\u0642 \u0645\u0646\u062e\u0641\u0636 ('+avg+'%) \u2014 \u0627\u0644\u0642\u0631\u0627\u0631\u0627\u062a \u062a\u062d\u062a\u0627\u062c \u0625\u0639\u062f\u0627\u062f\u0627\u064b \u0623\u0639\u0645\u0642');
+  else if(avg>85)pts.push('\u062a\u0648\u0627\u0641\u0642 \u0639\u0627\u0644\u064d ('+avg+'%) \u2014 \u0627\u0644\u0645\u062c\u0644\u0633 \u0645\u0646\u0633\u062c\u0645 \u0648\u0645\u0648\u062b\u0648\u0642');
+  Object.values(_mem.experts||{}).forEach(function(e){
+    if(e.rc>=3&&e.cs>70)pts.push(e.name+' \u0645\u062a\u0634\u0643\u0643 \u0628\u0627\u0633\u062a\u0645\u0631\u0627\u0631 ('+e.rc+' \u0631\u0641\u0636)');
+    if(e.ac>=4&&e.cs>80)pts.push(e.name+' \u062f\u0627\u0639\u0645 \u0645\u0646\u062a\u0638\u0645 ('+e.ac+' \u0645\u0648\u0627\u0641\u0642\u0629)');});
+  _mem.patterns=pts.slice(0,8);}
+
+// ذاكرة الخبير → تُحقن في sys prompt
+function memBuildExpertContext(eid){
+  if(!_mem||!_mem.experts||!_mem.experts[eid])return '';
+  var e=_mem.experts[eid];if(!e.pos||!e.pos.length)return '';
+  var L=e.pos.slice(0,3);
+  var ctx='\n\n== \u0630\u0627\u0643\u0631\u062a\u0643 \u0627\u0644\u0645\u0624\u0633\u0633\u064a\u0629 ('+e.pos.length+' \u062c\u0644\u0633\u0629) ==\n';
+  L.forEach(function(p,i){ctx+=(i+1)+'. ['+p.date+'] '+p.ds+
+    '\n   \u0645\u0648\u0642\u0641\u0643: '+(p.v==='approve'?'\u0645\u0648\u0627\u0641\u0642\u0629':p.v==='conditional'?'\u0645\u0634\u0631\u0648\u0637\u0629':'\u0631\u0641\u0636')+
+    ' ('+p.c+'/5) '+p.kp+'\n';});
+  ctx+='\u0631\u0627\u062c\u0639 \u0645\u0648\u0627\u0642\u0641\u0643 \u0648\u0627\u0630\u0643\u0631\u0647\u0627 \u0625\u0646 \u0643\u0627\u0646\u062a \u0630\u0627\u062a \u0635\u0644\u0629.';
+  return ctx;}
+
+// سياق الجلسات → يُضاف لـ SYNTH
+function memBuildSessionContext(){
+  if(!_mem||!_mem.sessions||!_mem.sessions.length)return '';
+  var L=_mem.sessions.slice(0,5);
+  var ctx='\n\n== \u0633\u064a\u0627\u0642 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0627\u0644\u0645\u0624\u0633\u0633\u064a\u0629 ==\n';
+  ctx+=_mem.co.dc+' \u0642\u0631\u0627\u0631 \u0633\u0627\u0628\u0642 | \u0645\u062a\u0648\u0633\u0637 '+_mem.co.aa+'%\n';
+  L.forEach(function(s,i){ctx+=(i+1)+'. ['+s.date+'] '+s.dec.substring(0,70)+
+    ' -> '+(s.verd==='approved'?'\u0645\u0639\u062a\u0645\u062f':s.verd==='conditional'?'\u0645\u0634\u0631\u0648\u0637':'\u0645\u0631\u0641\u0648\u062d')+'('+s.ratio+'%)\n';});
+  if(_mem.patterns&&_mem.patterns.length){ctx+='\u0623\u0646\u0645\u0627\u0637: ';ctx+=_mem.patterns.slice(0,3).join(' | ');}
+  return ctx;}
+
+async function gistSave(data){
+  var url=MEM.gistId?'https://api.github.com/gists/'+MEM.gistId:'https://api.github.com/gists';
+  var r=await fetch(url,{method:MEM.gistId?'PATCH':'POST',
+    headers:{'Authorization':'token '+MEM.gistToken,'Content-Type':'application/json',
+      'Accept':'application/vnd.github.v3+json'},
+    body:JSON.stringify({description:'SOR-Mem',public:false,
+      files:{'sor_mem.json':{content:JSON.stringify(data)}}})});
+  var d=await r.json();
+  if(d.id&&!MEM.gistId){MEM.gistId=d.id;localStorage.setItem('sor_gist_id',d.id);}
+  return d;}
+
+async function gistLoad(){
+  if(!MEM.gistId||!MEM.gistToken)return null;
+  var r=await fetch('https://api.github.com/gists/'+MEM.gistId,
+    {headers:{'Authorization':'token '+MEM.gistToken,'Accept':'application/vnd.github.v3+json'}});
+  var d=await r.json();
+  if(d.files&&d.files['sor_mem.json'])return JSON.parse(d.files['sor_mem.json'].content);
+  return null;}
+
+function memBadge(){
+  var b=document.getElementById('memBadge');if(!b||!_mem)return;
+  var c=(_mem.sessions||[]).length;
+  b.textContent=(MEM.gistId?'☁':'💾')+' '+c+' \u062c\u0644\u0633\u0629';
+  b.style.color=c>0?'var(--teal)':'var(--t3)';}
+
+function memShowPanel(){
+  if(!_mem){alert('\u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0644\u0645 \u062a\u064f\u062d\u0645\u0651\u0644');return;}
+  var ss=_mem.sessions||[];
+  var h='<div style="direction:rtl;font-family:Cairo,sans-serif">';
+  h+='<div style="background:rgba(196,154,60,.07);border:1px solid rgba(196,154,60,.2);border-radius:10px;padding:14px;margin-bottom:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:11px">';
+  h+='<div><div style="color:#888">\u0625\u062c\u0645\u0627\u0644\u064a</div><div style="font-size:22px;font-weight:700;color:#C49A3C">'+_mem.co.dc+'</div></div>';
+  h+='<div><div style="color:#888">\u0645\u062a\u0648\u0633\u0637</div><div style="font-size:22px;font-weight:700;color:#1AA886">'+_mem.co.aa+'%</div></div>';
+  h+='<div><div style="color:#888">\u0645\u0635\u062f\u0631</div><div style="margin-top:4px;color:'+(MEM.gistId?'#1AA886':'#888')+'">'+(MEM.gistId?'☁ Gist':'💾 \u0645\u062d\u0644\u064a')+'</div></div></div>';
+  ss.slice(0,8).forEach(function(s){
+    var vc=s.verd==='approved'?'#1AA886':s.verd==='conditional'?'#C49A3C':'#E24B4A';
+    h+='<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;margin-bottom:6px">';
+    h+='<div style="display:flex;justify-content:space-between;margin-bottom:3px">';
+    h+='<span style="font-size:10px;color:#C49A3C;font-family:monospace">'+s.sid+'</span>';
+    h+='<span style="font-size:10px;color:#888">'+s.date+'</span></div>';
+    h+='<div style="font-size:12px;color:#EAD8A0;margin-bottom:4px">'+s.dec.substring(0,70)+'</div>';
+    h+='<span style="font-size:11px;color:'+vc+'">'+
+      (s.verd==='approved'?'\u2705 \u0645\u0639\u062a\u0645\u062f':s.verd==='conditional'?'\u26a0 \u0645\u0634\u0631\u0648\u0637':'\u274c \u0645\u0631\u0641\u0648\u062d')+' '+s.ratio+'%</span></div>';});
+  if(!ss.length)h+='<div style="text-align:center;padding:24px;color:#4A5568">\u0644\u0627 \u062c\u0644\u0633\u0627\u062a \u0628\u0639\u062f \u2014 \u0633\u062a\u064f\u062d\u0641\u0638 \u0628\u0639\u062f \u0623\u0648\u0644 \u062a\u0634\u063a\u064a\u0644</div>';
+  if(_mem.patterns&&_mem.patterns.length){
+    h+='<div style="font-size:11px;font-weight:700;color:#888;margin:10px 0 6px">\u0623\u0646\u0645\u0627\u0637</div>';
+    _mem.patterns.forEach(function(p){h+='<div style="border-right:3px solid rgba(196,154,60,.3);padding:5px 8px;margin-bottom:4px;font-size:11px;color:#8A9BB0">'+p+'</div>';});}
+  h+='</div>';
+  var ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
+  ov.onclick=function(e){if(e.target===ov)document.body.removeChild(ov);};
+  var bx=document.createElement('div');
+  bx.style.cssText='background:#0D1220;border:1px solid rgba(196,154,60,.2);border-radius:14px;width:100%;max-width:520px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column';
+  bx.innerHTML='<div style="padding:13px 18px;border-bottom:1px solid rgba(196,154,60,.15);display:flex;align-items:center;justify-content:space-between">'+
+    '<div style="font-size:14px;font-weight:700;color:#EAD8A0">\u2bc1 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0627\u0644\u0645\u0624\u0633\u0633\u064a\u0629</div>'+
+    '<div style="display:flex;gap:6px">'+
+    '<button onclick="memSetupGist()" style="background:rgba(196,154,60,.1);border:1px solid rgba(196,154,60,.25);color:#C49A3C;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">☁ Gist</button>'+
+    '<button onclick="memExport()" style="background:rgba(26,168,134,.1);border:1px solid rgba(26,168,134,.2);color:#1AA886;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2b07 \u062a\u0635\u062f\u064a\u0631</button>'+
+    '<button onclick="this.closest(\'[style*=fixed]\').remove()" style="background:rgba(255,255,255,.05);border:none;color:#4A5568;width:26px;height:26px;border-radius:6px;cursor:pointer">\u2715</button>'+
+    '</div></div>'+
+    '<div style="padding:14px 18px;overflow-y:auto;flex:1">'+h+'</div>';
+  ov.appendChild(bx);document.body.appendChild(ov);}
+
+function memSetupGist(){
+  var t=prompt('GitHub Personal Access Token (gist scope):');
+  if(!t)return;MEM.gistToken=t;localStorage.setItem('sor_gist_token',t);
+  var g=prompt('Gist ID (\u0641\u0627\u0631\u063a \u0644\u0625\u0646\u0634\u0627\u0621 \u062c\u062f\u064a\u062f):');
+  if(g){MEM.gistId=g;localStorage.setItem('sor_gist_id',g);}
+  if(!_mem)_mem=freshMem();
+  gistSave(_mem).then(function(){alert('\u2705 Gist: '+MEM.gistId);memBadge();})
+    .catch(function(e){alert('\u274c '+e.message);});}
+
+function memExport(){
+  var b=new Blob([JSON.stringify(_mem,null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b);var a=document.createElement('a');
+  a.href=u;a.download='SOR_Memory_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(u);}
+
+window.addEventListener('load', function(){
+  memLoad().then(function(){
+    console.log('Memory:', (_mem&&_mem.sessions||[]).length, 'sessions');
+  }).catch(function(e){ console.warn('Memory init:', e.message); });
+});
+
+
+// ══ PRINT ROOM — فتح غرفة الطباعة الاحترافية ══════════════════
+// ✅ SOR-ADDED | PRINT-ROOM | v8.1 | يفتح governance_print.html مع البيانات الكاملة
+function openPrintRoom(){
+  // تحقق أن الجلسة مكتملة
+  if(!synth || synth.length < 100){
+    alert('يرجى إنجاز الجلسة كاملاً أولاً — انتظر حتى يكتمل المحضر الحوكمي');
+    return;
+  }
+
+  // بناء payload كامل
+  var sid = document.getElementById('sessionRef') ?
+    document.getElementById('sessionRef').textContent :
+    'SOR-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+  // قائمة الخبراء النشطين
+  var successExp = (_ce||[]).filter(function(e){
+    return _ca && _ca[e.id] && !(_ca[e.id]).startsWith('⚠');
+  });
+
+  var payload = {
+    sid:      sid,
+    decision: (_cd||'').substring(0, 1000),
+    decType:  '',
+    synth:    synth,
+    ratio:    agreeRatio || 0,
+    approve:  approveCount || 0,
+    cond:     conditionalCount || 0,
+    reject:   rejectCount || 0,
+    experts:  successExp.length,
+    company:  localStorage.getItem('sor_company_name') || '',
+    expertsList: successExp.map(function(e){
+      return { id: e.id, name: e.name, role: e.role||'' };
+    }),
+    analyses: _ca || {},
+    timestamp: new Date().toISOString(),
+  };
+
+  // حفظ في sessionStorage
+  sessionStorage.setItem('sor_print_data', JSON.stringify(payload));
+
+  // فتح صفحة الطباعة
+  var url = 'governance_print.html?sid=' + encodeURIComponent(sid);
+  var win = window.open(url, '_blank', 'width=1100,height=900,scrollbars=yes');
+
+  // إرسال البيانات عبر postMessage بعد التحميل
+  if(win){
+    var attempts = 0;
+    var interval = setInterval(function(){
+      attempts++;
+      try{
+        win.postMessage({ type: 'SOR_PRINT', payload: payload }, '*');
+      }catch(e){}
+      if(attempts >= 8) clearInterval(interval);
+    }, 600);
+  }
+}
+
+
+// ✅ SOR-ADDED | STATUS-PANEL | v8.1 | لوحة حالة النظام
+function showSystemStatus(){
+  var LOCKED=['MAXT_MAP:tokens مُعايَرة','TEMP_MAP:حرارة مُعايَرة','SEARCH_MAP:16 خبير بحث آني',
+    'SYNTH v3:CoT+9 أقسام','PROT v8.1:COSTAR+8 عناصر','PARTS 28K:substring(28000)',
+    'CHAT 3K:3000 token/خبير','COUNCIL 600:600 token/خبير','MEMORY v1:localStorage+Gist',
+    'VOICE:صوتي+TTS','PRINT-ROOM:governance_print.html','SIGN-PAGE:minutes_sign.html','SYNTH 16K:16000 token+session ctx','EXPERT-MEM:تُحقن في كل جلسة','SESSION-CTX:يصل لـ SYNTH'];
+  var PEND=[];  // ✅ تم إصلاح كل الـ PENDING — لا مشاكل معلقة
+  var mc=0;
+  try{mc=(JSON.parse(localStorage.getItem('sor_mem_v1')||'{}').sessions||[]).length;}catch(e){}
+  var h='<div style="direction:rtl;font-family:Cairo,sans-serif;font-size:12px">';
+  h+='<div style="text-align:center;padding:10px;margin-bottom:10px;background:rgba(196,154,60,.06);border-radius:8px;border:1px solid rgba(196,154,60,.2)">';
+  h+='<span style="color:#C49A3C;font-weight:700;font-size:14px">SOR v8.1</span>';
+  h+=' &nbsp;|&nbsp; <span style="color:#1AA886">28 خبيراً</span>';
+  h+=' &nbsp;|&nbsp; <span style="color:#1AA886">'+mc+' جلسة محفوظة</span></div>';
+  h+='<div style="font-weight:700;color:#1AA886;margin-bottom:6px">✅ مُثبَّت ومقفول ('+LOCKED.length+')</div>';
+  LOCKED.forEach(function(s){var p=s.split(':');
+    h+='<div style="display:flex;gap:8px;margin-bottom:4px;padding:5px 8px;background:rgba(26,168,134,.04);border-radius:5px;border:1px solid rgba(26,168,134,.1)">';
+    h+='<span style="color:#1AA886;font-family:monospace;min-width:80px;font-size:10px">'+p[0]+'</span>';
+    h+='<span style="color:#8A9BB0">'+p.slice(1).join(':')+'</span></div>';});
+  h+='<div style="font-weight:700;color:#E24B4A;margin:10px 0 6px">❌ PENDING ('+PEND.length+')</div>';
+  PEND.forEach(function(s){var p=s.split(':');
+    h+='<div style="display:flex;gap:8px;margin-bottom:4px;padding:5px 8px;background:rgba(226,75,74,.04);border-radius:5px;border:1px solid rgba(226,75,74,.12)">';
+    h+='<span style="color:#E24B4A;font-family:monospace;min-width:80px;font-size:10px">'+p[0]+'</span>';
+    h+='<span style="color:#8A9BB0">'+p.slice(1).join(':')+'</span></div>';});
+  h+='</div>';
+  var ov=document.createElement('div');
+  ov.id='sorStat';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
+  ov.onclick=function(ev){if(ev.target===ov){var el=document.getElementById('sorStat');if(el)el.remove();}};
+  var bx=document.createElement('div');
+  bx.style.cssText='background:#0D1220;border:1px solid rgba(196,154,60,.2);border-radius:12px;width:100%;max-width:460px;max-height:80vh;overflow-y:auto;padding:16px';
+  var title=document.createElement('div');
+  title.style.cssText='font-size:14px;font-weight:700;color:#EAD8A0;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center';
+  title.innerHTML='⯁ حالة النظام';
+  var cb=document.createElement('button');
+  cb.textContent='✕';
+  cb.style.cssText='background:rgba(255,255,255,.05);border:none;color:#4A5568;width:24px;height:24px;border-radius:5px;cursor:pointer';
+  cb.onclick=function(){var el=document.getElementById('sorStat');if(el)el.remove();};
+  title.appendChild(cb);
+  bx.appendChild(title);
+  var bd=document.createElement('div');
+  bd.innerHTML=h;
+  bx.appendChild(bd);
+  ov.appendChild(bx);
+  document.body.appendChild(ov);
+}
 
 </script>
 </body>
