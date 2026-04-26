@@ -269,13 +269,51 @@ footer{padding:28px 32px;border-top:1px solid var(--bdr);position:relative;z-ind
       <div class="sec-badge">آلية العمل</div>
       <h2 class="sec-title">كيف يعمل المجلس؟</h2>
     </div>
-    <div class="flow-wrap reveal">
-      <div class="flow-step"><div class="flow-num">1</div><div><div class="flow-title">وكيل التشكيل يُحلّل القرار</div><div class="flow-text">يختار الخبراء الآليين المناسبين تلقائياً. لا تدخل بشري. المجلس يُشكّل نفسه.</div></div></div>
-      <div class="flow-step"><div class="flow-num">2</div><div><div class="flow-title">28 خبيراً بعزل تام بالتوازي</div><div class="flow-text">كل خبير يُنجز تحليله من منظور تخصصه فقط — بلا تنسيق مع الآخرين.</div></div></div>
-      <div class="flow-step"><div class="flow-num">3</div><div><div class="flow-title">16 خبيراً يبحثون آنياً</div><div class="flow-text">بحث حي في أحدث البيانات قبل كل تحليل. لا تقارير مبنية على معرفة قديمة.</div></div></div>
-      <div class="flow-step"><div class="flow-num">4</div><div><div class="flow-title">Calibration — جولة المعايرة</div><div class="flow-text">جولة ثانية لمعايرة التصويت وضمان الاتساق. الخبير المتحيز يُكشف ويُصحَّح.</div></div></div>
-      <div class="flow-step"><div class="flow-num">5</div><div><div class="flow-title">SYNTH v3 — تركيب المحضر</div><div class="flow-text">Chain-of-Thought يُركّب 28 تقريراً في محضر حوكمي. 9 أقسام كاملة.</div></div></div>
-      <div class="flow-step"><div class="flow-num">6</div><div><div class="flow-title">المحضر الحوكمي الموقَّع</div><div class="flow-text">توقيع رقمي · شهادة اعتماد · أرشفة. القرار الأخير للقائد وحده.</div></div></div>
+         <div class="flow-wrap reveal">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div><div class="flow-title">وكيل التشكيل يُحلّل القرار</div>
+        <div class="flow-text">يختار الخبراء الآليين المناسبين تلقائياً. لا تدخل بشري. المجلس يُشكّل نفسه.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div><div class="flow-title">27 خبيراً بعزل تام بالتوازي</div>
+        <div class="flow-text">كل خبير يُنجز تحليله من منظور تخصصه فقط — بلا تنسيق مع الآخرين. الإجماع هنا لا يعني الصواب.</div></div>
+      </div>
+      <div class="flow-step" style="border-color:rgba(226,75,74,0.3);background:rgba(226,75,74,0.04)">
+        <div class="flow-num" style="background:linear-gradient(135deg,rgba(226,75,74,0.2),rgba(226,75,74,0.05));border-color:rgba(226,75,74,0.45);color:#E24B4A;font-size:16px">&#x2694;</div>
+        <div>
+          <div class="flow-title" style="color:#E24B4A">محكّم المجلس — خبير المعارضة الاستراتيجية</div>
+          <div class="flow-text">بينما يعمل الـ27، يقرأ محكّم المجلس تقاريرهم ويبني <strong style="color:var(--tx)">الحجة المضادة الكاملة</strong>. يفترض أن القرار <strong style="color:var(--tx)">فشل فعلاً</strong> ويسأل لماذا. يكشف الافتراضات الضمنية التي أخذها الجميع كمسلّمة ولم يُشكّك فيها أحد.
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">
+            <span style="font-size:10px;padding:2px 9px;border-radius:20px;background:rgba(226,75,74,0.08);border:1px solid rgba(226,75,74,0.25);color:#E24B4A;font-family:monospace">Devil&#x27;s Advocate</span>
+            <span style="font-size:10px;padding:2px 9px;border-radius:20px;background:rgba(226,75,74,0.08);border:1px solid rgba(226,75,74,0.25);color:#E24B4A;font-family:monospace">Pre-Mortem</span>
+            <span style="font-size:10px;padding:2px 9px;border-radius:20px;background:rgba(226,75,74,0.08);border:1px solid rgba(226,75,74,0.25);color:#E24B4A;font-family:monospace">Stress Test</span>
+            <span style="font-size:10px;padding:2px 9px;border-radius:20px;background:rgba(226,75,74,0.08);border:1px solid rgba(226,75,74,0.25);color:#E24B4A;font-family:monospace">&#x646;&#x642;&#x637;&#x629; &#x627;&#x644;&#x639;&#x645;&#x649;</span>
+          </div></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div><div class="flow-title">16 خبيراً يبحثون آنياً</div>
+        <div class="flow-text">بحث حي في أحدث البيانات قبل كل تحليل. لا تقارير مبنية على معرفة قديمة.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div><div class="flow-title">Calibration — جولة المعايرة</div>
+        <div class="flow-text">جولة ثانية لمعايرة التصويت وضمان الاتساق. الخبير المتحيز يُكشف ويُصحَّح.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div><div class="flow-title">SYNTH v3 — تركيب المحضر</div>
+        <div class="flow-text">Chain-of-Thought يُركّب 28 تقريراً في محضر حوكمي. 9 أقسام كاملة.</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div><div class="flow-title">المحضر الحوكمي الموقَّع</div>
+        <div class="flow-text">توقيع رقمي · شهادة اعتماد · أرشفة. القرار الأخير للقائد وحده.</div></div>
+      </div>
+    </div>
     </div>
   </div>
 </section>
