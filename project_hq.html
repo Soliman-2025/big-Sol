@@ -932,6 +932,7 @@ function saveLocal(){
   localStorage.setItem('sor_hq_db', JSON.stringify(DB));
   document.getElementById('lastUpdate').textContent = fmtDate(DB.meta.lastUpdate);
   updateBadges();
+  if(typeof scheduleReviewReminders==='function') scheduleReviewReminders();
 }
 
 function loadLocal(){
@@ -1120,10 +1121,13 @@ function renderReports(){
   var total   = DB.tasks.length;
   var conv    = DB.clients.length ? Math.round((deals/DB.clients.length)*100) : 0;
 
+  var reviewed2=(DB.sessions||[]).filter(function(s){return s.reviewed&&s.reviewOutcome;});
+  var accScore=reviewed2.length?Math.round(((reviewed2.filter(function(s){return s.reviewOutcome==='accurate';}).length+reviewed2.filter(function(s){return s.reviewOutcome==='partial';}).length*0.5)/reviewed2.length)*100):0;
   document.getElementById('reportKPIs').innerHTML = [
     {n:DB.clients.length,l:'إجمالي الفرص',c:'var(--gold)'},
     {n:deals,l:'جلسات منجزة',c:'var(--teal)'},
     {n:conv+'%',l:'معدل التحويل',c:'var(--blue)'},
+    {n:accScore+'%',l:'دقة التوصيات',c:accScore>=70?'var(--teal)':'var(--red)'},
     {n:done+'/'+total,l:'المهام المكتملة',c:'var(--purple)'},
   ].map(function(k){
     return '<div class="kpi" style="--kpi-c:'+k.c+'"><div class="kpi-n">'+k.n+'</div><div class="kpi-l">'+k.l+'</div></div>';
@@ -1585,6 +1589,19 @@ function renderAlerts(){
   if(!DB.alerts)DB.alerts=[];
   var auto=[];
   var now=new Date();
+  // مراجعة 6 أشهر
+  (DB.sessions||[]).forEach(function(s){
+    if(!s.date||s.reviewed)return;
+    var rd=new Date(s.date);rd.setMonth(rd.getMonth()+6);
+    var diff=Math.ceil((rd-now)/(86400000));
+    if(diff<=30&&diff>0){
+      auto.push({icon:'&#9711;',title:'مراجعة 6 أشهر: '+s.client,
+        sub:'بعد '+diff+' يوم',cls:'alert-info',sid:s.id});
+    } else if(diff<=0){
+      auto.push({icon:'&#9888;',title:'مراجعة متأخرة: '+s.client,
+        sub:fmtDate(rd.toISOString()),cls:'alert-urgent',sid:s.id});
+    }
+  });
   (DB.tasks||[]).forEach(function(t){
     if(t.status!=='\u0645\u0643\u062a\u0645\u0644'&&t.due&&new Date(t.due)<now)
       auto.push({icon:'&#9888;',title:'\u0645\u0647\u0645\u0629 \u0645\u062a\u0623\u062e\u0631\u0629: '+t.title,sub:fmtDate(t.due),cls:'alert-urgent'});
@@ -1701,6 +1718,89 @@ var extraForms={
 
 // override updateBadges
 // ✅ updateBadges موحَّدة
+
+
+// ✅ SOR-ADDED | REVIEW-SYSTEM | v8.1 | نظام مراجعة دقة التوصيات
+function markReviewed(sid){
+  var s=(DB.sessions||[]).find(function(x){return x.id===sid;});
+  if(!s)return;
+  s.reviewed=true;
+  s.reviewDate=new Date().toISOString();
+  saveLocal();renderAlerts();renderSessions();
+  showToast('✅ تم تسجيل المراجعة');
+}
+
+function openReviewModal(sid){
+  var s=(DB.sessions||[]).find(function(x){return x.id===sid;});
+  if(!s)return;
+  document.getElementById('modalTitle').textContent='تسجيل نتيجة المراجعة: '+s.client;
+  document.getElementById('modalBody').innerHTML=
+    '<div style="font-size:12px;color:var(--t2);margin-bottom:14px;padding:10px;background:var(--s3);border-radius:6px">'
+    +'<div style="color:var(--gold);font-size:10px;font-family:monospace;margin-bottom:5px">القرار الأصلي</div>'
+    +s.decision+'</div>'
+    +'<div class="f-field"><label class="f-label">هل تحققت التوصية؟</label>'
+    +'<select class="f-inp" id="rv_outcome">'
+    +'<option value="accurate">✅ نعم — تحققت بشكل كامل</option>'
+    +'<option value="partial">⚠ جزئياً — تحقق بعضها</option>'
+    +'<option value="inaccurate">❌ لا — لم تتحقق</option>'
+    +'<option value="pending">⏳ لا يزال مبكراً</option>'
+    +'</select></div>'
+    +'<div class="f-field" style="margin-top:10px"><label class="f-label">ملاحظات المراجعة</label>'
+    +'<textarea class="f-inp" id="rv_notes" rows="3" placeholder="ماذا حدث فعلاً؟ هل كانت هناك عوامل غير متوقعة؟"></textarea></div>';
+  var mf=document.getElementById('modalFooter');
+  mf.innerHTML='<button class="btn btn-outline" onclick="closeModal()">إلغاء</button>';
+  var saveBtn=document.createElement('button');
+  saveBtn.className='btn btn-gold';
+  saveBtn.textContent='❆ حفظ المراجعة';
+  saveBtn.onclick=function(){saveReview(sid);};
+  mf.appendChild(saveBtn);
+  window._modalSave=function(){saveReview(sid);};
+  document.getElementById('modalOv').classList.add('open');
+}
+
+function saveReview(sid){
+  var s=(DB.sessions||[]).find(function(x){return x.id===sid;});
+  if(!s)return;
+  s.reviewed=true;
+  s.reviewDate=new Date().toISOString();
+  s.reviewOutcome=document.getElementById('rv_outcome').value;
+  s.reviewNotes=document.getElementById('rv_notes').value;
+  saveLocal();closeModal();renderAlerts();renderSessions();
+  updateAccuracyKPI();
+  showToast('✅ تم تسجيل نتيجة المراجعة');
+}
+
+function updateAccuracyKPI(){
+  var reviewed=(DB.sessions||[]).filter(function(s){return s.reviewed&&s.reviewOutcome;});
+  if(!reviewed.length)return;
+  var accurate=reviewed.filter(function(s){return s.reviewOutcome==='accurate';}).length;
+  var partial =reviewed.filter(function(s){return s.reviewOutcome==='partial';}).length;
+  var score=Math.round(((accurate+partial*0.5)/reviewed.length)*100);
+  var el=document.getElementById('sk-rev');
+  if(el)el.textContent=score+'%';
+}
+
+function scheduleReviewReminders(){
+  (DB.sessions||[]).forEach(function(s){
+    if(!s.date||s.reviewed)return;
+    var reviewDate=new Date(s.date);
+    reviewDate.setMonth(reviewDate.getMonth()+6);
+    var exists=(DB.alerts||[]).some(function(a){return a.sessionRef===s.id;});
+    if(!exists){
+      if(!DB.alerts)DB.alerts=[];
+      DB.alerts.push({
+        id:uid(),
+        title:'مراجعة 6 أشهر: '+s.client,
+        due:reviewDate.toISOString().slice(0,10),
+        priority:'متوسطة',
+        done:false,
+        sessionRef:s.id,
+        auto:true
+      });
+    }
+  });
+  saveLocal();
+}
 
 </script>
 </body>
