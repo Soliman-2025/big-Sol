@@ -1458,23 +1458,26 @@ document.getElementById('lastUpdate').textContent = DB.meta.lastUpdate ? fmtDate
 setInterval(function(){
   if(GIST_CFG.token && GIST_CFG.id) syncGist();
 }, 5*60*1000);
-// تحميل من كل المصادر المتاحة
-var _savedToken = GIST_CFG.token || localStorage.getItem('sor_gist_token') || '';
-var _savedId    = GIST_CFG.id    || localStorage.getItem('sor_gist_id')    || '';
-if(_savedToken){
-  document.getElementById('gistToken').value = _savedToken;
-  GIST_CFG.token = _savedToken;
-}
-if(_savedId){
-  document.getElementById('gistId').value = _savedId;
-  GIST_CFG.id = _savedId;
-}
-// مزامنة تلقائية عند الفتح إذا كان Token موجوداً
-if(_savedToken && _savedId){
-  document.getElementById('syncLabel').textContent = 'جاهز';
-  document.getElementById('gistStatus').style.color = 'var(--teal)';
-  document.getElementById('gistStatus').textContent = '✅ Token محفوظ — اضغط مزامنة لتحديث البيانات';
-}
+// ✅ تحميل Token تلقائياً — مؤجَّل حتى يكتمل DOM
+document.addEventListener('DOMContentLoaded', function(){
+  var _tk = localStorage.getItem('sor_gist_token') || GIST_CFG.token || '';
+  var _id = localStorage.getItem('sor_gist_id')    || GIST_CFG.id    || '';
+  var tkEl = document.getElementById('gistToken');
+  var idEl = document.getElementById('gistId');
+  var stEl = document.getElementById('gistStatus');
+  var slEl = document.getElementById('syncLabel');
+  if(_tk && tkEl){ tkEl.value=_tk; GIST_CFG.token=_tk; }
+  if(_id && idEl){ idEl.value=_id; GIST_CFG.id=_id;    }
+  if(_tk){
+    if(slEl) slEl.textContent='جاهز';
+    if(stEl){
+      stEl.style.color='var(--teal)';
+      stEl.textContent=_id
+        ? '✅ Token محفوظ — اضغط مزامنة لتحديث البيانات'
+        : '✅ Token محفوظ — اضغط مزامنة لإنشاء Gist';
+    }
+  }
+});
 updateBadges();
 renderDashboard();
 
