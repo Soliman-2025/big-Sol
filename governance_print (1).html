@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المحضر الحوكمي الرسمي — غرفة العمليات الاستراتيجية</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Cairo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   SCREEN STYLES
+═══════════════════════════════════════════ */
+:root{
+  --gold:#C49A3C;--gl:#E8C060;--ink:#04070D;--s1:#080C16;--s2:#0D1220;
+  --teal:#1AA886;--red:#E24B4A;--tx:#EAD8A0;--t2:#8A9BB0;--t3:#4A5568;
+  --bdr:rgba(196,154,60,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;direction:rtl;min-height:100vh}
+
+/* SCREEN HEADER */
+.s-hdr{
+  background:rgba(8,12,22,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdr);padding:12px 28px;
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+.s-hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 5%,var(--gold) 50%,transparent 95%)}
+.s-logo{display:flex;align-items:center;gap:10px}
+.s-seal{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Scheherazade New',serif;font-size:13px;color:var(--gold);font-weight:700;flex-shrink:0}
+.s-nm{font-family:'Scheherazade New',serif;font-size:15px;color:var(--tx);font-weight:700}
+.s-en{font-size:8px;color:var(--t3);letter-spacing:1.5px;font-family:'IBM Plex Mono',monospace}
+.s-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.s-chip{font-size:11px;padding:5px 13px;border-radius:20px;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.s-chip.gold{color:var(--gold);border:1px solid rgba(196,154,60,0.3);background:rgba(196,154,60,0.07)}
+.s-chip.teal{color:var(--teal);border:1px solid rgba(26,168,134,0.3);background:rgba(26,168,134,0.07)}
+.s-chip.red{color:var(--red);border:1px solid rgba(226,75,74,0.25);background:rgba(226,75,74,0.05)}
+.btn-s{padding:9px 20px;border-radius:5px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px;text-decoration:none;border:none}
+.btn-print{background:linear-gradient(135deg,var(--gold),var(--gl));color:var(--ink)}
+.btn-print:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(196,154,60,0.35)}
+.btn-sign{background:rgba(26,168,134,0.12);color:var(--teal);border:1px solid rgba(26,168,134,0.3)}
+.btn-sign:hover{background:rgba(26,168,134,0.22)}
+.btn-back{background:transparent;color:var(--t2);border:1px solid rgba(255,255,255,0.08)}
+.btn-back:hover{color:var(--gold);border-color:var(--bdr)}
+
+/* STATS BAR */
+.s-stats{background:var(--s1);border-bottom:1px solid var(--bdr);
+  padding:10px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.ss{display:flex;flex-direction:column;align-items:center;min-width:60px}
+.ss-n{font-size:20px;font-weight:900;color:var(--gold);font-family:'IBM Plex Mono',monospace;line-height:1}
+.ss-n.teal{color:var(--teal)}.ss-n.red{color:var(--red)}
+.ss-l{font-size:9px;color:var(--t3);margin-top:2px;letter-spacing:.5px;text-align:center}
+.ss-div{width:1px;height:28px;background:var(--bdr)}
+
+/* PREVIEW AREA */
+.preview{max-width:870px;margin:28px auto;padding:0 16px 60px}
+
+/* NO DATA */
+.no-data{text-align:center;padding:80px 20px}
+.nd-icon{font-size:48px;color:var(--t3);margin-bottom:16px}
+
+/* ═══════════════════════════════════════════
+   MINUTES DOCUMENT STYLES (Screen + Print)
+═══════════════════════════════════════════ */
+.MIN{
+  font-family:'Cairo',sans-serif;
+  font-size:10.5pt;color:#1A1F2E;
+  line-height:1.75;direction:rtl;
+  background:white;
+}
+
+/* ── COVER ── */
+.COV{
+  min-height:270mm;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:18mm 16mm;text-align:center;
+  background:white;position:relative;
+  overflow:hidden;page-break-after:always;
+}
+.COV-BG{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(196,154,60,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 0% 100%,rgba(13,122,102,0.03) 0%,transparent 50%);
+}
+.COV-BORDER{
+  position:absolute;inset:8mm;
+  border:0.5pt solid rgba(196,154,60,0.2);
+  pointer-events:none;
+}
+.COV-CORNER{
+  position:absolute;width:8mm;height:8mm;
+  border-color:#C49A3C;border-style:solid;
+}
+.COV-CORNER.tl{top:8mm;right:8mm;border-width:1pt 0 0 1pt}
+.COV-CORNER.tr{top:8mm;left:8mm;border-width:1pt 1pt 0 0}
+.COV-CORNER.bl{bottom:8mm;right:8mm;border-width:0 0 1pt 1pt}
+.COV-CORNER.br{bottom:8mm;left:8mm;border-width:0 1pt 1pt 0}
+.COV-content{position:relative;z-index:1;width:100%}
+.COV-seal{
+  width:22mm;height:22mm;border-radius:50%;
+  border:2pt solid #C49A3C;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin:0 auto 6mm;
+  background:radial-gradient(circle,rgba(196,154,60,0.08),transparent);
+}
+.COV-seal-txt{font-family:'Scheherazade New',serif;font-size:14pt;color:#C49A3C;font-weight:900;line-height:1}
+.COV-seal-sub{font-size:5pt;color:#888;letter-spacing:1px;margin-top:1mm}
+.COV-org{font-family:'Scheherazade New',serif;font-size:20pt;font-weight:900;color:#C49A3C;margin-bottom:2mm}
+.COV-org-en{font-size:7pt;color:#888;letter-spacing:3pt;margin-bottom:8mm;font-family:'IBM Plex Mono',monospace}
+.GLINE{height:1.5pt;background:linear-gradient(to left,transparent,#C49A3C 30%,#E8C060 50%,#C49A3C 70%,transparent);margin:6mm 0;width:100%}
+.COV-type{font-size:8pt;color:#C49A3C;letter-spacing:3pt;margin-bottom:4mm;font-family:'IBM Plex Mono',monospace;font-weight:500}
+.COV-dec{
+  font-family:'Scheherazade New',serif;
+  font-size:17pt;font-weight:700;color:#1A1F2E;
+  line-height:1.4;margin-bottom:3mm;
+  max-width:160mm;margin-left:auto;margin-right:auto;
+}
+.COV-company{font-size:11pt;color:#0D7A66;margin-bottom:8mm;font-weight:600}
+.COV-stats{display:flex;justify-content:center;gap:5mm;margin:5mm 0;flex-wrap:wrap}
+.COV-stat{border:1pt solid rgba(196,154,60,0.25);border-radius:3pt;padding:3mm 5mm;text-align:center;min-width:28mm}
+.COV-stat-n{font-size:20pt;font-weight:900;color:#C49A3C;font-family:'IBM Plex Mono',monospace;line-height:1}
+.COV-stat-n.teal{color:#0D7A66}.COV-stat-n.red{color:#C0392B}
+.COV-stat-l{font-size:7pt;color:#888;margin-top:1mm}
+.COV-meta{
+  background:#FDFAF3;border:1pt solid rgba(196,154,60,0.2);
+  border-radius:3pt;padding:5mm;margin:5mm 0;text-align:right;width:100%;
+}
+.CMR{display:flex;justify-content:space-between;align-items:center;
+  padding:2pt 0;border-bottom:0.5pt solid rgba(196,154,60,0.1);font-size:9pt}
+.CMR:last-child{border-bottom:none}
+.CML{color:#888;font-weight:600;min-width:35mm}.CMV{font-weight:700;color:#1A1F2E}
+.COV-quota{
+  font-size:11pt;color:#C49A3C;font-style:italic;
+  border-right:3pt solid #C49A3C;border-left:3pt solid #C49A3C;
+  padding:3mm 8mm;background:rgba(196,154,60,0.04);margin:5mm 0;
+  font-family:'Scheherazade New',serif;
+}
+.COV-conf{
+  font-size:7pt;color:#C0392B;margin-top:8mm;
+  padding:2mm 6mm;border:1pt solid rgba(192,57,43,0.2);
+  border-radius:2pt;background:rgba(192,57,43,0.02);
+  display:inline-block;letter-spacing:.5px;
+}
+
+/* ── PAGE HEADER/FOOTER ── */
+.PH{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-bottom:3mm;border-bottom:2pt solid #C49A3C;margin-bottom:6mm;
+}
+.PH-L{color:#C49A3C;font-weight:700;font-size:9.5pt}
+.PH-R{color:#888;font-family:'IBM Plex Mono',monospace;font-size:8pt;text-align:left}
+.PF{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:3mm;border-top:1pt solid rgba(196,154,60,0.2);
+  margin-top:6mm;font-size:7.5pt;color:#888;
+}
+.PF-C{text-align:center;color:#C49A3C;font-weight:700;font-size:8pt}
+.PAGE{padding:12mm 14mm;page-break-after:always}
+.PAGE:last-child{page-break-after:auto}
+
+/* ── SECTIONS ── */
+.SEC{margin-bottom:7mm;page-break-inside:avoid}
+.SEC-HDR{
+  background:linear-gradient(135deg,#C49A3C 0%,#8B6914 100%);
+  color:white;padding:3mm 6mm;
+  display:flex;align-items:center;gap:3mm;
+  font-size:11pt;font-weight:700;border-radius:2pt 2pt 0 0;
+}
+.SEC-NUM{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9pt;font-weight:700;flex-shrink:0;
+}
+.SEC-BODY{
+  border:1pt solid rgba(196,154,60,0.2);border-top:none;
+  padding:4mm 6mm;border-radius:0 0 2pt 2pt;
+  background:#FEFCF6;
+}
+.SEC-BODY p{margin-bottom:3mm;font-size:9.5pt;line-height:1.8;color:#2D3748}
+.SEC-BODY strong{color:#1A1F2E;font-weight:700}
+.SEC-BODY h3{
+  color:#C49A3C;font-size:10pt;margin:4mm 0 2mm;font-weight:700;
+  border-right:3pt solid #C49A3C;padding-right:4mm;
+}
+.bullet{
+  display:flex;align-items:flex-start;gap:6px;
+  margin-bottom:3mm;font-size:9pt;color:#2D3748;line-height:1.7;
+}
+.bullet-dot{
+  width:6px;height:6px;border-radius:50%;background:#C49A3C;
+  flex-shrink:0;margin-top:5px;
+}
+
+/* ── VOTE TABLE ── */
+.TBL{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt}
+.TBL th{background:#C49A3C;color:white;padding:3.5pt 6pt;text-align:right;font-weight:700;border:1pt solid rgba(196,154,60,0.3)}
+.TBL td{padding:3.5pt 6pt;border:1pt solid rgba(196,154,60,0.12);vertical-align:top;color:#2D3748}
+.TBL tr:nth-child(even) td{background:rgba(196,154,60,0.03)}
+.vote-a{color:#0D7A66;font-weight:700}.vote-c{color:#C49A3C;font-weight:700}.vote-r{color:#C0392B;font-weight:700}
+
+/* ── EXPERT CARD ── */
+.EXP{border:1pt solid rgba(196,154,60,0.18);border-radius:3pt;margin-bottom:3mm;overflow:hidden;page-break-inside:avoid}
+.EXP-H{
+  background:rgba(196,154,60,0.06);padding:3mm 5mm;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1pt solid rgba(196,154,60,0.12);flex-wrap:wrap;gap:4px;
+}
+.EXP-NM{font-size:10pt;font-weight:700;color:#1A1F2E}
+.EXP-ROLE{font-size:8pt;color:#888;margin-top:1pt}
+.EXP-BADGE{font-size:8pt;font-weight:700;padding:2pt 8pt;border-radius:20pt;white-space:nowrap}
+.EXP-BADGE.a{background:rgba(13,122,102,0.1);color:#0D7A66;border:1pt solid rgba(13,122,102,0.25)}
+.EXP-BADGE.c{background:rgba(196,154,60,0.1);color:#C49A3C;border:1pt solid rgba(196,154,60,0.25)}
+.EXP-BADGE.r{background:rgba(192,57,43,0.08);color:#C0392B;border:1pt solid rgba(192,57,43,0.2)}
+.EXP-B{padding:3mm 5mm;font-size:9pt;color:#2D3748;line-height:1.75}
+.STARS{color:#C49A3C;font-size:9pt;letter-spacing:1px}
+
+/* ── QUOTE BOX ── */
+.QUOTE{
+  background:#FDFAF3;border-right:4pt solid #C49A3C;
+  padding:4mm 6mm;margin:4mm 0;
+  font-style:italic;color:#8B6914;font-size:10pt;
+  font-family:'Scheherazade New',serif;
+}
+
+/* ── SIGNATURE ── */
+.SIG-SECTION{border-top:2pt solid #C49A3C;margin-top:10mm;padding-top:6mm;page-break-inside:avoid}
+.SIG-GRID{display:flex;justify-content:space-between;gap:10mm;flex-wrap:wrap}
+.SIG-BLK{flex:1;min-width:60mm;text-align:center}
+.SIG-AREA{
+  height:22mm;border-bottom:1pt solid #1A1F2E;
+  margin:5mm auto 2mm;width:75%;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm;
+}
+.SIG-IMG{max-width:110px;max-height:50px;display:block;margin:0 auto}
+.SIG-HEX{font-size:22pt;color:#C49A3C;line-height:1}
+.SIG-NM{font-size:11pt;font-weight:700;color:#1A1F2E;margin-bottom:1mm}
+.SIG-TL{font-size:8pt;color:#888}
+.SIG-DT{font-size:8pt;color:#C49A3C;margin-top:1mm;font-family:'IBM Plex Mono',monospace}
+
+/* ── CERT BOX ── */
+.CERT{
+  background:#F4F2EC;border:1pt solid rgba(196,154,60,0.28);
+  border-radius:3pt;padding:4mm;
+  font-family:'IBM Plex Mono',monospace;font-size:8pt;
+  color:#1A1F2E;white-space:pre-line;margin:5mm 0;line-height:1.9;
+}
+
+/* ── DISCLAIMER ── */
+.DISC{
+  font-size:7pt;color:#888;line-height:1.7;
+  border-top:0.5pt solid #ddd;padding-top:4mm;margin-top:5mm;
+}
+.DISC strong{color:#C0392B}
+
+/* ═══════════════════════════════════════════
+   PRINT STYLES
+═══════════════════════════════════════════ */
+@media print{
+  @page{size:A4;margin:14mm 13mm 16mm 13mm}
+  body{background:white!important}
+  .s-hdr,.s-stats,.preview-toolbar,.no-print{display:none!important}
+  .preview{margin:0;padding:0;max-width:none}
+  .page-card{box-shadow:none!important;border:none!important}
+  .MIN{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .COV{page-break-after:always}
+  .PAGE{page-break-after:always}
+  .PAGE:last-child{page-break-after:auto}
+  .SEC,.EXP,.SIG-SECTION{page-break-inside:avoid}
+  .COV-BG{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<!-- SCREEN HEADER -->
+<div class="s-hdr">
+  <div class="s-logo">
+    <div class="s-seal">غ.ع</div>
+    <div>
+      <div class="s-nm">غرفة العمليات الاستراتيجية</div>
+      <div class="s-en">OFFICIAL GOVERNANCE MINUTES · PRINT CENTER</div>
+    </div>
+  </div>
+  <div class="s-actions">
+    <div class="s-chip gold" id="sidChip">SOR-??????</div>
+    <div class="s-chip teal" id="statusChip">جارٍ التحميل</div>
+    <a href="SOR_Council.html" class="btn-s btn-back">↩ الغرفة</a>
+    <button class="btn-s btn-sign" onclick="goSign()">✦ توقيع رقمي</button>
+    <button class="btn-s btn-print" onclick="window.print()">🖨 طباعة / PDF</button>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="s-stats" id="sBar" style="display:none">
+  <div class="ss"><div class="ss-n" id="sRatio">—</div><div class="ss-l">نسبة الاتفاق</div></div>
+  <div class="ss-div"></div>
+  <div class="ss"><div class="ss-n teal" id="sAp">—</div><div class="ss-l">موافقون</div></div>
+  <div class="ss"><div class="ss-n" id="sCo">—</div><div class="ss-l">مشروطون</div></div>
+  <div class="ss"><div class="ss-n red" id="sRe">—</div><div class="ss-l">رافضون</div></div>
+  <div class="ss-div"></div>
+  <div class="ss"><div class="ss-n" id="sEx">—</div><div class="ss-l">خبير</div></div>
+  <div class="ss-div"></div>
+  <div class="ss"><div class="ss-n" id="sDate" style="font-size:11px;color:var(--t2)">—</div><div class="ss-l">التاريخ</div></div>
+</div>
+
+<!-- PREVIEW -->
+<div class="preview">
+
+  <!-- NO DATA -->
+  <div class="no-data" id="noData" style="display:none">
+    <div class="nd-icon">📄</div>
+    <div style="font-size:16px;font-weight:700;color:var(--tx);margin-bottom:10px">لا يوجد محضر جاهز</div>
+    <div style="font-size:13px;margin-bottom:24px;color:var(--t2)">أنجز الجلسة كاملاً في الغرفة ثم اضغط 🖨 طباعة المحضر</div>
+    <a href="SOR_Council.html" class="btn-s btn-back" style="display:inline-flex;margin:0 auto">↩ العودة للغرفة</a>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loadBox" style="text-align:center;padding:80px 20px">
+    <div style="font-size:48px;color:var(--gold);animation:p 1.4s ease-in-out infinite">⬡</div>
+    <div style="font-size:13px;color:var(--t3);margin-top:14px">جارٍ تحميل المحضر الحوكمي...</div>
+    <style>@keyframes p{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.9)}}</style>
+  </div>
+
+  <!-- MINUTES DOCUMENT -->
+  <div id="minDoc" style="display:none;box-shadow:0 20px 60px rgba(0,0,0,.5)"></div>
+
+</div>
+
+<script>
+'use strict';
+var SD = null;
+var signedImg = null;
+
+// ── INIT
+window.addEventListener('load', function(){
+  var p = new URLSearchParams(window.location.search);
+  var sid = p.get('sid');
+  if(sid) document.getElementById('sidChip').textContent = sid;
+  var raw = sessionStorage.getItem('sor_print_data');
+  if(raw){ try{ SD = JSON.parse(raw); render(); return; }catch(e){} }
+  setTimeout(function(){ document.getElementById('loadBox').style.display='none'; document.getElementById('noData').style.display='block'; }, 1200);
+});
+
+window.addEventListener('message', function(e){
+  if(e.data && e.data.type === 'SOR_PRINT'){
+    SD = e.data.payload;
+    sessionStorage.setItem('sor_print_data', JSON.stringify(SD));
+    render();
+  }
+});
+
+// ── RENDER
+function render(){
+  document.getElementById('loadBox').style.display='none';
+  document.getElementById('noData').style.display='none';
+  document.getElementById('sBar').style.display='flex';
+  document.getElementById('minDoc').style.display='block';
+
+  var d = SD || {};
+  var sid     = d.sid || 'SOR-??????';
+  var ratio   = d.ratio || 0;
+  var approve = d.approve || 0;
+  var cond    = d.cond || 0;
+  var reject  = d.reject || 0;
+  var experts = d.experts || 0;
+  var today   = new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var verdict = ratio>=75?'approved':ratio>=50?'conditional':'rejected';
+  var vText   = verdict==='approved'?'\u2705 \u0645\u0639\u062a\u0645\u062f':verdict==='conditional'?'\u26a0 \u0645\u0634\u0631\u0648\u0637':'\u274c \u0645\u0631\u0641\u0648\u062d';
+  var vColor  = verdict==='approved'?'#0D7A66':verdict==='conditional'?'#C49A3C':'#C0392B';
+
+  document.getElementById('sidChip').textContent = sid;
+  document.getElementById('sRatio').textContent = ratio+'%';
+  document.getElementById('sAp').textContent = approve;
+  document.getElementById('sCo').textContent = cond;
+  document.getElementById('sRe').textContent = reject;
+  document.getElementById('sEx').textContent = experts;
+  document.getElementById('sDate').textContent = today;
+  var sc = document.getElementById('statusChip');
+  sc.textContent = vText;
+  sc.className = 's-chip '+(verdict==='approved'?'teal':verdict==='conditional'?'gold':'red');
+
+  var dec     = d.decision || '';
+  var synth   = d.synth || '';
+  var company = d.company || '';
+  var certId  = 'CERT-'+sid+'-'+Date.now().toString(36).toUpperCase().slice(-4);
+  var sections = parseSections(synth);
+  var exList   = d.expertsList || [];
+  var analyses = d.analyses || {};
+
+  var H = '<div class="MIN">';
+
+  // ══ COVER ══
+  H += '<div class="COV">';
+  H += '<div class="COV-BG"></div>';
+  H += '<div class="COV-BORDER"></div>';
+  H += '<div class="COV-CORNER tl"></div><div class="COV-CORNER tr"></div>';
+  H += '<div class="COV-CORNER bl"></div><div class="COV-CORNER br"></div>';
+  H += '<div class="COV-content">';
+  H += '<div class="COV-seal"><div class="COV-seal-txt">\u063a.\u0639</div><div class="COV-seal-sub">SOR v8.1</div></div>';
+  H += '<div class="COV-org">\u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629</div>';
+  H += '<div class="COV-org-en">STRATEGIC OPERATIONS ROOM &nbsp;&middot;&nbsp; v8.1</div>';
+  H += '<div class="GLINE"></div>';
+  H += '<div class="COV-type">OFFICIAL GOVERNANCE REPORT &nbsp;&middot;&nbsp; \u0645\u062d\u0636\u0631 \u062d\u0648\u0643\u0645\u064a \u0631\u0633\u0645\u064a</div>';
+  H += '<div class="COV-dec">'+esc(dec.substring(0,120))+(dec.length>120?'...':'')+'</div>';
+  if(company) H += '<div class="COV-company">'+esc(company)+'</div>';
+
+  H += '<div class="COV-stats">';
+  H += stat(ratio+'%','\u0646\u0633\u0628\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642','',vColor);
+  H += stat(approve,'\u0645\u0648\u0627\u0641\u0642\u0648\u0646','teal');
+  H += stat(cond,'\u0645\u0634\u0631\u0648\u0637\u0648\u0646','');
+  H += stat(reject,'\u0631\u0627\u0641\u0636\u0648\u0646','red');
+  H += stat(experts,'\u062e\u0628\u064a\u0631','');
+  H += '</div>';
+
+  H += '<div class="COV-meta">';
+  H += mr('\u0631\u0642\u0645 \u0627\u0644\u062c\u0644\u0633\u0629','<span style="font-family:monospace">'+sid+'</span>');
+  H += mr('\u0627\u0644\u062a\u0627\u0631\u064a\u062e',today);
+  H += mr('\u0627\u0644\u062d\u0627\u0644\u0629','<span style="color:'+vColor+';font-weight:700">'+vText+'</span>');
+  H += mr('\u0646\u0633\u0628\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642','<span style="color:'+vColor+';font-weight:700">'+ratio+'%</span>');
+  if(company) H += mr('\u0627\u0644\u0634\u0631\u0643\u0629',esc(company));
+  H += mr('\u0627\u0644\u0645\u0646\u0647\u062c\u064a\u0629','\u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629 \u00b7 28 \u062e\u0628\u064a\u0631\u0627\u064b \u00b7 SYNTH v3');
+  H += '</div>';
+
+  H += '<div class="COV-quota">\u00ab\u062d\u064a\u062b \u064a\u064f\u0635\u0646\u0639 \u0627\u0644\u0642\u0631\u0627\u0631\u060c \u0644\u0627 \u064a\u064f\u062e\u0645\u064e\u0651\u0646\u00bb</div>';
+  H += '<div class="COV-conf">\u0633\u0631\u064a &nbsp;&middot;&nbsp; \u0644\u0644\u0627\u0637\u0644\u0627\u0639 \u0627\u0644\u0645\u062d\u062f\u0648\u062f &nbsp;&middot;&nbsp; \u064a\u064f\u0645\u0646\u0639 \u062a\u062f\u0627\u0648\u0644\u0647 \u062e\u0627\u0631\u062c \u0646\u0637\u0627\u0642 \u0635\u0627\u062d\u0628 \u0627\u0644\u0635\u0644\u0627\u062d\u064a\u0629</div>';
+  H += '</div></div>';
+
+  // ══ PAGE 2: القرار + خريطة الاتفاق ══
+  H += '<div class="PAGE">';
+  H += ph(sid,today);
+  H += sec('\u0661','\u0627\u0644\u0642\u0631\u0627\u0631 \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a \u0627\u0644\u0643\u0627\u0645\u0644',
+    '<p>'+esc(dec).replace(/\n/g,'<br>')+'</p>');
+
+  var voteRows = '';
+  voteRows += tr('\u0646\u0633\u0628\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642 \u0627\u0644\u0643\u0644\u064a\u0629','<span style="color:'+vColor+';font-weight:700">'+ratio+'%</span>',verdict==='approved'?'\u0627\u062a\u0641\u0627\u0642 \u0643\u0627\u0641\u064d \u0644\u0644\u0627\u0639\u062a\u0645\u0627\u062f':verdict==='conditional'?'\u0645\u0634\u0631\u0648\u0637 \u2014 \u064a\u062d\u062a\u0627\u062c \u0636\u0645\u0627\u0646\u0627\u062a':'\u063a\u064a\u0631 \u0643\u0627\u0641\u064d');
+  voteRows += tr('\u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0648\u0646','<span class="vote-a">'+approve+' \u062e\u0628\u064a\u0631</span>','\u064a\u0624\u064a\u062f\u0648\u0646 \u0627\u0644\u0645\u0636\u064a \u0628\u0644\u0627 \u0634\u0631\u0648\u0637');
+  voteRows += tr('\u0627\u0644\u0645\u0634\u0631\u0648\u0637\u0648\u0646','<span class="vote-c">'+cond+' \u062e\u0628\u064a\u0631</span>','\u0645\u0648\u0627\u0641\u0642\u0629 \u0628\u0636\u0645\u0627\u0646\u0627\u062a \u0645\u062d\u062f\u062f\u0629');
+  voteRows += tr('\u0627\u0644\u0631\u0627\u0641\u0636\u0648\u0646','<span class="vote-r">'+reject+' \u062e\u0628\u064a\u0631</span>','\u064a\u0631\u0648\u0646 \u0645\u062e\u0627\u0637\u0631 \u062c\u0648\u0647\u0631\u064a\u0629');
+  voteRows += tr('\u0625\u062c\u0645\u0627\u0644\u064a \u0627\u0644\u062e\u0628\u0631\u0627\u0621',experts+' \u062e\u0628\u064a\u0631','\u0645\u062c\u0644\u0633 28 \u2014 \u0627\u0644\u0646\u0634\u0637\u0648\u0646 \u0641\u064a \u0647\u0630\u0647 \u0627\u0644\u062c\u0644\u0633\u0629');
+
+  H += sec('\u0662','\u062e\u0631\u064a\u0637\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642 \u0648\u0627\u0644\u062e\u0644\u0627\u0641',
+    '<table class="TBL"><thead><tr><th>\u0627\u0644\u0628\u064f\u0639\u062f</th><th>\u0627\u0644\u0646\u062a\u064a\u062c\u0629</th><th>\u0627\u0644\u062a\u0641\u0633\u064a\u0631</th></tr></thead><tbody>'+voteRows+'</tbody></table>');
+
+  H += pf('\u0635\u0641\u062d\u0629 2 \u0645\u0646 7');
+  H += '</div>';
+
+  // ══ PAGE 3: المحضر الكامل ══
+  if(synth){
+    H += '<div class="PAGE">';
+    H += ph(sid,today);
+    H += sec('\u0663','\u0627\u0644\u0645\u062d\u0636\u0631 \u0627\u0644\u062d\u0648\u0643\u0645\u064a \u0627\u0644\u0643\u0627\u0645\u0644 \u2014 SYNTH v3',
+      '<div>'+mdHTML(synth)+'</div>');
+    H += pf('\u0635\u0641\u062d\u0629 3-4 \u0645\u0646 7');
+    H += '</div>';
+  }
+
+  // ══ PAGE 4: مواقف الخبراء ══
+  if(exList.length > 0){
+    H += '<div class="PAGE">';
+    H += ph(sid,today);
+    var expBody = '';
+    exList.forEach(function(e){
+      var txt = (analyses[e.id]||'').substring(0,350);
+      var vote = /\u0645\u0648\u0627\u0641\u0642\u0629 \u0643\u0627\u0645\u0644\u0629|\u0623\u0648\u0635\u064a \u0628\u0627\u0644\u0645\u0636\u064a/.test(txt)?'approve':/\u0645\u0634\u0631\u0648\u0637/.test(txt)?'conditional':/\u0631\u0641\u0636|\u0623\u0631\u0641\u0636/.test(txt)?'reject':'conditional';
+      var vt = vote==='approve'?'\u2705 \u0645\u0648\u0627\u0641\u0642\u0629':vote==='conditional'?'\u26a0 \u0645\u0634\u0631\u0648\u0637':'\u274c \u0631\u0641\u0636';
+      var stars = (txt.match(/\u2605{1,5}/)||['\u2605\u2605\u2605'])[0].length;
+      var starStr = '\u2605'.repeat(stars)+'\u2606'.repeat(5-stars);
+      expBody += '<div class="EXP">';
+      expBody += '<div class="EXP-H"><div><div class="EXP-NM">'+esc(e.name||e.id)+'</div>';
+      if(e.role) expBody += '<div class="EXP-ROLE">'+esc(e.role)+'</div>';
+      expBody += '</div><div style="text-align:left"><div class="EXP-BADGE '+vote+'">'+vt+'</div>';
+      expBody += '<div class="STARS" style="margin-top:2pt">'+starStr+'</div></div></div>';
+      if(txt) expBody += '<div class="EXP-B">'+esc(txt.substring(0,300)).replace(/\n/g,'<br>')+(txt.length>300?'...':'')+'</div>';
+      expBody += '</div>';
+    });
+    H += sec('\u0664','\u0645\u0648\u0627\u0642\u0641 \u062e\u0628\u0631\u0627\u0621 \u0627\u0644\u0645\u062c\u0644\u0633',expBody);
+    H += pf('\u0635\u0641\u062d\u0629 5 \u0645\u0646 7');
+    H += '</div>';
+  }
+
+  // ══ PAGE 5: التوصية + Kill Switch + Pre-Mortem ══
+  H += '<div class="PAGE">';
+  H += ph(sid,today);
+
+  var recBody = '';
+  if(sections.recommendation) recBody += '<h3>\u0627\u0644\u062a\u0648\u0635\u064a\u0629 \u0627\u0644\u0646\u0647\u0627\u0626\u064a\u0629</h3><div>'+mdHTML(sections.recommendation)+'</div>';
+  if(sections.conditions)     recBody += '<h3>\u0627\u0644\u0634\u0631\u0648\u0637 \u0648\u0627\u0644\u0636\u0645\u0627\u0646\u0627\u062a</h3><div>'+mdHTML(sections.conditions)+'</div>';
+  if(sections.killswitch)     recBody += '<h3>Kill Switch \u2014 \u0634\u0631\u0648\u0637 \u0627\u0644\u0625\u064a\u0642\u0627\u0641 \u0627\u0644\u0641\u0648\u0631\u064a</h3><div>'+mdHTML(sections.killswitch)+'</div>';
+  if(sections.premortem)      recBody += '<h3>Pre-Mortem \u2014 \u0623\u0633\u0628\u0627\u0628 \u0627\u0644\u0641\u0634\u0644 \u0627\u0644\u0645\u062d\u062a\u0645\u0644\u0629</h3><div>'+mdHTML(sections.premortem)+'</div>';
+  if(sections.secondorder)    recBody += '<h3>Second Order Thinking</h3><div>'+mdHTML(sections.secondorder)+'</div>';
+  if(!recBody) recBody = '<p>\u064a\u0631\u062c\u0649 \u0645\u0631\u0627\u062c\u0639\u0629 \u0627\u0644\u0645\u062d\u0636\u0631 \u0627\u0644\u0643\u0627\u0645\u0644 \u0623\u0639\u0644\u0627\u0647 \u0644\u0644\u062a\u0648\u0635\u064a\u0629</p>';
+
+  H += sec('\u0665','\u0627\u0644\u062a\u0648\u0635\u064a\u0629 \u0627\u0644\u0646\u0647\u0627\u0626\u064a\u0629 \u0648\u0646\u0642\u0627\u0637 \u0627\u0644\u062d\u0633\u0645',recBody);
+  H += pf('\u0635\u0641\u062d\u0629 6 \u0645\u0646 7');
+  H += '</div>';
+
+  // ══ PAGE 6: التوقيع والشهادة ══
+  H += '<div class="PAGE">';
+  H += ph(sid,today);
+
+  var certTxt =
+    '\u0631\u0642\u0645 \u0627\u0644\u062c\u0644\u0633\u0629:   '+sid+'\n'+
+    '\u0631\u0642\u0645 \u0627\u0644\u0634\u0647\u0627\u062f\u0629: '+certId+'\n'+
+    '\u0627\u0644\u062a\u0627\u0631\u064a\u062e:      '+today+'\n'+
+    '\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n'+
+    '\u0646\u0633\u0628\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642: '+ratio+'%  |  \u0627\u0644\u062e\u0628\u0631\u0627\u0621: '+experts+'  |  '+vText+'\n'+
+    '\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n'+
+    '\u0627\u0644\u0645\u0646\u0647\u062c\u064a\u0629: \u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629 v8.1\n'+
+    '\u0627\u0644\u0645\u0633\u0624\u0648\u0644\u064a\u0629 \u0627\u0644\u0628\u0634\u0631\u064a\u0629 \u0645\u0631\u062c\u0639 \u0646\u0647\u0627\u0626\u064a \u062f\u0627\u0626\u0645\u0627\u064b \u00b7 \u0627\u0644\u0642\u0631\u0627\u0631 \u0644\u0644\u0642\u0627\u0626\u062f \u0648\u062d\u062f\u0647\n'+
+    '\u00a9 \u062c\u0645\u064a\u0639 \u062d\u0642\u0648\u0642 \u0627\u0644\u0641\u0643\u0631 \u0645\u062d\u0641\u0648\u0638\u0629 \u00b7 2026\u0645';
+
+  var sigHtml = '<div class="SIG-SECTION"><div class="SIG-GRID">';
+  sigHtml += '<div class="SIG-BLK"><div class="SIG-AREA" id="sigAreaD"><div id="sigImgD"></div></div>';
+  sigHtml += '<div class="SIG-NM" id="sigNameD">\u0635\u0627\u062d\u0628 \u0627\u0644\u0635\u0644\u0627\u062d\u064a\u0629</div>';
+  sigHtml += '<div class="SIG-TL" id="sigTitleD">\u0627\u0644\u0645\u0646\u0635\u0628</div>';
+  sigHtml += '<div class="SIG-DT">'+today+'</div></div>';
+  sigHtml += '<div class="SIG-BLK"><div class="SIG-AREA"><div class="SIG-HEX">\u2bc1</div></div>';
+  sigHtml += '<div class="SIG-NM">\u0633\u0644\u064a\u0645\u0627\u0646 \u0625\u0628\u0631\u0627\u0647\u064a\u0645 \u0622\u0644 \u062d\u0648\u064a\u0633 \u0627\u0644\u0642\u0648\u0632\u064a</div>';
+  sigHtml += '<div class="SIG-TL">\u0645\u0624\u0633\u0633 \u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629</div>';
+  sigHtml += '<div class="SIG-DT">'+today+'</div></div></div>';
+  sigHtml += '<div class="CERT">'+certTxt+'</div>';
+  sigHtml += '<div class="DISC"><strong>\u0625\u062e\u0644\u0627\u0621 \u0627\u0644\u0645\u0633\u0624\u0648\u0644\u064a\u0629:</strong> \u064a\u064f\u0642\u062f\u0651\u0645 \u0647\u0630\u0627 \u0627\u0644\u0645\u062d\u0636\u0631 \u0643\u062e\u062f\u0645\u0629 \u0627\u0633\u062a\u0634\u0627\u0631\u064a\u0629 \u062a\u062d\u0644\u064a\u0644\u064a\u0629. \u0627\u0644\u062a\u0648\u0635\u064a\u0627\u062a \u0627\u0633\u062a\u0634\u0627\u0631\u064a\u0629 \u0648\u0644\u0627 \u062a\u0634\u0643\u0644 \u0636\u0645\u0627\u0646\u0627\u064b. \u0627\u0644\u0642\u0631\u0627\u0631 \u0627\u0644\u0646\u0647\u0627\u0626\u064a \u0644\u0635\u0627\u062d\u0628 \u0627\u0644\u0635\u0644\u0627\u062d\u064a\u0629 \u0648\u062d\u062f\u0647. \u0645\u062a\u0648\u0627\u0641\u0642 \u0645\u0639 SDAIA \u0648PDPL.</div>';
+  sigHtml += '</div>';
+
+  H += sec('\u0666','\u0627\u0644\u0627\u0639\u062a\u0645\u0627\u062f \u0648\u0627\u0644\u062a\u0648\u0642\u064a\u0639 \u0627\u0644\u0631\u0633\u0645\u064a',sigHtml);
+  H += pf('\u0635\u0641\u062d\u0629 7 \u0645\u0646 7');
+  H += '</div>';
+  H += '</div>';
+
+  document.getElementById('minDoc').innerHTML = H;
+
+  // inject signed data if available
+  var signedRaw = sessionStorage.getItem('sor_signed_doc');
+  if(signedRaw){
+    try{
+      var sv = JSON.parse(signedRaw);
+      if(sv.signer && sv.signer.name) document.getElementById('sigNameD').textContent = sv.signer.name;
+      if(sv.signer && sv.signer.title) document.getElementById('sigTitleD').textContent = sv.signer.title;
+      if(sv.sigImg){
+        document.getElementById('sigImgD').innerHTML = '<img class="SIG-IMG" src="'+sv.sigImg+'" alt="">';
+      }
+    }catch(e){}
+  }
+}
+
+// ── HELPERS
+function stat(n,l,cls,col){
+  var style = col ? 'color:'+col+';' : '';
+  return '<div class="COV-stat"><div class="COV-stat-n '+cls+'" style="'+style+'">'+n+'</div><div class="COV-stat-l">'+l+'</div></div>';
+}
+function mr(label,val){
+  return '<div class="CMR"><span class="CML">'+label+'</span><span class="CMV">'+val+'</span></div>';
+}
+function tr(a,b,c){
+  return '<tr><td>'+a+'</td><td style="text-align:center">'+b+'</td><td>'+c+'</td></tr>';
+}
+function sec(num,title,body){
+  return '<div class="SEC"><div class="SEC-HDR"><div class="SEC-NUM">'+num+'</div>'+title+'</div><div class="SEC-BODY">'+body+'</div></div>';
+}
+function ph(sid,date){
+  return '<div class="PH"><div class="PH-L">\u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629 \u00b7 \u0627\u0644\u0645\u062d\u0636\u0631 \u0627\u0644\u062d\u0648\u0643\u0645\u064a \u0627\u0644\u0631\u0633\u0645\u064a</div><div class="PH-R">'+sid+' \u00b7 '+date+'</div></div>';
+}
+function pf(pg){
+  return '<div class="PF"><div>\u0633\u0644\u064a\u0645\u0627\u0646 \u0625\u0628\u0631\u0627\u0647\u064a\u0645 \u0622\u0644 \u062d\u0648\u064a\u0633 \u0627\u0644\u0642\u0648\u0632\u064a</div><div class="PF-C">\u2bc1 \u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629</div><div>'+pg+'</div></div>';
+}
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function mdHTML(md){
+  if(!md) return '';
+  return md
+    .replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/^## (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^### (.+)$/gm,'<h3 style="font-size:9.5pt">$1</h3>')
+    .replace(/^> (.+)$/gm,'<div class="QUOTE">$1</div>')
+    .replace(/^[★\u2605\u25c6\u2022\-] (.+)$/gm,'<div class="bullet"><div class="bullet-dot"></div><div>$1</div></div>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>');
+}
+
+function parseSections(txt){
+  var out={summary:'',recommendation:'',conditions:'',killswitch:'',premortem:'',secondorder:''};
+  if(!txt) return out;
+  var cur='summary'; var buf={};
+  txt.split('\n').forEach(function(l){
+    var ll=l.toLowerCase();
+    if(/\u0645\u0644\u062e\u0635 \u062a\u0646\u0641\u064a\u0630\u064a|executive summary/.test(ll)) cur='summary';
+    else if(/\u062a\u0648\u0635\u064a\u0629 \u0646\u0647\u0627\u0626\u064a\u0629|\u0627\u0644\u062d\u0643\u0645 \u0627\u0644\u0645\u0648\u062d\u062f/.test(ll)) cur='recommendation';
+    else if(/\u0634\u0631\u0648\u0637|\u0636\u0645\u0627\u0646\u0627\u062a/.test(ll)) cur='conditions';
+    else if(/kill switch|\u0625\u064a\u0642\u0627\u0641/.test(ll)) cur='killswitch';
+    else if(/pre.mortem|\u0641\u0634\u0644/.test(ll)) cur='premortem';
+    else if(/second order/.test(ll)) cur='secondorder';
+    buf[cur]=(buf[cur]||'')+l+'\n';
+  });
+  Object.keys(buf).forEach(function(k){ out[k]=(buf[k]||'').trim(); });
+  if(!out.summary) out.summary=txt.substring(0,1500);
+  return out;
+}
+
+function goSign(){
+  if(!SD){alert('\u0644\u0627 \u062a\u0648\u062c\u062f \u0628\u064a\u0627\u0646\u0627\u062a');return;}
+  sessionStorage.setItem('sor_session_data',JSON.stringify(SD));
+  window.open('minutes_sign.html?sid='+(SD.sid||''),'_blank');
+}
+</script>
+</body>
+</html>
