@@ -326,7 +326,7 @@ textarea.f-inp{resize:vertical;min-height:80px;line-height:1.65}
     </div>
   </div>
   <div class="tb-right">
-    <span class="tb-chip chip-teal"><span class="sync-dot" id="syncDot" style="display:inline-block;margin-left:5px"></span><span id="syncLabel">محلي</span></span>
+    <span class="tb-chip chip-teal" id="syncChip" title="حالة المزامنة"><span class="sync-dot" id="syncDot" style="display:inline-block;margin-left:5px"></span><span id="syncLabel">محلي</span></span>
     <span class="tb-chip chip-gold" id="dateChip"></span>
     <button class="tb-btn tb-sync" onclick="syncGist()">☁ مزامنة</button>
     <button class="tb-btn tb-print" onclick="window.print()">🖨 تقرير PDF</button>
@@ -944,6 +944,9 @@ function saveGistConfig(){
   GIST_CFG.token = document.getElementById('gistToken').value.trim();
   GIST_CFG.id    = document.getElementById('gistId').value.trim();
   localStorage.setItem('sor_hq_gist', JSON.stringify(GIST_CFG));
+  // حفظ Token منفصلاً لضمان البقاء
+  if(GIST_CFG.token) localStorage.setItem('sor_gist_token', GIST_CFG.token);
+  if(GIST_CFG.id)    localStorage.setItem('sor_gist_id',    GIST_CFG.id);
 }
 
 async function syncGist(){
@@ -959,7 +962,12 @@ async function syncGist(){
     var r = await fetch(url,{method:method,headers:{'Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok) throw new Error(r.status);
     var data = await r.json();
-    if(!gistId){ GIST_CFG.id=data.id; document.getElementById('gistId').value=data.id; localStorage.setItem('sor_hq_gist',JSON.stringify(GIST_CFG)); }
+    if(!gistId){
+      GIST_CFG.id=data.id;
+      document.getElementById('gistId').value=data.id;
+      localStorage.setItem('sor_hq_gist',JSON.stringify(GIST_CFG));
+      localStorage.setItem('sor_gist_id', data.id);
+    }
     document.getElementById('syncLabel').textContent = '\u0645\u0632\u0627\u0645\u064e\u0646';
     document.getElementById('gistStatus').style.color='var(--teal)';
     document.getElementById('gistStatus').textContent = '\u2705 \u0645\u0632\u0627\u0645\u064e\u0646 '+fmtDate(new Date().toISOString());
@@ -1446,8 +1454,27 @@ function showToast(msg){
 loadLocal();
 document.getElementById('dateChip').textContent = new Date().toLocaleDateString('ar-SA',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
 document.getElementById('lastUpdate').textContent = DB.meta.lastUpdate ? fmtDate(DB.meta.lastUpdate) : '—';
-if(GIST_CFG.token) document.getElementById('gistToken').value=GIST_CFG.token;
-if(GIST_CFG.id)    document.getElementById('gistId').value=GIST_CFG.id;
+// مزامنة تلقائية كل 5 دقائق إذا كان Token موجوداً
+setInterval(function(){
+  if(GIST_CFG.token && GIST_CFG.id) syncGist();
+}, 5*60*1000);
+// تحميل من كل المصادر المتاحة
+var _savedToken = GIST_CFG.token || localStorage.getItem('sor_gist_token') || '';
+var _savedId    = GIST_CFG.id    || localStorage.getItem('sor_gist_id')    || '';
+if(_savedToken){
+  document.getElementById('gistToken').value = _savedToken;
+  GIST_CFG.token = _savedToken;
+}
+if(_savedId){
+  document.getElementById('gistId').value = _savedId;
+  GIST_CFG.id = _savedId;
+}
+// مزامنة تلقائية عند الفتح إذا كان Token موجوداً
+if(_savedToken && _savedId){
+  document.getElementById('syncLabel').textContent = 'جاهز';
+  document.getElementById('gistStatus').style.color = 'var(--teal)';
+  document.getElementById('gistStatus').textContent = '✅ Token محفوظ — اضغط مزامنة لتحديث البيانات';
+}
 updateBadges();
 renderDashboard();
 
