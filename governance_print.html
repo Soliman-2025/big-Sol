@@ -434,7 +434,7 @@ function render(){
   H += '<div class="PAGE">';
   H += ph(sid,today);
   H += sec('\u0661','\u0627\u0644\u0642\u0631\u0627\u0631 \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a \u0627\u0644\u0643\u0627\u0645\u0644',
-    '<p>'+esc(dec).replace(/\n/g,'<br>')+'</p>');
+    '<p>'+esc(dec).replace(/[\r\n]/g,'<br>')+'</p>');
 
   var voteRows = '';
   voteRows += tr('\u0646\u0633\u0628\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642 \u0627\u0644\u0643\u0644\u064a\u0629','<span style="color:'+vColor+';font-weight:700">'+ratio+'%</span>',verdict==='approved'?'\u0627\u062a\u0641\u0627\u0642 \u0643\u0627\u0641\u064d \u0644\u0644\u0627\u0639\u062a\u0645\u0627\u062f':verdict==='conditional'?'\u0645\u0634\u0631\u0648\u0637 \u2014 \u064a\u062d\u062a\u0627\u062c \u0636\u0645\u0627\u0646\u0627\u062a':'\u063a\u064a\u0631 \u0643\u0627\u0641\u064d');
@@ -459,28 +459,54 @@ function render(){
     H += '</div>';
   }
 
-  // ══ PAGE 4: مواقف الخبراء ══
+  // ══ PAGE 4: ملخص مواقف الخبراء (جميعهم) ══
   if(exList.length > 0){
     H += '<div class="PAGE">';
     H += ph(sid,today);
-    var expBody = '';
+    var expSummary = '';
     exList.forEach(function(e){
-      var txt = (analyses[e.id]||'').substring(0,350);
+      var txt = analyses[e.id] || '';
       var vote = /\u0645\u0648\u0627\u0641\u0642\u0629 \u0643\u0627\u0645\u0644\u0629|\u0623\u0648\u0635\u064a \u0628\u0627\u0644\u0645\u0636\u064a/.test(txt)?'approve':/\u0645\u0634\u0631\u0648\u0637/.test(txt)?'conditional':/\u0631\u0641\u0636|\u0623\u0631\u0641\u0636/.test(txt)?'reject':'conditional';
       var vt = vote==='approve'?'\u2705 \u0645\u0648\u0627\u0641\u0642\u0629':vote==='conditional'?'\u26a0 \u0645\u0634\u0631\u0648\u0637':'\u274c \u0631\u0641\u0636';
       var stars = (txt.match(/\u2605{1,5}/)||['\u2605\u2605\u2605'])[0].length;
       var starStr = '\u2605'.repeat(stars)+'\u2606'.repeat(5-stars);
-      expBody += '<div class="EXP">';
-      expBody += '<div class="EXP-H"><div><div class="EXP-NM">'+esc(e.name||e.id)+'</div>';
-      if(e.role) expBody += '<div class="EXP-ROLE">'+esc(e.role)+'</div>';
-      expBody += '</div><div style="text-align:left"><div class="EXP-BADGE '+vote+'">'+vt+'</div>';
-      expBody += '<div class="STARS" style="margin-top:2pt">'+starStr+'</div></div></div>';
-      if(txt) expBody += '<div class="EXP-B">'+esc(txt.substring(0,300)).replace(/\n/g,'<br>')+(txt.length>300?'...':'')+'</div>';
-      expBody += '</div>';
+      // ملخص الخبير — أول 200 حرف فقط في هذه الصفحة
+      var preview = txt.substring(0,200).replace(/#+/g,'').replace(/[\r\n]/g,' ').trim();
+      expSummary += '<div class="EXP">';
+      expSummary += '<div class="EXP-H"><div><div class="EXP-NM">'+esc(e.name||e.id)+'</div>';
+      if(e.role) expSummary += '<div class="EXP-ROLE">'+esc(e.role)+'</div>';
+      expSummary += '</div><div style="text-align:left"><div class="EXP-BADGE '+vote+'">'+vt+'</div>';
+      expSummary += '<div class="STARS" style="margin-top:2pt">'+starStr+'</div></div></div>';
+      if(preview) expSummary += '<div class="EXP-B">'+esc(preview)+(txt.length>200?'...':'')+'</div>';
+      expSummary += '</div>';
     });
-    H += sec('\u0664','\u0645\u0648\u0627\u0642\u0641 \u062e\u0628\u0631\u0627\u0621 \u0627\u0644\u0645\u062c\u0644\u0633',expBody);
-    H += pf('\u0635\u0641\u062d\u0629 5 \u0645\u0646 7');
+    H += sec('\u0664','\u0645\u0644\u062e\u0635 \u0645\u0648\u0627\u0642\u0641 \u0627\u0644\u062e\u0628\u0631\u0627\u0621 \u2014 '+exList.length+' \u062e\u0628\u064a\u0631\u0627\u064b', expSummary);
+    H += pf('\u0635\u0641\u062d\u0629 4 \u0645\u0646 7+');
     H += '</div>';
+
+    // ══ صفحة كاملة لكل خبير — التقرير الكامل ══
+    exList.forEach(function(e, idx){
+      var txt = analyses[e.id] || '';
+      if(!txt) return;
+      var vote = /\u0645\u0648\u0627\u0641\u0642\u0629 \u0643\u0627\u0645\u0644\u0629|\u0623\u0648\u0635\u064a \u0628\u0627\u0644\u0645\u0636\u064a/.test(txt)?'approve':/\u0645\u0634\u0631\u0648\u0637/.test(txt)?'conditional':/\u0631\u0641\u0636|\u0623\u0631\u0641\u0636/.test(txt)?'reject':'conditional';
+      var vt = vote==='approve'?'\u2705 \u0645\u0648\u0627\u0641\u0642\u0629':vote==='conditional'?'\u26a0 \u0645\u0634\u0631\u0648\u0637':'\u274c \u0631\u0641\u0636';
+      var stars = (txt.match(/\u2605{1,5}/)||['\u2605\u2605\u2605'])[0].length;
+      var starStr = '\u2605'.repeat(stars)+'\u2606'.repeat(5-stars);
+      H += '<div class="PAGE">';
+      H += ph(sid,today);
+      var expFull = '';
+      expFull += '<div class="EXP" style="border:1pt solid rgba(196,154,60,0.3);padding:12pt;border-radius:6pt;margin-bottom:10pt">';
+      expFull += '<div class="EXP-H" style="margin-bottom:8pt">';
+      expFull += '<div><div class="EXP-NM" style="font-size:14pt">'+esc(e.name||e.id)+'</div>';
+      expFull += '<div class="EXP-ROLE">'+esc(e.role||'')+'</div></div>';
+      expFull += '<div style="text-align:left"><div class="EXP-BADGE '+vote+'" style="font-size:11pt">'+vt+'</div>';
+      expFull += '<div class="STARS" style="font-size:12pt;margin-top:3pt">'+starStr+'</div></div></div>';
+      expFull += '<div class="EXP-B" style="font-size:10pt;line-height:1.8;white-space:pre-wrap">'+esc(txt).replace(/[\r\n]/g,'<br>')+'</div>';
+      expFull += '</div>';
+      H += sec('4.'+(idx+1), (e.name||e.id)+' \u2014 \u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u0643\u0627\u0645\u0644', expFull);
+      H += pf('\u062e\u0628\u064a\u0631 '+(idx+1)+' \u0645\u0646 '+exList.length);
+      H += '</div>';
+    });
   }
 
   // ══ PAGE 5: التوصية + Kill Switch + Pre-Mortem ══
@@ -579,7 +605,7 @@ function mdHTML(md){
     .replace(/^> (.+)$/gm,'<div class="QUOTE">$1</div>')
     .replace(/^[★\u2605\u25c6\u2022\-] (.+)$/gm,'<div class="bullet"><div class="bullet-dot"></div><div>$1</div></div>')
     .replace(/\n\n/g,'</p><p>')
-    .replace(/\n/g,'<br>');
+    .replace(/[\r\n]/g,'<br>');
 }
 
 function parseSections(txt){
