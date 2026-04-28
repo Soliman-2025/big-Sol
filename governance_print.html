@@ -323,7 +323,28 @@ body{background:var(--ink);color:var(--t2);font-family:'Cairo',sans-serif;direct
   <div id="loadBox" style="text-align:center;padding:80px 20px">
     <div style="font-size:48px;color:var(--gold);animation:p 1.4s ease-in-out infinite">⬡</div>
     <div style="font-size:13px;color:var(--t3);margin-top:14px">جارٍ تحميل المحضر الحوكمي...</div>
-    <style>@keyframes p{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.9)}}</style>
+    <style>@keyframes p{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.9)}}
+/* ✅ SOR-ADDED | MARKDOWN-STYLES | v8.3 */
+.MD-TBL{width:100%;border-collapse:collapse;margin:8pt 0;font-size:8.5pt;direction:rtl}
+.MD-TBL th{background:rgba(196,154,60,0.12);color:#8B6914;padding:5pt 8pt;border:0.5pt solid rgba(196,154,60,0.25);font-weight:700;text-align:right;font-size:8pt}
+.MD-TBL td{padding:4pt 8pt;border:0.5pt solid rgba(196,154,60,0.15);color:#2D3748;vertical-align:top;line-height:1.5}
+.MD-TBL tr:nth-child(even) td{background:rgba(196,154,60,0.04)}
+.MD-TBL tr:hover td{background:rgba(196,154,60,0.08)}
+.MD-H1{font-size:13pt;font-weight:900;color:#1A1F2E;margin:10pt 0 5pt;font-family:'Scheherazade New',serif;border-bottom:1pt solid rgba(196,154,60,0.3);padding-bottom:3pt}
+.MD-H2{font-size:11pt;font-weight:700;color:#C49A3C;margin:8pt 0 4pt}
+.MD-H3{font-size:10pt;font-weight:700;color:#1A1F2E;margin:6pt 0 3pt}
+.MD-H4{font-size:9pt;font-weight:700;color:#4A5568;margin:4pt 0 2pt}
+.MD-P{margin:4pt 0;line-height:1.75;font-size:9pt;color:#2D3748}
+.MD-UL{margin:4pt 0 4pt 15pt;padding:0}
+.MD-LI{margin:2pt 0;font-size:9pt;color:#2D3748;list-style:none;padding-right:10pt;position:relative}
+.MD-LI::before{content:'◆';color:#C49A3C;position:absolute;right:0;font-size:6pt;top:3pt}
+.MD-OLI{margin:2pt 0;font-size:9pt;color:#2D3748}
+.MD-PRE{background:#F7F9FC;border:0.5pt solid #E2E8F0;border-radius:3pt;padding:6pt;overflow-x:auto;margin:5pt 0;font-size:7.5pt;direction:ltr;text-align:left}
+.MD-CODE{background:#F7F9FC;padding:1pt 4pt;border-radius:2pt;font-size:8pt;color:#C49A3C;font-family:monospace}
+.MD-HR{border:none;border-top:1pt solid rgba(196,154,60,0.3);margin:8pt 0}
+.hdr-row th{background:rgba(196,154,60,0.18)!important}
+
+</style>
   </div>
 
   <!-- MINUTES DOCUMENT -->
@@ -501,7 +522,7 @@ function render(){
       expFull += '<div class="EXP-ROLE">'+esc(e.role||'')+'</div></div>';
       expFull += '<div style="text-align:left"><div class="EXP-BADGE '+vote+'" style="font-size:11pt">'+vt+'</div>';
       expFull += '<div class="STARS" style="font-size:12pt;margin-top:3pt">'+starStr+'</div></div></div>';
-      expFull += '<div class="EXP-B" style="font-size:10pt;line-height:1.8;white-space:pre-wrap">'+esc(txt).replace(/[\r\n]/g,'<br>')+'</div>';
+      expFull += '<div class="EXP-B" style="font-size:10pt;line-height:1.8">'+mdHTML(txt)+'</div>';
       expFull += '</div>';
       H += sec('4.'+(idx+1), (e.name||e.id)+' \u2014 \u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u0643\u0627\u0645\u0644', expFull);
       H += pf('\u062e\u0628\u064a\u0631 '+(idx+1)+' \u0645\u0646 '+exList.length);
@@ -598,14 +619,132 @@ function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 
 function mdHTML(md){
   if(!md) return '';
-  return md
+
+  // ══ 1: تحويل الجداول ASCII (├ ┤ ┌ ┐ └ ┘ │ ─) إلى HTML ══
+  function convertAsciiTable(text){
+    var lines = text.split('\n');
+    var result = [];
+    var inTable = false;
+    var tableLines = [];
+
+    for(var i=0; i<lines.length; i++){
+      var line = lines[i];
+      // كشف سطر جدول ASCII
+      var isTableLine = /[\u2500-\u257F\|\+]/.test(line) && line.trim().length > 3;
+      var isSeparator = /^[\s\|\+\-\u2500-\u257F]+$/.test(line.trim()) && line.trim().length > 3;
+
+      if(isTableLine){
+        if(!inTable){ inTable=true; tableLines=[]; }
+        tableLines.push(line);
+      } else {
+        if(inTable){
+          result.push(buildHtmlTable(tableLines));
+          tableLines=[];inTable=false;
+        }
+        result.push(line);
+      }
+    }
+    if(inTable && tableLines.length) result.push(buildHtmlTable(tableLines));
+    return result.join('\n');
+  }
+
+  function buildHtmlTable(lines){
+    // استخراج الصفوف الحقيقية (تحتوي على | أو │)
+    var rows = lines.filter(function(l){
+      var hasContent = l.replace(/[\u2500-\u257F\|\+\-\s]/g,'').length > 0;
+      return hasContent;
+    });
+    if(!rows.length) return lines.join('\n');
+
+    var html = '<table class="MD-TABLE"><tbody>';
+    rows.forEach(function(row, idx){
+      // تقسيم الصف بـ | أو │
+      var cells = row.split(/[\u2502\|]/).filter(function(c){
+        return c.replace(/[\u2500-\u257F\s]/g,'').length > 0;
+      });
+      if(!cells.length) return;
+      var tag = idx===0 ? 'th' : 'td';
+      html += '<tr>';
+      cells.forEach(function(cell){
+        var content = cell.trim()
+          .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+          .replace(/[\u2605]/g,'★').replace(/[\u2606]/g,'☆');
+        html += '<'+tag+'>'+content+'</'+tag+'>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+  }
+
+  // ══ 2: تحويل جداول Markdown (| col | col |) ══
+  function convertMdTable(text){
+    var lines = text.split('\n');
+    var result = [];
+    var i = 0;
+    while(i < lines.length){
+      var line = lines[i];
+      if(line.trim().startsWith('|') && line.trim().endsWith('|')){
+        var tableRows = [];
+        while(i < lines.length && lines[i].trim().startsWith('|')){
+          tableRows.push(lines[i]);
+          i++;
+        }
+        // حذف سطر الفاصل (---|---) 
+        var dataRows = tableRows.filter(function(r){
+          return !/^[\s|:\-]+$/.test(r);
+        });
+        if(dataRows.length > 0){
+          var html2 = '<table class="MD-TABLE"><tbody>';
+          dataRows.forEach(function(row, ridx){
+            var cells2 = row.split('|').filter(function(c){return c.trim().length>0;});
+            var tag2 = ridx===0 ? 'th' : 'td';
+            html2 += '<tr>';
+            cells2.forEach(function(cell){
+              var c = cell.trim()
+                .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+                .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+                .replace(/[\u2705]/g,'<span style="color:#1AA886">✅</span>')
+                .replace(/[\u274c]/g,'<span style="color:#E24B4A">❌</span>')
+                .replace(/[\u26a0]/g,'<span style="color:#C49A3C">⚠</span>');
+              html2 += '<'+tag2+'>'+c+'</'+tag2+'>';
+            });
+            html2 += '</tr>';
+          });
+          html2 += '</tbody></table>';
+          result.push(html2);
+        }
+      } else {
+        result.push(line);
+        i++;
+      }
+    }
+    return result.join('\n');
+  }
+
+  // ══ 3: تطبيق التحويلات ══
+  var out = md;
+
+  // جداول ASCII أولاً
+  out = convertAsciiTable(out);
+  // جداول Markdown
+  out = convertMdTable(out);
+
+  // ══ 4: باقي Markdown ══
+  out = out
     .replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>')
-    .replace(/^## (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^### (.+)$/gm,'<h3 style="font-size:9.5pt">$1</h3>')
+    .replace(/^#{1} (.+)$/gm,'<h2 style="color:#C49A3C;font-size:12pt;margin:8pt 0 4pt">$1</h2>')
+    .replace(/^#{2} (.+)$/gm,'<h3 style="color:#EAD8A0;font-size:11pt;margin:6pt 0 3pt">$1</h3>')
+    .replace(/^#{3} (.+)$/gm,'<h4 style="color:#8A9BB0;font-size:10pt;margin:4pt 0 2pt">$1</h4>')
     .replace(/^> (.+)$/gm,'<div class="QUOTE">$1</div>')
-    .replace(/^[★\u2605\u25c6\u2022\-] (.+)$/gm,'<div class="bullet"><div class="bullet-dot"></div><div>$1</div></div>')
-    .replace(/\n\n/g,'</p><p>')
+    .replace(/^[★\u2605\u25c6\u2022] (.+)$/gm,'<div class="bullet"><div class="bullet-dot">◆</div><div>$1</div></div>')
+    .replace(/^[-•] (.+)$/gm,'<div class="bullet"><div class="bullet-dot">◆</div><div>$1</div></div>')
+    .replace(/```([\s\S]*?)```/g,'<pre class="MD-CODE">$1</pre>')
+    .replace(/`([^`]+)`/g,'<code style="background:rgba(196,154,60,0.1);padding:0 4pt;border-radius:2pt;font-size:9pt">$1</code>')
+    .replace(/\n\n/g,'</p><p style="margin:4pt 0">')
     .replace(/[\r\n]/g,'<br>');
+
+  return out;
 }
 
 function parseSections(txt){
@@ -632,6 +771,92 @@ function goSign(){
   sessionStorage.setItem('sor_session_data',JSON.stringify(SD));
   window.open('minutes_sign.html?sid='+(SD.sid||''),'_blank');
 }
+
+// ✅ SOR-ADDED | MARKDOWN-RENDERER | v8.3 | يُحوّل Markdown لـ HTML احترافي
+function mdHTML(txt){
+  if(!txt) return '';
+  var t = txt;
+
+  // ══ 1: جداول Markdown ══
+  // تحويل الجداول | col | col | → <table>
+  t = t.replace(/(?:^|\n)((?:\|[^\n]+\|\n?)+)/gm, function(match, tableBlock){
+    var rows = tableBlock.trim().split('\n').filter(function(r){ return r.trim(); });
+    if(rows.length < 2) return match;
+    var html = '<table class="MD-TBL"><thead><tr>';
+    // هيدر
+    var headers = rows[0].split('|').filter(function(c){ return c.trim(); });
+    headers.forEach(function(h){ html += '<th>'+esc(h.trim())+'</th>'; });
+    html += '</tr></thead><tbody>';
+    // تخطي سطر الفواصل (---)
+    var dataRows = rows.slice(1).filter(function(r){ return !/^[\s|:-]+$/.test(r); });
+    dataRows.forEach(function(row){
+      html += '<tr>';
+      var cells = row.split('|').filter(function(c,i,arr){ return i>0 && i<arr.length-1 || c.trim(); });
+      // تنظيف الخلايا
+      row.split('|').slice(1,-1).forEach(function(cell){
+        html += '<td>'+esc(cell.trim())+'</td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return '\n' + html + '\n';
+  });
+
+  // ══ 2: جداول ASCII ══
+  // تحويل ┌─┬─┐ و │ col │ → HTML table
+  t = t.replace(/[┌└├][-─┬┴┼┐┘┤]+[┐┘┤]\n?((?:[│][^\n]*[│]\n?)+)/gm, function(match, rows){
+    if(!rows) return match;
+    var lines = rows.split('\n').filter(function(l){ return l.includes('│') && !/^[┌└├├┤┐┘]/.test(l); });
+    if(!lines.length) return match;
+    var html = '<table class="MD-TBL"><tbody>';
+    lines.forEach(function(line, i){
+      var cells = line.split('│').filter(function(c){ return c !== undefined; }).slice(1,-1);
+      html += i===0 ? '<tr class="hdr-row">' : '<tr>';
+      cells.forEach(function(c){
+        html += i===0 ? '<th>'+esc(c.trim())+'</th>' : '<td>'+esc(c.trim())+'</td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+  });
+
+  // ══ 3: عناوين ══
+  t = t.replace(/^#{4}\s+(.+)$/gm,'<h4 class="MD-H4">$1</h4>');
+  t = t.replace(/^#{3}\s+(.+)$/gm,'<h3 class="MD-H3">$1</h3>');
+  t = t.replace(/^#{2}\s+(.+)$/gm,'<h2 class="MD-H2">$1</h2>');
+  t = t.replace(/^#{1}\s+(.+)$/gm,'<h1 class="MD-H1">$1</h1>');
+
+  // ══ 4: نص عريض ومائل ══
+  t = t.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
+  t = t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  t = t.replace(/\*(.+?)\*/g,'<em>$1</em>');
+
+  // ══ 5: قوائم ══
+  t = t.replace(/^(\s*)[-•]\s+(.+)$/gm,'<li class="MD-LI">$2</li>');
+  t = t.replace(/^(\s*)\d+\.\s+(.+)$/gm,'<li class="MD-OLI">$2</li>');
+  // تغليف li بـ ul
+  t = t.replace(/(<li class="MD-LI">[\s\S]*?<\/li>)(\s*)(?!<li)/gm, function(m){ return '<ul class="MD-UL">'+m+'</ul>'; });
+
+  // ══ 6: كود ══
+  t = t.replace(/```[\w]*\n?([\s\S]*?)```/gm,'<pre class="MD-PRE"><code>$1</code></pre>');
+  t = t.replace(/`([^`]+)`/g,'<code class="MD-CODE">$1</code>');
+
+  // ══ 7: خط أفقي ══
+  t = t.replace(/^---+$/gm,'<hr class="MD-HR">');
+
+  // ══ 8: فقرات ══
+  t = t.replace(/\n\n+/g,'</p><p class="MD-P">');
+  t = '<p class="MD-P">' + t + '</p>';
+
+  // ══ 9: تنظيف ══
+  t = t.replace(/<p class="MD-P"><\/p>/g,'');
+  t = t.replace(/<p class="MD-P">(<(?:h[1-4]|table|ul|pre|hr)[^>]*>)/g,'$1');
+  t = t.replace(/(<\/(?:h[1-4]|table|ul|pre|hr)>)<\/p>/g,'$1');
+
+  return t;
+}
+
 </script>
 </body>
 </html>
