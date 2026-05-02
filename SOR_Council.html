@@ -418,24 +418,26 @@ select option{background:var(--s2)}
 
 /* ✅ SOR-ADDED | COMPLIANCE-BAR | v8.3 | شريط الامتثال القانوني */
 .compliance-bar{
-  background:rgba(26,168,134,0.06);
-  border-bottom:1px solid rgba(26,168,134,0.2);
-  padding:6px 20px;
+  background:#EDF7F4;
+  border-top:3px solid #B8860B;
+  border-bottom:1px solid rgba(184,134,11,0.2);
+  padding:8px 20px;
   display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:6px;font-size:10px;direction:rtl;
   font-family:'IBM Plex Mono','Cairo',monospace;
+  box-shadow:0 2px 8px rgba(184,134,11,0.08);
 }
-.cb-legal{color:#1AA886;display:flex;align-items:center;gap:6px;line-height:1.4}
+.cb-legal{color:#1A7A5E;display:flex;align-items:center;gap:6px;line-height:1.4;font-weight:600}
 .cb-legal::before{content:'🔒';font-size:11px}
 .cb-badges{display:flex;gap:6px;flex-wrap:wrap}
 .cb-badge{
   padding:2px 8px;border-radius:10px;font-size:9px;
   border:1px solid;font-family:'IBM Plex Mono',monospace;letter-spacing:.5px;
 }
-.cb-nca{background:rgba(184,134,11,0.08);border-color:rgba(184,134,11,0.3);color:#B8860B}
-.cb-pdpl{background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.25);color:#3B82F6}
-.cb-sdaia{background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.25);color:#8B5CF6}
-.cb-https{background:rgba(26,168,134,0.08);border-color:rgba(26,168,134,0.25);color:#1AA886}
+.cb-nca{background:#FFF8E6;border-color:#B8860B;color:#7A5C00;font-weight:700;border-width:1.5px}
+.cb-pdpl{background:#EEF2FF;border-color:#2E5090;color:#1E3A7A;font-weight:700;border-width:1.5px}
+.cb-sdaia{background:#F5F0FF;border-color:#6B4FBB;color:#4A2D9C;font-weight:700;border-width:1.5px}
+.cb-https{background:#EDF7F4;border-color:#1AA886;color:#0F7A5C;font-weight:700;border-width:1.5px}
 
 /* Privacy Notice Modal */
 .privacy-modal-ov{
@@ -538,9 +540,9 @@ input::placeholder,textarea::placeholder{color:#7A6548!important}
 <body>
 <!-- ✅ SOR-ADDED | COMPLIANCE-BAR | v8.3 -->
 <div class="compliance-bar">
-  <div class="cb-legal">
+  <div class="cb-legal" style="color:#1A7A5E;font-weight:700">
     واجهة تشغيل — نظام تحليل بيانات مؤسسي مؤقت | لا يخزن بيانات شخصية | لا يتتبع الأفراد
-    <span style="color:var(--t3);cursor:pointer;text-decoration:underline" onclick="openPrivacy()">سياسة الخصوصية</span>
+    <span style="color:#B8860B;cursor:pointer;text-decoration:underline;font-weight:700;margin-right:8px" onclick="openPrivacy()">🔐 سياسة الخصوصية</span>
   </div>
   <div class="cb-badges">
     <span class="cb-badge cb-https">HTTPS ✓</span>
