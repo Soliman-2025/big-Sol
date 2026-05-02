@@ -2,16 +2,29 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="واجهة تشغيل — نظام تحليل بيانات داخلي متوافق مع متطلبات الحوكمة الوطنية">
+<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>غرفة العمليات الاستراتيجية</title>
+<title>واجهة تشغيل — نظام تحليل بيانات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --gold:#C49A3C;--gold-l:#E8C060;--gold-d:#8A6A20;
-  --ink:#07090F;--s1:#0D1118;--s2:#111822;--s3:#161E2C;
-  --b1:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.1);
+  /* ══ أبيض + ذهبي عتيق — SOR v8.3 ══ */
+  --bg:#FAFAF8;--s2:#F5F3EE;--s3:#F0EDE6;--s4:#EAE6DC;
+  --tx:#1A1208;--t2:#3D2E1A;--t3:#7A6548;
+  --bdr:rgba(184,134,11,0.2);--bdr2:rgba(184,134,11,0.12);
+  --gold:#B8860B;--gold-dim:rgba(184,134,11,0.1);
+  --teal:#1AA886;--teal-dim:rgba(26,168,134,0.1);
+  --red:#C0392B;--red-dim:rgba(192,57,43,0.08);
+  --blue:#2E5090;--blue-dim:rgba(46,80,144,0.08);
+  --purple:#6B4FBB;--purple-dim:rgba(107,79,187,0.08);
+  --green:#1E7E34;--green-dim:rgba(30,126,52,0.08);
+
+  --gold:#B8860B;--gold-l:#C49A3C;--gold-d:#8A6A20;
+  --ink:#F7F5F0;--s1:#0D1118;--s2:#111822;--s3:#161E2C;
+  --b1:rgba(184,134,11,0.09);--b2:rgba(184,134,11,0.15);
   --t1:#F0EDE6;--t2:rgba(240,237,230,0.65);--t3:rgba(240,237,230,0.3);
   --teal:#1AA886;--red:#EF4444;--green:#22C55E;--blue:#3B82F6;
   --r:10px;
@@ -20,7 +33,7 @@ body{background:var(--ink);color:var(--t1);font-family:'Tajawal',sans-serif;dire
 
 /* ══ BACKGROUND ═══════════════════════════════ */
 body::before{content:'';position:fixed;inset:0;background:
-  radial-gradient(ellipse 80% 50% at 20% 0%,rgba(196,154,60,0.06) 0%,transparent 60%),
+  radial-gradient(ellipse 80% 50% at 20% 0%,rgba(184,134,11,0.06) 0%,transparent 60%),
   radial-gradient(ellipse 60% 40% at 80% 100%,rgba(26,168,134,0.04) 0%,transparent 60%);
   pointer-events:none;z-index:0}
 
@@ -31,14 +44,14 @@ body::before{content:'';position:fixed;inset:0;background:
 .hdr-logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold-d),var(--gold));
   border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:900;color:#07090F;letter-spacing:-0.5px;flex-shrink:0}
+  font-size:11px;font-weight:900;color:#F7F5F0;letter-spacing:-0.5px;flex-shrink:0}
 .logo-text{font-size:15px;font-weight:900;color:#fff}
 .logo-text span{color:var(--gold)}
 .logo-sub{font-size:9px;color:var(--t3);margin-top:1px;font-weight:400}
-.logo-motto{font-size:8px;color:rgba(196,154,60,0.5);margin-top:2px;font-style:italic;letter-spacing:.3px}
+.logo-motto{font-size:8px;color:rgba(184,134,11,0.5);margin-top:2px;font-style:italic;letter-spacing:.3px}
 .hdr-right{display:flex;align-items:center;gap:8px}
 .badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;
-  background:rgba(196,154,60,0.1);border:1px solid rgba(196,154,60,0.2);color:var(--gold)}
+  background:rgba(184,134,11,0.1);border:1px solid rgba(184,134,11,0.2);color:var(--gold)}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);
   animation:pulse-dot 2s infinite}
 @keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,0.4)}
@@ -52,12 +65,12 @@ body::before{content:'';position:fixed;inset:0;background:
 .card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);
   padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(196,154,60,0.3),transparent)}
+  background:linear-gradient(90deg,transparent,rgba(184,134,11,0.3),transparent)}
 .card-title{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(196,154,60,0.6);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.card-title::after{content:'';flex:1;height:1px;background:rgba(196,154,60,0.1)}
+  color:rgba(184,134,11,0.6);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:rgba(184,134,11,0.1)}
 .step-num{width:22px;height:22px;border-radius:50%;background:var(--gold);
-  color:#07090F;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  color:#F7F5F0;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hidden{display:none!important}
 
 /* ══ INPUTS ════════════════════════════════════ */
@@ -66,7 +79,7 @@ body::before{content:'';position:fixed;inset:0;background:
   border:1px solid var(--b1);border-radius:8px;color:var(--t1);
   font-size:13px;font-family:'Tajawal',sans-serif;direction:rtl;
   outline:none;transition:border .2s,background .2s}
-.inp:focus,textarea:focus,select:focus{border-color:rgba(196,154,60,0.4);background:rgba(255,255,255,0.05)}
+.inp:focus,textarea:focus,select:focus{border-color:rgba(184,134,11,0.4);background:rgba(184,134,11,0.07)}
 textarea{min-height:110px;resize:vertical;line-height:1.6}
 select option{background:var(--s2)}
 .key-row{display:flex;align-items:center;gap:8px}
@@ -80,22 +93,22 @@ select option{background:var(--s2)}
 .btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;
   font-family:'Tajawal',sans-serif;font-weight:700;font-size:13px;transition:all .2s}
 .btn-gold{background:linear-gradient(135deg,var(--gold-d) 0%,var(--gold) 50%,var(--gold-l) 100%);
-  color:#07090F;box-shadow:0 2px 12px rgba(196,154,60,0.25)}
-.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(196,154,60,0.35)}
+  color:#F7F5F0;box-shadow:0 2px 12px rgba(184,134,11,0.25)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(184,134,11,0.35)}
 .btn-gold:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
 .btn-ghost{background:rgba(255,255,255,.04);color:var(--t2);border:1px solid var(--b1)}
 .btn-ghost:hover{background:rgba(255,255,255,.07);border-color:var(--b2)}
-.btn-file{background:rgba(196,154,60,0.08);border:1px solid rgba(196,154,60,0.2);
+.btn-file{background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.2);
   color:var(--gold);padding:8px 14px;font-size:12px}
-.btn-file:hover{background:rgba(196,154,60,0.14)}
+.btn-file:hover{background:rgba(184,134,11,0.14)}
 
 /* ══ COUNCIL GRID ══════════════════════════════ */
 .eg{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:7px;margin-top:12px}
 .ec{background:rgba(255,255,255,0.02);border:1px solid var(--b1);
   border-top:2px solid var(--ec,var(--gold));border-radius:8px;padding:10px;
   cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.ec:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1)}
-.ec.thinking{background:rgba(196,154,60,0.04);border-top-color:var(--ec);
+.ec:hover{background:rgba(184,134,11,0.06);border-color:rgba(184,134,11,0.15)}
+.ec.thinking{background:rgba(184,134,11,0.04);border-top-color:var(--ec);
   animation:think 1.5s ease-in-out infinite}
 .ec.done{border-top-color:var(--green);background:rgba(34,197,94,0.04)}
 .ec.err{border-top-color:var(--red);background:rgba(239,68,68,0.04)}
@@ -112,21 +125,21 @@ select option{background:var(--s2)}
 .status-bar{display:flex;align-items:center;gap:9px;padding:8px 12px;
   background:rgba(255,255,255,0.02);border-radius:7px;font-size:12px;
   color:var(--t2);margin-bottom:10px}
-.spin{width:12px;height:12px;border:2px solid rgba(196,154,60,0.3);
+.spin{width:12px;height:12px;border:2px solid rgba(184,134,11,0.3);
   border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ══ LIVE PREVIEW ══════════════════════════════ */
 .lp{display:none;background:rgba(255,255,255,0.02);
-  border:1px solid rgba(196,154,60,0.15);border-right:3px solid var(--lpc,var(--gold));
+  border:1px solid rgba(184,134,11,0.15);border-right:3px solid var(--lpc,var(--gold));
   border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px;animation:fadeIn .3s}
 .lp.vis{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .lp-n{font-size:11px;font-weight:700;margin-bottom:6px}
 .lp-b{font-size:12px;color:var(--t2);line-height:1.75;white-space:pre-wrap;
-  max-height:420px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(196,154,60,0.3) transparent}
+  max-height:420px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(184,134,11,0.3) transparent}
 .lp-b::-webkit-scrollbar{width:4px}
-.lp-b::-webkit-scrollbar-thumb{background:rgba(196,154,60,0.3);border-radius:2px}
+.lp-b::-webkit-scrollbar-thumb{background:rgba(184,134,11,0.3);border-radius:2px}
 .lp-b::-webkit-scrollbar-track{background:transparent}
 
 /* ══ FORMATION PANEL ════════════════════════════ */
@@ -157,21 +170,21 @@ select option{background:var(--s2)}
 .bio-sig{font-size:12px;color:var(--gold);font-style:italic;border-top:1px solid var(--b1);padding-top:10px}
 .bio-methods{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
 .bio-tag{font-size:10px;padding:2px 8px;border-radius:12px;
-  background:rgba(196,154,60,0.1);border:1px solid rgba(196,154,60,0.2);color:var(--gold)}
+  background:rgba(184,134,11,0.1);border:1px solid rgba(184,134,11,0.2);color:var(--gold)}
 
 /* ══ REPORT ════════════════════════════════════ */
-.rpt-hdr{background:linear-gradient(135deg,#07090F,#0D1520 50%,#07090F);
-  border:1px solid rgba(196,154,60,0.2);border-top:3px solid var(--gold);
+.rpt-hdr{background:linear-gradient(135deg,#F7F5F0,#0D1520 50%,#F7F5F0);
+  border:1px solid rgba(184,134,11,0.2);border-top:3px solid var(--gold);
   border-radius:10px;padding:22px 24px 18px;margin-bottom:14px;position:relative;overflow:hidden}
 .rpt-hdr::after{content:'';position:absolute;top:0;right:0;width:200px;height:100%;
-  background:radial-gradient(ellipse at top right,rgba(196,154,60,0.07),transparent 70%)}
+  background:radial-gradient(ellipse at top right,rgba(184,134,11,0.07),transparent 70%)}
 .rpt-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(196,154,60,0.55);margin-bottom:6px}
+  color:rgba(184,134,11,0.55);margin-bottom:6px}
 .rpt-title{font-size:19px;font-weight:900;color:#fff;margin-bottom:2px}
 .rpt-sub{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:16px}
 .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
-  gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05)}
-.ml{font-size:8px;font-weight:700;letter-spacing:1.5px;color:rgba(196,154,60,0.5);
+  gap:10px;padding-top:14px;border-top:1px solid rgba(184,134,11,0.07)}
+.ml{font-size:8px;font-weight:700;letter-spacing:1.5px;color:rgba(184,134,11,0.5);
   text-transform:uppercase;margin-bottom:2px}
 .mv{font-size:11px;font-weight:700;color:#fff}
 .status-ok{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;
@@ -182,16 +195,14 @@ select option{background:var(--s2)}
   border-radius:8px;margin-bottom:8px;overflow:hidden}
 .exp-hdr{display:flex;align-items:center;gap:8px;padding:9px 13px;
   background:rgba(255,255,255,0.02);border-bottom:1px solid var(--b1);cursor:pointer}
-.exp-hdr:hover{background:rgba(255,255,255,0.04)}
+.exp-hdr:hover{background:rgba(184,134,11,0.06)}
 .exp-ico2{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;
   justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
 .exp-nm{font-size:11px;font-weight:700;color:#fff;flex:1}
 .exp-role-sm{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
 .exp-tag{font-size:9px;padding:2px 7px;border-radius:7px;font-weight:600}
-.exp-chat-btn{padding:3px 9px;background:rgba(196,154,60,0.1);
-  border:1px solid rgba(196,154,60,0.2);border-radius:6px;
-  color:var(--gold);font-size:9px;cursor:pointer;font-weight:700;font-family:inherit}
-.exp-bio-btn{padding:3px 9px;background:rgba(255,255,255,0.05);
+
+.exp-bio-btn{padding:3px 9px;background:rgba(184,134,11,0.07);
   border:1px solid var(--b1);border-radius:6px;
   color:var(--t3);font-size:9px;cursor:pointer;font-weight:600;font-family:inherit}
 .exp-body{padding:11px 13px;font-size:12px;color:var(--t2);line-height:1.8;
@@ -207,32 +218,32 @@ select option{background:var(--s2)}
 
 /* ══ SEAL ══════════════════════════════════════ */
 .seal-wrap{display:flex;flex-direction:column;align-items:center;margin:20px auto 14px;gap:8px}
-.seal-cap{font-size:9px;letter-spacing:2px;color:rgba(196,154,60,0.4);
+.seal-cap{font-size:9px;letter-spacing:2px;color:rgba(184,134,11,0.4);
   text-transform:uppercase;font-weight:700}
 .sig-blk{max-width:320px;margin:0 auto 12px;text-align:center;
   padding:16px 22px 12px;position:relative;
-  background:linear-gradient(135deg,rgba(196,154,60,0.06),rgba(196,154,60,0.02));
-  border:1px solid rgba(196,154,60,0.15);border-top:2px solid rgba(196,154,60,0.4);border-radius:8px}
+  background:linear-gradient(135deg,rgba(184,134,11,0.06),rgba(184,134,11,0.02));
+  border:1px solid rgba(184,134,11,0.15);border-top:2px solid rgba(184,134,11,0.4);border-radius:8px}
 .sig-blk::before{content:'◆';position:absolute;top:-8px;left:50%;
   transform:translateX(-50%);background:var(--ink);padding:0 6px;color:var(--gold);font-size:10px}
-.sig-lbl{font-size:8px;letter-spacing:2px;color:rgba(196,154,60,0.45);
+.sig-lbl{font-size:8px;letter-spacing:2px;color:rgba(184,134,11,0.45);
   text-transform:uppercase;margin-bottom:8px;font-weight:700}
 .sig-line{width:50%;height:1px;margin:4px auto 8px;
-  background:linear-gradient(to right,transparent,rgba(196,154,60,0.5),transparent)}
-.sig-nm{font-size:13px;font-weight:700;color:rgba(196,154,60,0.88)}
+  background:linear-gradient(to right,transparent,rgba(184,134,11,0.5),transparent)}
+.sig-nm{font-size:13px;font-weight:700;color:rgba(184,134,11,0.88)}
 .sig-rl{font-size:10px;color:rgba(255,255,255,0.25);margin-top:2px}
 .sig-dt{font-size:9px;color:rgba(255,255,255,0.18);margin-top:8px;
-  padding-top:8px;border-top:1px solid rgba(255,255,255,0.05)}
+  padding-top:8px;border-top:1px solid rgba(184,134,11,0.07)}
 .verdict-box{border-radius:8px;padding:14px;margin-bottom:12px;
   border:1px solid rgba(34,197,94,0.25);background:rgba(34,197,94,0.05)}
 .verdict-box h3{font-size:13px;font-weight:900;color:#fff;margin-bottom:4px}
 .verdict-box p{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6}
-.disc{font-size:9px;color:rgba(255,255,255,0.2);text-align:center;
+.disc{font-size:9px;color:rgba(184,134,11,0.25);text-align:center;
   margin-top:8px;line-height:1.6;padding-top:8px;border-top:1px solid var(--b1)}
-.print-btn{width:100%;padding:10px;background:rgba(196,154,60,0.08);
-  border:1px solid rgba(196,154,60,0.2);border-radius:8px;color:var(--gold);
+.print-btn{width:100%;padding:10px;background:rgba(184,134,11,0.08);
+  border:1px solid rgba(184,134,11,0.2);border-radius:8px;color:var(--gold);
   font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
-.print-btn:hover{background:rgba(196,154,60,0.16)}
+.print-btn:hover{background:rgba(184,134,11,0.16)}
 
 /* ══ CHAT MODAL ════════════════════════════════ */
 .chat-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);
@@ -245,9 +256,9 @@ select option{background:var(--s2)}
   width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;font-size:16px;
   transition:all .25s;flex-shrink:0;
-  background:rgba(255,255,255,0.05);color:var(--t2);
+  background:rgba(184,134,11,0.07);color:var(--t2);
 }
-.voice-btn:hover{background:rgba(196,154,60,0.15);color:var(--gold)}
+.voice-btn:hover{background:rgba(184,134,11,0.15);color:var(--gold)}
 .voice-btn.recording{
   background:rgba(226,75,74,0.2)!important;
   color:#E24B4A!important;
@@ -286,21 +297,21 @@ select option{background:var(--s2)}
 @keyframes vbar{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
 .tts-btn{
   width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;
-  background:rgba(255,255,255,0.04);color:var(--t3);font-size:12px;
+  background:rgba(184,134,11,0.06);color:var(--t3);font-size:12px;
   transition:all .2s;display:flex;align-items:center;justify-content:center;
 }
 .tts-btn:hover{background:rgba(26,168,134,0.15);color:var(--teal)}
 .tts-btn.playing{color:var(--teal);animation:voicePulse 0.8s infinite}
 .msg-voice-row{display:flex;align-items:center;gap:6px;margin-top:4px}
 .msg-council-hdr{font-size:10px;color:var(--gold);font-family:monospace;letter-spacing:1px;margin:8px 0 3px;padding-right:4px;border-right:2px solid var(--gold)}
-.msg-council-resp{background:rgba(196,154,60,0.04);border:1px solid rgba(196,154,60,0.12);border-radius:8px;padding:10px 12px;margin:4px 0;font-size:12px;line-height:1.7}
+.msg-council-resp{background:rgba(184,134,11,0.04);border:1px solid rgba(184,134,11,0.12);border-radius:8px;padding:10px 12px;margin:4px 0;font-size:12px;line-height:1.7}
 .msg-council-resp .exp-name{font-size:10px;font-weight:700;color:var(--gold);margin-bottom:4px}
 .msg-council-resp .exp-ans{color:var(--t2)}
-.chat-history-btn{font-size:10px;color:var(--t3);padding:4px 8px;border:1px solid rgba(255,255,255,0.08);border-radius:6px;background:transparent;cursor:pointer;margin:4px 2px}
-.chat-history-btn:hover{color:var(--gold);border-color:rgba(196,154,60,0.3)}
+.chat-history-btn{font-size:10px;color:var(--t3);padding:4px 8px;border:1px solid rgba(184,134,11,0.12);border-radius:6px;background:transparent;cursor:pointer;margin:4px 2px}
+.chat-history-btn:hover{color:var(--gold);border-color:rgba(184,134,11,0.3)}
 .council-progress{font-size:10px;color:var(--t3);font-family:monospace;margin:4px 0;padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:6px}
 
-.chat-box{background:var(--s2);border:1px solid rgba(196,154,60,0.2);
+.chat-box{background:var(--s2);border:1px solid rgba(184,134,11,0.2);
   border-radius:12px;width:100%;max-width:560px;max-height:80vh;
   display:flex;flex-direction:column}
 .chat-hdr{display:flex;align-items:center;justify-content:space-between;
@@ -314,10 +325,10 @@ select option{background:var(--s2)}
   border:1px solid var(--b1);border-radius:7px;color:#fff;
   font-size:12px;font-family:'Tajawal',sans-serif;direction:rtl;outline:none}
 .chat-send{padding:8px 14px;background:linear-gradient(135deg,var(--gold-d),var(--gold));
-  color:#07090F;border:none;border-radius:7px;font-weight:700;cursor:pointer;
+  color:#F7F5F0;border:none;border-radius:7px;font-weight:700;cursor:pointer;
   font-size:12px;font-family:inherit}
 .msg-user{text-align:left;margin:5px 0}
-.msg-user span{background:rgba(196,154,60,.12);border:1px solid rgba(196,154,60,.2);
+.msg-user span{background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.2);
   border-radius:8px 8px 0 8px;padding:7px 11px;font-size:12px;color:var(--gold);
   display:inline-block;max-width:85%}
 .msg-ai{margin:5px 0}
@@ -337,13 +348,13 @@ select option{background:var(--s2)}
 /* ══ SCROLL ════════════════════════════════════ */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.2)}
+::-webkit-scrollbar-thumb{background:rgba(184,134,11,0.15);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(184,134,11,0.25)}
 
 /* ══ VOICE CHAT SYSTEM v2.0 ══ */
 .voice-bar{
   display:flex;align-items:center;gap:8px;padding:8px 12px;
-  background:rgba(196,154,60,0.06);border-top:1px solid rgba(196,154,60,0.12);
+  background:rgba(184,134,11,0.06);border-top:1px solid rgba(184,134,11,0.12);
   transition:all .3s;
 }
 .voice-status{
@@ -359,8 +370,8 @@ select option{background:var(--s2)}
   display:flex;align-items:center;justify-content:center;font-size:16px;
   transition:all .25s;flex-shrink:0;
 }
-.btn-voice-live.idle{background:rgba(196,154,60,0.1);border:1.5px solid rgba(196,154,60,0.3)}
-.btn-voice-live.idle:hover{background:rgba(196,154,60,0.2);transform:scale(1.1)}
+.btn-voice-live.idle{background:rgba(184,134,11,0.1);border:1.5px solid rgba(184,134,11,0.3)}
+.btn-voice-live.idle:hover{background:rgba(184,134,11,0.2);transform:scale(1.1)}
 .btn-voice-live.active{background:rgba(226,75,74,0.15);border:1.5px solid var(--red);
   animation:voicePulse .8s ease-in-out infinite alternate}
 @keyframes voicePulse{from{box-shadow:0 0 0 0 rgba(226,75,74,0.3)}to{box-shadow:0 0 0 8px rgba(226,75,74,0)}}
@@ -390,7 +401,7 @@ select option{background:var(--s2)}
 
 .auto-send-toggle{
   font-size:10px;padding:3px 8px;border-radius:10px;cursor:pointer;
-  border:1px solid rgba(255,255,255,0.08);background:transparent;
+  border:1px solid rgba(184,134,11,0.12);background:transparent;
   color:var(--t3);transition:all .2s;white-space:nowrap;
 }
 .auto-send-toggle.on{
@@ -399,14 +410,187 @@ select option{background:var(--s2)}
 
 /* interim transcript */
 .interim-txt{
-  font-size:12px;color:rgba(196,154,60,0.6);font-style:italic;
-  padding:6px 12px;border-right:2px solid rgba(196,154,60,0.3);
+  font-size:12px;color:rgba(184,134,11,0.6);font-style:italic;
+  padding:6px 12px;border-right:2px solid rgba(184,134,11,0.3);
   margin:4px 8px;line-height:1.5;min-height:20px;
 }
+
+
+/* ✅ SOR-ADDED | COMPLIANCE-BAR | v8.3 | شريط الامتثال القانوني */
+.compliance-bar{
+  background:rgba(26,168,134,0.06);
+  border-bottom:1px solid rgba(26,168,134,0.2);
+  padding:6px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:6px;font-size:10px;direction:rtl;
+  font-family:'IBM Plex Mono','Cairo',monospace;
+}
+.cb-legal{color:#1AA886;display:flex;align-items:center;gap:6px;line-height:1.4}
+.cb-legal::before{content:'🔒';font-size:11px}
+.cb-badges{display:flex;gap:6px;flex-wrap:wrap}
+.cb-badge{
+  padding:2px 8px;border-radius:10px;font-size:9px;
+  border:1px solid;font-family:'IBM Plex Mono',monospace;letter-spacing:.5px;
+}
+.cb-nca{background:rgba(184,134,11,0.08);border-color:rgba(184,134,11,0.3);color:#B8860B}
+.cb-pdpl{background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.25);color:#3B82F6}
+.cb-sdaia{background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.25);color:#8B5CF6}
+.cb-https{background:rgba(26,168,134,0.08);border-color:rgba(26,168,134,0.25);color:#1AA886}
+
+/* Privacy Notice Modal */
+.privacy-modal-ov{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9000;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.privacy-modal-ov.open{opacity:1;pointer-events:all}
+.privacy-modal{
+  background:#F0EDE6;border:1px solid rgba(184,134,11,0.25);
+  border-radius:12px;width:100%;max-width:640px;max-height:85vh;
+  overflow-y:auto;padding:28px;direction:rtl;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.privacy-modal h2{
+  font-family:'Scheherazade New',serif;font-size:18px;
+  color:#1A1208;margin-bottom:16px;
+  border-bottom:1px solid rgba(184,134,11,0.2);padding-bottom:10px;
+}
+.privacy-modal h3{font-size:13px;color:#B8860B;margin:14px 0 6px;font-weight:700}
+.privacy-modal p{font-size:12px;color:#5C5040;line-height:1.8;margin-bottom:8px}
+.privacy-modal .legal-box{
+  background:rgba(26,168,134,0.06);border:1px solid rgba(26,168,134,0.2);
+  border-radius:8px;padding:14px;margin:14px 0;
+}
+.privacy-modal .legal-box p{color:#1AA886;font-size:12px;font-weight:600}
+.privacy-close{
+  width:100%;margin-top:20px;padding:10px;
+  background:linear-gradient(135deg,#B8860B,#D4A017);
+  color:#FAFAF8;border:none;border-radius:6px;
+  font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;
+}
+
+
+/* ══ WHITE+GOLD OVERRIDE — SOR v8.3 ══ */
+:root{
+  --ink:#FAFAF8!important;
+  --obsidian:#F5F3EE!important;
+  --bg-primary:#FAFAF8!important;
+  --bg-secondary:#F5F3EE!important;
+  --bg-tertiary:#F0EDE6!important;
+  --tx-primary:#1A1208!important;
+  --tx-secondary:#3D2E1A!important;
+  --tx-tertiary:#7A6548!important;
+  --gold-accent:#B8860B!important;
+}
+html,body{
+  background:#FAFAF8!important;
+  color:#1A1208!important;
+}
+/* Cards & Panels */
+.card,.panel,.modal,.sidebar,.sb,.topbar,.tb{
+  background:#FFFFFF!important;
+  border-color:rgba(184,134,11,0.15)!important;
+  color:#1A1208!important;
+}
+/* نص داخل البطاقات */
+.card *:not(button):not(input):not(select):not(textarea):not(.btn):not([class*="chip"]):not([class*="badge"]):not([class*="status"]):not([class*="tag"]) {
+  color:inherit;
+}
+/* Sidebar */
+.sidebar,.sb-wrap,.sb-inner,.nav-sidebar{
+  background:#F0EDE6!important;
+  border-right-color:rgba(184,134,11,0.15)!important;
+}
+/* Topbar */
+.topbar,.tb-wrap,.header,.hdr{
+  background:rgba(250,250,248,0.97)!important;
+  border-bottom-color:rgba(184,134,11,0.15)!important;
+}
+/* Tables */
+table th{background:rgba(184,134,11,0.08)!important;color:#5C3D0A!important}
+table td{color:#1A1208!important;border-color:rgba(184,134,11,0.1)!important}
+table tr:nth-child(even) td{background:rgba(184,134,11,0.04)!important}
+/* Inputs */
+input,select,textarea{
+  background:#FFFFFF!important;
+  border-color:rgba(184,134,11,0.2)!important;
+  color:#1A1208!important;
+}
+input::placeholder,textarea::placeholder{color:#7A6548!important}
+/* KPI cards */
+.kpi{background:#FFFFFF!important;border:1px solid rgba(184,134,11,0.15)!important}
+.kpi-n{color:#B8860B!important}
+.kpi-l{color:#5C5040!important}
+/* Section headers */
+.sec-title,.card-title,.sec-hdr{color:#1A1208!important}
+.sec-sub,.card-sub{color:#5C5040!important}
+/* Status chips */
+.s-done{background:rgba(30,126,52,0.1)!important;color:#1E7E34!important;border-color:rgba(30,126,52,0.2)!important}
+.s-pending{background:rgba(184,134,11,0.08)!important;color:#8B6914!important;border-color:rgba(184,134,11,0.2)!important}
+.s-active{background:rgba(26,168,134,0.1)!important;color:#1AA886!important;border-color:rgba(26,168,134,0.2)!important}
+/* Scroll */
+::-webkit-scrollbar-track{background:#F0EDE6!important}
+::-webkit-scrollbar-thumb{background:rgba(184,134,11,0.25)!important}
+/* END WHITE+GOLD OVERRIDE */
 
 </style>
 </head>
 <body>
+<!-- ✅ SOR-ADDED | COMPLIANCE-BAR | v8.3 -->
+<div class="compliance-bar">
+  <div class="cb-legal">
+    واجهة تشغيل — نظام تحليل بيانات مؤسسي مؤقت | لا يخزن بيانات شخصية | لا يتتبع الأفراد
+    <span style="color:var(--t3);cursor:pointer;text-decoration:underline" onclick="openPrivacy()">سياسة الخصوصية</span>
+  </div>
+  <div class="cb-badges">
+    <span class="cb-badge cb-https">HTTPS ✓</span>
+    <span class="cb-badge cb-nca">NCA متوافق</span>
+    <span class="cb-badge cb-pdpl">PDPL متوافق</span>
+    <span class="cb-badge cb-sdaia">SDAIA متوافق</span>
+  </div>
+</div>
+
+<!-- Privacy & Compliance Modal -->
+<div class="privacy-modal-ov" id="privacyModal">
+  <div class="privacy-modal">
+    <h2>🔒 سياسة الخصوصية والامتثال القانوني</h2>
+
+    <div class="legal-box">
+      <p>✅ هذا النظام لا يخزن بيانات شخصية ولا يقوم بتتبع الأفراد، ويعمل كأداة تحليل مؤقتة للبيانات المدخلة فقط.</p>
+    </div>
+
+    <h3>🏛 تعريف النظام</h3>
+    <p>واجهة تشغيل (Web Interface) لنظام تحليل بيانات داخلي متوافق مع متطلبات الحوكمة الوطنية. يعمل النظام كأداة تحليلية استشارية تُقدّم مخرجات للمساعدة في اتخاذ القرار فقط.</p>
+
+    <h3>🔐 الأمن السيبراني — NCA Saudi</h3>
+    <p>• الاتصال مشفّر عبر HTTPS بالكامل</p>
+    <p>• لا تُخزَّن بيانات المستخدمين على خوادم خارجية</p>
+    <p>• جميع العمليات تتم في الذاكرة المؤقتة (Stateless Processing)</p>
+    <p>• الجلسة تنتهي تلقائياً عند إغلاق المتصفح</p>
+
+    <h3>📋 حماية البيانات — PDPL</h3>
+    <p>• لا تُجمَع بيانات شخصية من المستخدمين</p>
+    <p>• البيانات المُدخَلة تُعالَج مؤقتاً ولا تُحفَظ</p>
+    <p>• التحليلات تُنتَج بواسطة نماذج ذكاء اصطناعي وتُعرَض للمستخدم مباشرة</p>
+    <p>• لا يوجد تتبع للأفراد أو جمع لبيانات التصفح</p>
+
+    <h3>🏢 حوكمة البيانات — سدايا</h3>
+    <p>• <strong style="color:#1A1208">مصدر البيانات:</strong> مُدخَلة من المستخدم مباشرة</p>
+    <p>• <strong style="color:#1A1208">تصنيف البيانات:</strong> بيانات مؤسسية مؤقتة — غير محفوظة</p>
+    <p>• <strong style="color:#1A1208">ملكية البيانات:</strong> الجهة المستخدمة — لا تنتقل لأي طرف ثالث</p>
+    <p>• <strong style="color:#1A1208">معالجة الذكاء الاصطناعي:</strong> عبر Anthropic API وفق سياسة الخصوصية الخاصة بهم</p>
+
+    <h3>⚖️ إخلاء المسؤولية</h3>
+    <p>التوصيات الصادرة عن هذا النظام استشارية بحتة ولا تُشكّل قراراً ملزماً. المسؤولية البشرية مرجع نهائي دائماً. القرار الأخير لصاحب الصلاحية وحده.</p>
+
+    <p style="font-size:10px;color:var(--t3);margin-top:12px;text-align:center">
+      متوافق مع: PDPL · SDAIA 2026 · NCA Saudi · Anthropic Usage Policy<br>
+      سليمان إبراهيم آل حويس القوزي · المؤسس · 2026م
+    </p>
+    <button class="privacy-close" onclick="closePrivacy()">✓ فهمت — إغلاق</button>
+  </div>
+</div>
+
 
 <!-- HEADER -->
 <header class="hdr">
@@ -520,7 +704,7 @@ select option{background:var(--s2)}
     </div>
     <div style="display:flex;gap:6px">
       <button class="btn btn-ghost" onclick="copyRpt()" style="font-size:11px;padding:5px 12px">📋 نسخ</button>
-      <button class="btn btn-ghost" onclick="openPrintRoom()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(196,154,60,0.25),rgba(196,154,60,0.08));border-color:rgba(196,154,60,0.5);color:#E8D5A0;font-weight:700">🖨 طباعة المحضر</button>
+      <button class="btn btn-ghost" onclick="openPrintRoom()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(184,134,11,0.25),rgba(184,134,11,0.08));border-color:rgba(184,134,11,0.5);color:#E8D5A0;font-weight:700">🖨 طباعة المحضر</button>
       <button class="btn btn-ghost" onclick="openSignPage()" style="font-size:11px;padding:5px 12px;background:linear-gradient(135deg,rgba(26,168,134,0.2),rgba(26,168,134,0.05));border-color:rgba(26,168,134,0.35);color:#7ECFC0">✦ محضر + توقيع</button>
       <button class="btn btn-ghost" onclick="printEn()" style="font-size:11px;padding:5px 12px">🖨 English PDF</button>
     </div>
@@ -557,10 +741,10 @@ select option{background:var(--s2)}
       <div style="display:flex;align-items:center;gap:8px;flex:1">
         <div class="chat-title" id="chatTitle">💬 حوار مع الخبير</div>
         <button id="btnCouncilChat" onclick="switchToCouncilChat()"
-          style="font-size:10px;padding:3px 10px;border-radius:12px;border:1px solid rgba(196,154,60,0.4);background:rgba(196,154,60,0.08);color:#C49A3C;cursor:pointer;transition:all .2s"
+          style="font-size:10px;padding:3px 10px;border-radius:12px;border:1px solid rgba(184,134,11,0.4);background:rgba(184,134,11,0.08);color:#B8860B;cursor:pointer;transition:all .2s"
           title="اسأل كل المجلس">⬡ المجلس كله</button>
         <button id="btnExpertChat" onclick="switchToExpertChat()"
-          style="font-size:10px;padding:3px 10px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:#5A6A75;cursor:pointer;display:none"
+          style="font-size:10px;padding:3px 10px;border-radius:12px;border:1px solid rgba(184,134,11,0.15);background:transparent;color:#5A6A75;cursor:pointer;display:none"
           title="ارجع للخبير المحدد">↩ الخبير</button>
       </div>
       <button class="chat-close" onclick="closeChat()">✕</button>
@@ -647,7 +831,8 @@ MAXT_MAP = {
   risk:             11000, // Risk Matrix 5×5 + COSO + Kill Switch مفصّل
   legal:            11000, // خريطة تنظيمية + جدول امتثال PDPL + SDAIA
   // ── خبراء يحتاجون tokens عالية
-  strategic:        10000, // Porter + Blue Ocean + VRIO + سيناريوهات
+  strategic:        11000, // Porter + Blue Ocean + VRIO + سيناريوهات
+  verifier:         10000, // تدقيق كل الادعاءات + كشف الافتراضات الزائفة
   operations:       10000, // OKRs + Stage-Gate + خطة تنفيذية مفصّلة
   digital:          10000, // AI Governance + Cloud + تحول رقمي مفصّل
   economics:        10000, // PESTLE + TAM/SAM/SOM + تحليل كمي
@@ -720,7 +905,7 @@ const TOUT = 300000;
 // ══ EXPERTS ══════════════════════════════════
 const EX = [
 {id:'strategic',name:'د. أحمد الشريف',role:'مستشار استراتيجية مؤسسية',color:'#1AA886',cLight:'rgba(26,168,134,0.12)',always:true,triggers:[],creds:'دكتوراه إدارة الأعمال · Porter وBlue Ocean معتمد · 18 عاماً',bio:'متخصص في تشخيص الهيكل الجوهري للقرار لا ظاهره. قاد أكثر من 60 مشروع تحول استراتيجي في قطاعات الطاقة والصناعة والخدمات المالية. لا يُخبر القائد بما يريد سماعه.',sig:'يُشخّص الهيكل — لا الظاهرة',methods:["Porter 5 Forces", "Blue Ocean", "McKinsey 7S", "VRIO", "Ansoff Matrix"],sys:'أنت د. أحمد الشريف، مستشار استراتيجي أول بخبرة 20 عاماً في القطاعَين العام والخاص الخليجي. تخصصك: هندسة نماذج الأعمال وتحليل الفرص الاستراتيجية في بيئة رؤية 2030.\n\nالمنهجية الإلزامية: ابدأ بـ Porter Five Forces لتشخيص القوى التنافسية. طبّق VRIO لتحديد الميزة التنافسية المستدامة. استخدم McKinsey 7S لتقييم التوافق التنظيمي. Blue Ocean Strategy: هل هناك مساحة غير متنازع عليها؟ Value Chain Analysis: أين تتركز القيمة وأين تتسرب؟\n\nالسياق الخليجي الإلزامي: ربط القرار بمحاور رؤية 2030 الثلاثة (مجتمع حيوي، اقتصاد مزدهر، وطن طموح). تقييم التوافق مع برامج التحول الوطني. الثقافة القيادية الخليجية: القرار الجيد يحتاج تحالفاً قبل إعلانه.\n\nشكل المخرج الإلزامي:\n| الحكم الاستراتيجي | [جملة واحدة حادة] |\n| القوة الأولى | [ميزة تنافسية محددة] |\n| الخطر الأول | [تهديد وجودي محدد] |\n| الافتراض الأكثر هشاشة | [ما إذا انهار ينهار القرار] |\nSecond Order: ماذا سيحدث 3 سنوات بعد القرار؟\nPremortem: إذا فشل بعد 18 شهراً — الأسباب الثلاثة الأكثر احتمالاً؟\n⚔ أقوى حجة ضد توصيتي: [لا تُجامل نفسك]\nالتصويت: موافقة كاملة / مشروطة / رفض | الثقة: ★(1-5) | السبب في جملة.'},
-{id:'financial',name:'د. لينا الغامدي',role:'خبيرة تمويل وتقييم واندماج',color:'#C49A3C',cLight:'rgba(196,154,60,0.12)',always:true,triggers:[],creds:'CFA · CPA · ماجستير التمويل · خبرة M&A 15 عاماً',bio:'تحلّل كل قرار بثلاثة سيناريوهات: متشائم ومحافظ ومتفائل مع احتمالية كل منها. لديها سجل في اكتشاف التكاليف الخفية التي لا تراها الفرق الداخلية. تُسمّي الأرقام غير الواقعية بدون مجاملة.',sig:'ثلاثة سيناريوهات — لا سيناريو واحد',methods:["DCF", "LBO", "WACC", "Monte Carlo", "IFRS", "P10/P50/P90"],sys:'تعليمات الأولوية: اكتب الحكم النهائي والتصويت ودرجة الثقة أولاً في الأسطر الأولى — قبل التفاصيل. هذا يضمن وصول القرار حتى لو تم القطع.\n\nأنت د. لينا الغامدي، خبيرة مالية CFA-CPA بتخصص في تقييم الاستثمارات والاندماجات والاستحواذات. عملتِ مع صندوق الاستثمارات العامة وعدد من الشركات المدرجة في السوق السعودية.\n\nالمنهجية الإلزامية: DCF مع WACC مُحدَّد لكل سيناريو. IRR مقارناً بـ Hurdle Rate واضح. ثلاثة سيناريوهات إلزامية: P10 (متشائم) / P50 (محتمل) / P90 (متفائل) — كل سيناريو بأرقام لا بكلمات. ROIC مقارناً بتكلفة رأس المال. مضاعفات التقييم: EV/EBITDA وP/E قياساً بمعايير القطاع. تحليل التدفق النقدي الحر FCF على 5 سنوات.\n\nالسياق الخليجي الإلزامي: تكلفة رأس المال في السوق السعودي. متطلبات SAMA للتمويل. ضريبة القيمة المضافة 15% وأثرها على الهوامش. الزكاة وتأثيرها على العائد الفعلي. فرص تمويل صندوق الاستثمارات العامة وصندوق التنمية الوطني.\n\nشكل المخرج الإلزامي:\n| السيناريو | P10 | P50 | P90 |\n|---|---|---|---|\n| IRR | x% | x% | x% |\n| NPV | xم ريال | xم ريال | xم ريال |\n| فترة الاسترداد | x سنة | x سنة | x سنة |\nالنقطة العمياء المالية: [ما لا يراه أحد]\n⚔ أقوى حجة ضد توصيتي: [الخطر المالي الحقيقي]\nالتصويت: موافقة / مشروطة / رفض | الثقة: ★(1-5) | الشرط الرئيسي.'},
+{id:'financial',name:'د. لينا الغامدي',role:'خبيرة تمويل وتقييم واندماج',color:'#B8860B',cLight:'rgba(184,134,11,0.12)',always:true,triggers:[],creds:'CFA · CPA · ماجستير التمويل · خبرة M&A 15 عاماً',bio:'تحلّل كل قرار بثلاثة سيناريوهات: متشائم ومحافظ ومتفائل مع احتمالية كل منها. لديها سجل في اكتشاف التكاليف الخفية التي لا تراها الفرق الداخلية. تُسمّي الأرقام غير الواقعية بدون مجاملة.',sig:'ثلاثة سيناريوهات — لا سيناريو واحد',methods:["DCF", "LBO", "WACC", "Monte Carlo", "IFRS", "P10/P50/P90"],sys:'تعليمات الأولوية: اكتب الحكم النهائي والتصويت ودرجة الثقة أولاً في الأسطر الأولى — قبل التفاصيل. هذا يضمن وصول القرار حتى لو تم القطع.\n\nأنت د. لينا الغامدي، خبيرة مالية CFA-CPA بتخصص في تقييم الاستثمارات والاندماجات والاستحواذات. عملتِ مع صندوق الاستثمارات العامة وعدد من الشركات المدرجة في السوق السعودية.\n\nالمنهجية الإلزامية: DCF مع WACC مُحدَّد لكل سيناريو. IRR مقارناً بـ Hurdle Rate واضح. ثلاثة سيناريوهات إلزامية: P10 (متشائم) / P50 (محتمل) / P90 (متفائل) — كل سيناريو بأرقام لا بكلمات. ROIC مقارناً بتكلفة رأس المال. مضاعفات التقييم: EV/EBITDA وP/E قياساً بمعايير القطاع. تحليل التدفق النقدي الحر FCF على 5 سنوات.\n\nالسياق الخليجي الإلزامي: تكلفة رأس المال في السوق السعودي. متطلبات SAMA للتمويل. ضريبة القيمة المضافة 15% وأثرها على الهوامش. الزكاة وتأثيرها على العائد الفعلي. فرص تمويل صندوق الاستثمارات العامة وصندوق التنمية الوطني.\n\nشكل المخرج الإلزامي:\n| السيناريو | P10 | P50 | P90 |\n|---|---|---|---|\n| IRR | x% | x% | x% |\n| NPV | xم ريال | xم ريال | xم ريال |\n| فترة الاسترداد | x سنة | x سنة | x سنة |\nالنقطة العمياء المالية: [ما لا يراه أحد]\n⚔ أقوى حجة ضد توصيتي: [الخطر المالي الحقيقي]\nالتصويت: موافقة / مشروطة / رفض | الثقة: ★(1-5) | الشرط الرئيسي.'},
 {id:'executive',name:'د. خالد العتيبي',role:'خبير عمليات وكفاءة تشغيلية',color:'#3B82F6',cLight:'rgba(59,130,246,0.12)',always:true,triggers:[],creds:'Six Sigma Black Belt · PMP معتمد · Lean Expert · 20 عاماً',bio:'قضى عشرين عاماً في تحويل الخطط إلى واقع تشغيلي. يعرف الفجوة الحقيقية بين ما تعد به الخطط وما تستطيع المنظمات تنفيذه. يُصدر حكماً صريحاً على واقعية الجدول الزمني.',sig:'يبني Plan B قبل أن يُطلب منه',methods:["Lean", "Six Sigma", "SCOR", "Stage-Gate", "OKRs", "FMEA"],sys:'أنت د. خالد العتيبي، خبير تنفيذي PMP-PMI وBlack Belt Six Sigma. تخصصك تحويل القرارات الاستراتيجية إلى خطط تنفيذية قابلة للقياس. خبرتك في إدارة مشاريع التحول الكبرى في القطاع الحكومي والخاص السعودي.\n\nالمنهجية الإلزامية: Stage-Gate لتقييم جاهزية التنفيذ. FMEA: أوضاع الفشل المحتملة وتأثيرها وقابليتها للكشف. OKRs: الأهداف والنتائج الرئيسية لأول 90 يوم. Critical Path Method: المسار الحرج والتبعيات. RACI Matrix: من المسؤول عن كل تسليم؟ Plan B: إذا فشلت المرحلة الأولى — ما البديل التنفيذي؟ Resource Leveling: هل الموارد المطلوبة متاحة فعلاً؟\n\nالسياق الخليجي الإلزامي: نسب التوطين واشتراطات نظام حماية الأجور. متطلبات السجل التجاري والتراخيص القطاعية. ثقافة القرار السعودية: التنفيذ يحتاج رضا القيادات الوسطى قبل الإعلان. موسمية السوق (رمضان، الصيف، المواسم الحكومية).\n\nشكل المخرج الإلزامي:\n| المرحلة | المهمة | المسؤول | الموعد | مؤشر الإنجاز |\nأعلى 3 حواجز تنفيذية: [محددة لا عامة]\nFMEA أعلى مخاطر: [احتمالية × أثر × قابلية الكشف]\nPlan B: [خطة بديلة محددة]\n⚔ أقوى حجة ضد توصيتي: [لماذا قد لا يُنفَّذ]\nالتصويت: موافقة / مشروطة / رفض | الثقة: ★(1-5)'},
 {id:'digital',name:'د. سارة الزهراني',role:'خبيرة تحول رقمي وذكاء اصطناعي',color:'#8B5CF6',cLight:'rgba(139,92,246,0.12)',always:true,triggers:[],creds:'دكتوراه ذكاء اصطناعي · Gartner Certified · MLOps Expert · 14 عاماً',bio:'تُفرّق بفطنة بين ضجيج التسويق التقني والقيمة الحقيقية. قيّمت عشرات مشاريع AI وأوصت بإيقاف كثير منها قبل إهدار الموارد. تستخدم Gartner Maturity لقراءة الواقع لا التمنيات.',sig:'تُفرّق بين الذكاء الحقيقي والضجيج',methods:["Gartner Maturity", "Digital Twin", "MLOps", "AI Governance"],sys:'أنت د. سارة الزهراني، خبيرة تحول رقمي وذكاء اصطناعي، حاملة شهادات AWS Architecture وGoogle Cloud وMicrosoft Azure. عملتِ على مشاريع التحول الرقمي الحكومي ضمن برنامج الحكومة الرقمية السعودية.\n\nالمنهجية الإلزامية: Gartner Digital Maturity Model (مستوى 1-5): أين المنظمة الآن وأين يضعها هذا القرار؟ AI Readiness Assessment: هل البنية التحتية والبيانات تدعم AI فعلاً؟ فرّقي بين AI الحقيقي والأتمتة العادية والضجيج التسويقي. Build vs Buy vs Partner: ما القرار التقني الصحيح؟ API-First Architecture: هل المنظومة قابلة للتوسع؟ Data Governance: هل البيانات نظيفة وموثوقة؟ Technical Debt: ما التراكم التقني الذي سيُعيق القرار؟\n\nالسياق الخليجي الإلزامي: متطلبات NCA للأمن السيبراني (ECC-1:2018). اشتراطات استضافة البيانات داخل المملكة (SDAIA Cloud First). التوافق مع منصة حساب المواطن والأنظمة الحكومية. سرعة تبني التقنية في السوق السعودي: من بين أعلى المعدلات عالمياً.\n\nشكل المخرج الإلزامي:\nنضج رقمي حالي: [x/5] | المستهدف: [y/5]\nجاهزية AI الحقيقية: [مستعد / يحتاج تطوير / غير مستعد] + السبب\nأعلى 3 مخاطر تقنية: [محددة بأثرها]\nالتوصية التقنية: [Build/Buy/Partner + مبرر]\n⚔ أقوى حجة ضد توصيتي: [لماذا قد يفشل التحول]\nالتصويت: موافقة / مشروطة / رفض | الثقة: ★(1-5)'},
 {id:'foresight',name:'د. لمى القحطاني',role:'خبيرة استشراف وابتكار استراتيجي',color:'#EC4899',cLight:'rgba(236,72,153,0.12)',always:true,triggers:[],creds:'زمالة دراسات المستقبليات · Shell Scenarios Practitioner · 13 عاماً',bio:'تسأل السؤال الذي لا يجرؤ عليه أحد: "ماذا لو كان كل ما نفترضه خاطئاً؟" تُقاوم الإجماع المريح وتكشف مسبقاً الاضطرابات التي لم يتنبه لها أحد.',sig:'تعدّ الخلاف قيمة أعلى من التوافق',methods:["Shell Scenarios", "Futures Wheel", "STEEP+", "Wild Cards"],sys:'أنت د. لمى القحطاني، خبيرة استشراف وابتكار استراتيجي، متخصصة في Shell Scenarios Methodology وFutures Studies. درّبتِ مع مركز محمد بن سلمان للريادة وعملتِ مع مراكز الفكر الخليجية.\n\nالمنهجية الإلزامية: Shell Scenarios: أربعة سيناريوهات مستقبلية محتملة بناءً على محورَي عدم اليقين الأعلى. STEEP Analysis (اجتماعي، تقني، اقتصادي، بيئي، سياسي): أي قوى ستُشكّل مسار القرار؟ Weak Signals: الإشارات الخافتة التي تُنذر بتحولات كبيرة. Wild Cards: الأحداث منخفضة الاحتمالية عالية الأثر. Second و Third Order Consequences: ماذا يحدث بعد ما يحدث؟ Assumptions Audit: كل افتراض في القرار يُوضع تحت مجهر الاختبار.\n\nالسياق الخليجي الإلزامي: التحول من الاقتصاد الريعي إلى الاقتصاد المعرفي — أين يقع هذا القرار من هذا المسار؟ الديموغرافيا السعودية: 70% من السكان دون 35 عاماً. التوترات الجيوسياسية الإقليمية وأثرها على المدى البعيد. الذكاء الاصطناعي كمُحوِّل للاقتصاد الخليجي بحلول 2030.\n\nشكل المخرج الإلزامي:\nالسيناريو الأكثر احتمالاً: [وصف + احتمالية]\nالسيناريو الأكثر خطورة: [وصف + المُشغّل]\nWild Card الأكثر إزعاجاً: [حدث غير متوقع]\nالافتراض الأكثر هشاشة في القرار: [ما إذا تغيّر يغيّر كل شيء]\n⚔ أقوى حجة ضد توصيتي: [لماذا المستقبل قد يُكذّب هذا القرار]\nالتصويت: موافقة / مشروطة / رفض | الثقة: ★(1-5)'},
@@ -1246,16 +1431,16 @@ parts.substring(0,28000)+calibNote+
   const seal = `<svg width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#E8C060"/><stop offset="50%" style="stop-color:#C49A3C"/><stop offset="100%" style="stop-color:#7A5F25"/>
+      <stop offset="0%" style="stop-color:#C49A3C"/><stop offset="50%" style="stop-color:#B8860B"/><stop offset="100%" style="stop-color:#7A5F25"/>
     </linearGradient>
     <linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FBF0D5;stop-opacity:.9"/><stop offset="100%" style="stop-color:#C49A3C;stop-opacity:.9"/>
+      <stop offset="0%" style="stop-color:#FBF0D5;stop-opacity:.9"/><stop offset="100%" style="stop-color:#B8860B;stop-opacity:.9"/>
     </linearGradient>
   </defs>
   <circle cx="100" cy="100" r="97" fill="none" stroke="url(#sg)" stroke-width="1" opacity=".3"/>
   <circle cx="100" cy="100" r="90" fill="none" stroke="url(#sg)" stroke-width="2.5"/>
   <circle cx="100" cy="100" r="84" fill="none" stroke="url(#sg)" stroke-width=".7" opacity=".5"/>
-  <circle cx="100" cy="100" r="80" fill="#07090F" opacity=".97"/>
+  <circle cx="100" cy="100" r="80" fill="#F7F5F0" opacity=".97"/>
   <g fill="url(#sg)" opacity=".5">
     <circle cx="100" cy="5" r="2"/><circle cx="148" cy="18" r="1.5"/><circle cx="182" cy="52" r="1.5"/>
     <circle cx="195" cy="100" r="2"/><circle cx="182" cy="148" r="1.5"/><circle cx="148" cy="182" r="1.5"/>
@@ -1291,7 +1476,7 @@ parts.substring(0,28000)+calibNote+
       ? 'background:rgba(248,113,113,.1);color:#f87171'
       : e.always
         ? 'background:rgba(34,197,94,.1);color:#22C55E'
-        : 'background:rgba(196,154,60,.1);color:#C49A3C';
+        : 'background:rgba(184,134,11,.1);color:#B8860B';
     const tLabel = isS?(e.id==='contrarian'?'⚔ معارضة':'🔍 تدقيق'):e.always?'دائم':'مُستدعى';
     const hasErr = analyses[e.id]?.startsWith('تعذّر');
     return `<div class="exp-sec">
@@ -1302,7 +1487,7 @@ parts.substring(0,28000)+calibNote+
         <span class="exp-tag" style="${tStyle}">${tLabel}</span>
         ${hasErr?'<span style="color:var(--red);font-size:10px">⚠ لم يكتمل</span>':''}
         <button class="exp-bio-btn" onclick="event.stopPropagation();showBio('${e.id}')">👤 سيرة</button>
-        ${!hasErr?`<button class="exp-chat-btn" onclick="event.stopPropagation();openChat('${e.id}')">💬 حوار</button>`:''}
+        ${!hasErr?'':''}
       </div>
       <div class="exp-body" id="eb-${e.id}">${analyses[e.id]||'—'}</div>
     </div>`;
@@ -1323,10 +1508,10 @@ parts.substring(0,28000)+calibNote+
     </div>
 
     <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-      color:rgba(196,154,60,.6);margin:14px 0 8px;display:flex;align-items:center;gap:7px">
+      color:rgba(184,134,11,.6);margin:14px 0 8px;display:flex;align-items:center;gap:7px">
       تحليلات المجلس
-      <span style="flex:1;height:1px;background:rgba(196,154,60,.15)"></span>
-      <span style="font-size:9px;background:rgba(196,154,60,.1);border:1px solid rgba(196,154,60,.2);
+      <span style="flex:1;height:1px;background:rgba(184,134,11,.15)"></span>
+      <span style="font-size:9px;background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.2);
         padding:2px 8px;border-radius:7px;color:var(--gold)">${experts.length} خبيراً</span>
     </div>
     ${expHTML}
@@ -1351,7 +1536,7 @@ parts.substring(0,28000)+calibNote+
     <div class="verdict-box">
       <h3>✓ المحضر الحوكمي معتمد</h3>
       <p>مرّ القرار بمنهجية تحليل متعددة المناظير من ${experts.length} خبيراً متخصصاً. المحضر موثق ومحمي قانونياً ومؤرشف.</p>
-      <div class="disc" style="font-size:9px;line-height:1.7;color:rgba(255,255,255,0.2);text-align:center;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.05)">
+      <div class="disc" style="font-size:9px;line-height:1.7;color:rgba(184,134,11,0.25);text-align:center;margin-top:8px;padding-top:8px;border-top:1px solid rgba(184,134,11,0.07)">
           <b style="color:rgba(255,255,255,0.3)">إخلاء المسؤولية القانوني</b><br>
           يُقدَّم هذا المحضر كخدمة استشارية تحليلية باستخدام تقنيات الذكاء الاصطناعي (Claude من Anthropic) ومنهجية غرفة العمليات الاستراتيجية المعززة بـ28 خبيراً. التوصيات تعتمد على البيانات المقدمة من العميل ولا تشكل ضماناً بأي نتيجة. غرفة العمليات الاستراتيجية ومؤسسها غير مسؤولَين عن أي خسائر مباشرة أو غير مباشرة بناءً على هذا المحضر.<br>
           يتوافق هذا المحضر مع مبادئ أخلاقيات الذكاء الاصطناعي الصادرة عن <b style="color:rgba(26,168,134,0.6)">SDAIA</b> (الشفافية، المساءلة، السلامة) ومع <b style="color:rgba(26,168,134,0.6)">نظام حماية البيانات الشخصية PDPL</b>.<br>
@@ -1425,25 +1610,25 @@ function printEn(){
   p.push('@page{size:A4;margin:15mm 14mm}');
   p.push('@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.pb{page-break-before:always}}');
   p.push('.cover{min-height:240mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15mm 10mm;page-break-after:always}');
-  p.push('.gold{color:#C49A3C} .teal{color:#0F6E56}');
+  p.push('.gold{color:#B8860B} .teal{color:#0F6E56}');
   p.push('table{width:100%;border-collapse:collapse;font-size:8.5pt;margin:3mm 0}');
-  p.push('th{background:#C49A3C;color:white;padding:3pt 5pt;font-weight:700}');
-  p.push('td{padding:3pt 5pt;border-bottom:0.5pt solid rgba(196,154,60,0.18);vertical-align:top}');
-  p.push('.meta{background:#FDF8EE;border:1pt solid rgba(196,154,60,0.3);border-radius:4pt;padding:4mm;margin:5mm 0}');
-  p.push('.mr{display:flex;justify-content:space-between;padding:2pt 0;border-bottom:0.5pt solid rgba(196,154,60,0.15);font-size:8.5pt}');
+  p.push('th{background:#B8860B;color:white;padding:3pt 5pt;font-weight:700}');
+  p.push('td{padding:3pt 5pt;border-bottom:0.5pt solid rgba(184,134,11,0.18);vertical-align:top}');
+  p.push('.meta{background:#FDF8EE;border:1pt solid rgba(184,134,11,0.3);border-radius:4pt;padding:4mm;margin:5mm 0}');
+  p.push('.mr{display:flex;justify-content:space-between;padding:2pt 0;border-bottom:0.5pt solid rgba(184,134,11,0.15);font-size:8.5pt}');
   p.push('.mr:last-child{border-bottom:none}');
-  p.push('.seal-row{display:flex;justify-content:space-between;border-top:1pt solid #C49A3C;padding-top:5mm;margin-top:8mm}');
+  p.push('.seal-row{display:flex;justify-content:space-between;border-top:1pt solid #B8860B;padding-top:5mm;margin-top:8mm}');
   p.push('.sig-ln{width:40mm;border-top:1pt solid #1C2028;margin:0 auto 2mm}');
   p.push('.sig-n{font-size:11pt;font-weight:700;text-align:center}');
   p.push('.disc{background:#F4F2EC;padding:3mm;font-size:7pt;color:#666;line-height:1.6;margin-top:6mm}');
   p.push('.rpt-content{font-size:9.5pt;line-height:1.75} .rpt-content .rpt-hdr,.rpt-content .rpt-meta{display:none}');
   p.push('<\/style><\/head><body>');
   p.push('<div class="cover">');
-  p.push('<div style="width:60mm;height:3pt;background:linear-gradient(to right,transparent,#C49A3C,transparent);margin:0 auto 5mm"></div>');
-  p.push('<div style="width:22mm;height:22mm;border:2pt solid #C49A3C;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16pt;font-weight:700;color:#C49A3C;margin:0 auto 5mm">SOR</div>');
-  p.push('<div style="font-size:18pt;font-weight:700;color:#C49A3C;margin-bottom:2mm">Strategic Operations Room</div>');
+  p.push('<div style="width:60mm;height:3pt;background:linear-gradient(to right,transparent,#B8860B,transparent);margin:0 auto 5mm"></div>');
+  p.push('<div style="width:22mm;height:22mm;border:2pt solid #B8860B;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16pt;font-weight:700;color:#B8860B;margin:0 auto 5mm">SOR</div>');
+  p.push('<div style="font-size:18pt;font-weight:700;color:#B8860B;margin-bottom:2mm">Strategic Operations Room</div>');
   p.push('<div style="font-size:8pt;color:#666;letter-spacing:2pt;margin-bottom:6mm">OFFICIAL GOVERNANCE REPORT · v8.1</div>');
-  p.push('<div style="width:100%;height:1pt;background:linear-gradient(to right,transparent,#C49A3C,transparent);margin:3mm 0"></div>');
+  p.push('<div style="width:100%;height:1pt;background:linear-gradient(to right,transparent,#B8860B,transparent);margin:3mm 0"></div>');
   p.push('<div style="font-size:16pt;font-weight:700;margin:3mm 0">'+dec.substring(0,80)+(dec.length>80?'...':'')+'</div>');
   p.push('<div style="font-size:11pt;color:#0F6E56;margin-bottom:8mm">Council of '+ok.length+' Specialists</div>');
   p.push('<div class="meta">');
@@ -1453,11 +1638,11 @@ function printEn(){
   p.push('<div class="mr"><span style="color:#666;font-weight:600">Agreement Rate</span><span style="font-weight:700">'+agr+'%</span></div>');
   p.push('<div class="mr"><span style="color:#666;font-weight:600">Status</span><span style="font-weight:700">'+status+'</span></div>');
   p.push('<\/div>');
-  p.push('<div style="font-size:10pt;color:#C49A3C;font-style:italic;border:0 solid #C49A3C;border-left-width:3pt;border-right-width:3pt;padding:3mm 5mm;background:rgba(196,154,60,0.04);border-radius:2pt;margin:5mm 0">&quot;Where decisions are made, not guessed&quot;</div>');
+  p.push('<div style="font-size:10pt;color:#B8860B;font-style:italic;border:0 solid #B8860B;border-left-width:3pt;border-right-width:3pt;padding:3mm 5mm;background:rgba(184,134,11,0.04);border-radius:2pt;margin:5mm 0">&quot;Where decisions are made, not guessed&quot;</div>');
   p.push('<\/div>');
   p.push('<div class="rpt-content">'+synth_html+'<\/div>');
   p.push('<div class="pb"><\/div>');
-  p.push('<div style="font-size:12pt;font-weight:700;color:#C49A3C;border-bottom:2pt solid #C49A3C;padding-bottom:2mm;margin-bottom:4mm">Expert Council Summary<\/div>');
+  p.push('<div style="font-size:12pt;font-weight:700;color:#B8860B;border-bottom:2pt solid #B8860B;padding-bottom:2mm;margin-bottom:4mm">Expert Council Summary<\/div>');
   p.push('<table><thead><tr><th style="width:22%">Expert</th><th style="width:48%">Direct Verdict</th><th style="width:16%">Vote</th><\/tr><\/thead><tbody>'+rows+'<\/tbody><\/table>');
   p.push('<div class="seal-row">');
   p.push('<div style="text-align:center"><p style="font-size:8pt;color:#666;margin-bottom:3mm">Founder Signature<\/p><div class="sig-ln"><\/div><div class="sig-n">Sulaiman Al-Huways Al-Qawzi<\/div><div style="font-size:7.5pt;color:#666;text-align:center">Founder, SOR · '+today+'<\/div><\/div>');
@@ -1491,7 +1676,7 @@ function openChat(eid){
   document.getElementById('btnExpertChat').style.display = 'none';
 
   document.getElementById('chatTitle').textContent = '💬 حوار مع '+e.name;
-  document.getElementById('chatTitle').style.color = e.color||'#C49A3C';
+  document.getElementById('chatTitle').style.color = e.color||'#B8860B';
   document.getElementById('chatInp').placeholder = 'اسأل ' + e.name + ' حول تقريره أو أي جانب من القرار...';
 
   // عرض تاريخ المحادثة إن وُجد
@@ -1511,7 +1696,7 @@ function openChat(eid){
   } else {
     msgs.innerHTML = '<div style="text-align:center;font-size:11px;color:var(--t3);padding:12px">'+
       '<div style="font-size:18px;margin-bottom:6px">💬</div>'+
-      'ابدأ بسؤال <strong style="color:'+( e.color||'#C49A3C')+'">'+e.name+'</strong> حول تقريره<br/>'+
+      'ابدأ بسؤال <strong style="color:'+( e.color||'#B8860B')+'">'+e.name+'</strong> حول تقريره<br/>'+
       '<span style="font-size:10px">أو اضغط "⬡ المجلس كله" لسؤال المجلس كاملاً</span>'+
     '</div>';
   }
@@ -1534,7 +1719,7 @@ function switchToCouncilChat(){
   document.getElementById('chatTitle').textContent = '⬡ حوار مع مجلس الـ' + (_ce||[]).length + ' خبيراً';
   document.getElementById('chatInp').placeholder = 'اطرح سؤالاً على المجلس كله — كل خبير يجيب من منظوره...';
   var msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += '<div class="msg-system" style="text-align:center;font-size:10px;color:var(--gold);margin:8px 0;padding:6px;background:rgba(196,154,60,0.06);border-radius:6px">⬡ وضع المجلس الكامل — سؤالك يصل لكل الخبراء</div>';
+  msgs.innerHTML += '<div class="msg-system" style="text-align:center;font-size:10px;color:var(--gold);margin:8px 0;padding:6px;background:rgba(184,134,11,0.06);border-radius:6px">⬡ وضع المجلس الكامل — سؤالك يصل لكل الخبراء</div>';
   msgs.scrollTop = 99999;
 }
 
@@ -1715,7 +1900,7 @@ max_tokens: 600,
       if(d.content && Array.isArray(d.content)){
         d.content.forEach(function(b){ if(b.type==='text') txt+=b.text; });
       }
-      results[e.id] = {name:e.name, role:e.role||'', text:txt||'—', color:e.color||'#C49A3C'};
+      results[e.id] = {name:e.name, role:e.role||'', text:txt||'—', color:e.color||'#B8860B'};
     }catch(err){
       results[e.id] = {name:e.name, role:e.role||'', text:'(تعذّر الرد: '+err.message+')', color:'#5A6A75'};
     }
@@ -1787,7 +1972,7 @@ max_tokens: 600,
     }
     document.getElementById(sumId)?.remove();
     if(stxt){
-      msgs.innerHTML += '<div style="background:rgba(196,154,60,0.08);border:1px solid rgba(196,154,60,0.25);border-radius:8px;padding:10px 12px;margin:6px 0">'+
+      msgs.innerHTML += '<div style="background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.25);border-radius:8px;padding:10px 12px;margin:6px 0">'+
         '<div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:4px">⬡ خلاصة SYNTH</div>'+
         '<div style="font-size:12px;color:var(--tx);white-space:pre-wrap">'+stxt+'</div>'+
       '</div>';
@@ -1868,10 +2053,10 @@ function generateProfessionalPDF(){
                /\u0631\u0641\u0636/.test(txt)?'\u274c \u0631\u0627\u0641\u0636':'\u26a0 \u0645\u0634\u0631\u0648\u0637';
     var trust = /\u2605\u2605\u2605\u2605\u2605/.test(txt)?'\u2605\u2605\u2605\u2605\u2605':/\u2605\u2605\u2605\u2605/.test(txt)?'\u2605\u2605\u2605\u2605\u2606':'\u2605\u2605\u2605\u2606\u2606';
     var bg = i%2===0?'#FDF8EE':'#F4F2EC';
-    return '<tr style="background:'+bg+'"><td style="font-weight:700;font-size:9pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2)">'+
-      e.name+'</td><td style="font-size:8.5pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2)">'+
-      verdict+'</td><td style="text-align:center;font-size:9pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2)">'+
-      vote+'</td><td style="text-align:center;font-size:8pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(196,154,60,0.2);color:#C49A3C">'+
+    return '<tr style="background:'+bg+'"><td style="font-weight:700;font-size:9pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(184,134,11,0.2)">'+
+      e.name+'</td><td style="font-size:8.5pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(184,134,11,0.2)">'+
+      verdict+'</td><td style="text-align:center;font-size:9pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(184,134,11,0.2)">'+
+      vote+'</td><td style="text-align:center;font-size:8pt;padding:4pt 6pt;border-bottom:0.5pt solid rgba(184,134,11,0.2);color:#B8860B">'+
       trust+'</td></tr>';
   }).join('');
 
@@ -1880,47 +2065,47 @@ function generateProfessionalPDF(){
   parts.push('<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">');
   parts.push('<style>');
   parts.push('@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap");');
-  parts.push(':root{--gold:#C49A3C;--dark:#1C2028;--teal:#0F6E56;--red:#A32D2D;--light:#FDF8EE;--gray:#F4F2EC;--muted:#666}');
+  parts.push(':root{--gold:#B8860B;--dark:#1C2028;--teal:#0F6E56;--red:#A32D2D;--light:#FDF8EE;--gray:#F4F2EC;--muted:#666}');
   parts.push('*{box-sizing:border-box;margin:0;padding:0}');
   parts.push('body{font-family:"Cairo","Arial",sans-serif;font-size:10pt;color:var(--dark);background:white;direction:rtl}');
   parts.push('@page{size:A4;margin:15mm 14mm}');
   parts.push('@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none}.pb{page-break-before:always}}');
   parts.push('.cover{min-height:250mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15mm 10mm;page-break-after:always}');
-  parts.push('.gold-line{width:70mm;height:3pt;background:linear-gradient(to left,transparent,#C49A3C,transparent);margin:5mm auto}');
-  parts.push('.seal{width:22mm;height:22mm;border:2pt solid #C49A3C;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16pt;font-weight:700;color:#C49A3C;margin:0 auto 5mm}');
-  parts.push('.org{font-size:18pt;font-weight:700;color:#C49A3C;margin-bottom:2mm}');
-  parts.push('.meta{width:100%;background:#FDF8EE;border:1pt solid rgba(196,154,60,0.3);border-radius:4pt;padding:4mm 5mm;margin:6mm 0}');
-  parts.push('.mr{display:flex;justify-content:space-between;padding:2pt 0;border-bottom:0.5pt solid rgba(196,154,60,0.15);font-size:8.5pt}');
+  parts.push('.gold-line{width:70mm;height:3pt;background:linear-gradient(to left,transparent,#B8860B,transparent);margin:5mm auto}');
+  parts.push('.seal{width:22mm;height:22mm;border:2pt solid #B8860B;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16pt;font-weight:700;color:#B8860B;margin:0 auto 5mm}');
+  parts.push('.org{font-size:18pt;font-weight:700;color:#B8860B;margin-bottom:2mm}');
+  parts.push('.meta{width:100%;background:#FDF8EE;border:1pt solid rgba(184,134,11,0.3);border-radius:4pt;padding:4mm 5mm;margin:6mm 0}');
+  parts.push('.mr{display:flex;justify-content:space-between;padding:2pt 0;border-bottom:0.5pt solid rgba(184,134,11,0.15);font-size:8.5pt}');
   parts.push('.mr:last-child{border-bottom:none} .ml{color:#666;font-weight:600} .mv{font-weight:700}');
-  parts.push('.ph{display:flex;justify-content:space-between;padding-bottom:3pt;border-bottom:1.5pt solid #C49A3C;margin-bottom:5mm;font-size:8pt;color:#666}');
-  parts.push('.ph-t{color:#C49A3C;font-weight:700}');
+  parts.push('.ph{display:flex;justify-content:space-between;padding-bottom:3pt;border-bottom:1.5pt solid #B8860B;margin-bottom:5mm;font-size:8pt;color:#666}');
+  parts.push('.ph-t{color:#B8860B;font-weight:700}');
   parts.push('.sh{display:flex;align-items:center;gap:3mm;margin:5mm 0 3mm;page-break-after:avoid}');
-  parts.push('.sn{min-width:8mm;height:8mm;background:#C49A3C;color:white;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;border-radius:2pt;flex-shrink:0}');
-  parts.push('.st{font-size:12pt;font-weight:700;border-bottom:2pt solid #C49A3C;padding-bottom:1.5pt;flex:1}');
+  parts.push('.sn{min-width:8mm;height:8mm;background:#B8860B;color:white;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;border-radius:2pt;flex-shrink:0}');
+  parts.push('.st{font-size:12pt;font-weight:700;border-bottom:2pt solid #B8860B;padding-bottom:1.5pt;flex:1}');
   parts.push('.stats{display:flex;gap:2mm;margin:3mm 0}');
-  parts.push('.stat{flex:1;text-align:center;border:1pt solid rgba(196,154,60,0.3);border-radius:2pt;padding:2mm;background:#FDF8EE}');
-  parts.push('.sn2{font-size:16pt;font-weight:700;color:#C49A3C;line-height:1} .sl{font-size:7pt;color:#666;margin-top:1mm}');
+  parts.push('.stat{flex:1;text-align:center;border:1pt solid rgba(184,134,11,0.3);border-radius:2pt;padding:2mm;background:#FDF8EE}');
+  parts.push('.sn2{font-size:16pt;font-weight:700;color:#B8860B;line-height:1} .sl{font-size:7pt;color:#666;margin-top:1mm}');
   parts.push('table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:8.5pt}');
-  parts.push('th{background:#C49A3C;color:white;padding:3pt 5pt;text-align:right;font-weight:700}');
-  parts.push('td{padding:3pt 5pt;border-bottom:0.5pt solid rgba(196,154,60,0.18);vertical-align:top;line-height:1.5}');
+  parts.push('th{background:#B8860B;color:white;padding:3pt 5pt;text-align:right;font-weight:700}');
+  parts.push('td{padding:3pt 5pt;border-bottom:0.5pt solid rgba(184,134,11,0.18);vertical-align:top;line-height:1.5}');
   parts.push('tr:nth-child(even) td{background:#F4F2EC} tr:last-child td{border-bottom:none}');
-  parts.push('.seal-row{display:flex;justify-content:space-between;align-items:flex-end;border-top:1pt solid #C49A3C;padding-top:5mm;margin-top:8mm}');
+  parts.push('.seal-row{display:flex;justify-content:space-between;align-items:flex-end;border-top:1pt solid #B8860B;padding-top:5mm;margin-top:8mm}');
   parts.push('.sig-ln{width:40mm;border-top:1pt solid #1C2028;margin:0 auto 2mm} .sig-n{font-size:11pt;font-weight:700;text-align:center}');
   parts.push('.sig-s{font-size:7.5pt;color:#666;text-align:center} .disc{background:#F4F2EC;padding:3mm 4mm;font-size:7pt;color:#666;line-height:1.6;margin-top:6mm;border-radius:2pt}');
   parts.push('p{margin:1.5mm 0;line-height:1.65;font-size:9pt}');
   parts.push('.synth-content{font-size:9.5pt;line-height:1.75}');
-  parts.push('.synth-content h2,.synth-content h3{color:#C49A3C;margin:4mm 0 2mm;font-size:11pt}');
+  parts.push('.synth-content h2,.synth-content h3{color:#B8860B;margin:4mm 0 2mm;font-size:11pt}');
   parts.push('.synth-content table{font-size:8.5pt}');
   parts.push('.synth-content .rpt-hdr,.synth-content .rpt-meta{display:none}');
-  parts.push('.quote{font-size:10pt;color:#C49A3C;font-style:italic;border-right:3pt solid #C49A3C;border-left:3pt solid #C49A3C;padding:4mm 6mm;background:rgba(196,154,60,0.04);border-radius:2pt;margin:5mm 0;text-align:center}');
+  parts.push('.quote{font-size:10pt;color:#B8860B;font-style:italic;border-right:3pt solid #B8860B;border-left:3pt solid #B8860B;padding:4mm 6mm;background:rgba(184,134,11,0.04);border-radius:2pt;margin:5mm 0;text-align:center}');
   // COVER
   parts.push('<div class="cover">');
   parts.push('<div class="gold-line"></div>');
   parts.push('<div class="seal">\u063a.\u0639</div>');
   parts.push('<div class="org">\u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629</div>');
   parts.push('<div style="font-size:8pt;color:#666;letter-spacing:2pt;margin-bottom:6mm">STRATEGIC OPERATIONS ROOM \u00b7 v8.1</div>');
-  parts.push('<div style="width:100%;height:1pt;background:linear-gradient(to left,transparent,#C49A3C,transparent);margin:3mm 0"></div>');
-  parts.push('<div style="font-size:8pt;color:#C49A3C;letter-spacing:2pt;margin-bottom:3mm">OFFICIAL GOVERNANCE REPORT \u00b7 \u0645\u062d\u0636\u0631 \u062d\u0648\u0643\u0645\u064a \u0631\u0633\u0645\u064a</div>');
+  parts.push('<div style="width:100%;height:1pt;background:linear-gradient(to left,transparent,#B8860B,transparent);margin:3mm 0"></div>');
+  parts.push('<div style="font-size:8pt;color:#B8860B;letter-spacing:2pt;margin-bottom:3mm">OFFICIAL GOVERNANCE REPORT \u00b7 \u0645\u062d\u0636\u0631 \u062d\u0648\u0643\u0645\u064a \u0631\u0633\u0645\u064a</div>');
   parts.push('<div style="font-size:18pt;font-weight:700;line-height:1.4;margin-bottom:3mm">' + dec.substring(0,80) + (dec.length>80?'\u2026':'') + '</div>');
   parts.push('<div style="font-size:11pt;color:#0F6E56;font-weight:600;margin-bottom:8mm">\u0645\u062c\u0644\u0633 \u0627\u0644\u062e\u0628\u0631\u0627\u0621 \u2014 ' + successExp.length + ' \u062e\u0628\u064a\u0631\u0627\u064b</div>');
   parts.push('<div class="meta">');
@@ -1935,14 +2120,14 @@ function generateProfessionalPDF(){
 
   // PAGE HEADER
   parts.push('<div class="ph"><div class="ph-t">\u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629 \u00b7 \u0627\u0644\u0645\u062d\u0636\u0631 \u0627\u0644\u062d\u0648\u0643\u0645\u064a \u0627\u0644\u0631\u0633\u0645\u064a</div>');
-  parts.push('<div style="font-family:monospace;color:#C49A3C">' + sid + ' \u00b7 ' + today + '</div></div>');
+  parts.push('<div style="font-family:monospace;color:#B8860B">' + sid + ' \u00b7 ' + today + '</div></div>');
 
   // SYNTH CONTENT
   parts.push('<div class="synth-content">' + synth_content + '</div>');
 
   // EXPERT TABLE PAGE
   parts.push('<div class="pb"></div>');
-  parts.push('<div class="ph"><div class="ph-t">\u0645\u0644\u062e\u0635 \u0645\u062e\u0631\u062c\u0627\u062a \u0627\u0644\u062e\u0628\u0631\u0627\u0621</div><div style="font-family:monospace;color:#C49A3C">' + sid + '</div></div>');
+  parts.push('<div class="ph"><div class="ph-t">\u0645\u0644\u062e\u0635 \u0645\u062e\u0631\u062c\u0627\u062a \u0627\u0644\u062e\u0628\u0631\u0627\u0621</div><div style="font-family:monospace;color:#B8860B">' + sid + '</div></div>');
   parts.push('<div class="sh"><div class="sn">\u0645</div><div class="st">\u0645\u0644\u062e\u0635 \u0645\u062e\u0631\u062c\u0627\u062a \u0627\u0644\u062e\u0628\u0631\u0627\u0621 \u2014 ' + successExp.length + ' \u062e\u0628\u064a\u0631\u0627\u064b</div></div>');
   parts.push('<div class="stats">');
   parts.push('<div class="stat"><div class="sn2">' + agreeRatio + '%</div><div class="sl">\u0646\u0633\u0628\u0629 \u0627\u0644\u0627\u062a\u0641\u0627\u0642</div></div>');
@@ -1962,8 +2147,8 @@ function generateProfessionalPDF(){
 
   // SEAL
   parts.push('<div class="seal-row">');
-  parts.push('<div style="width:24mm;height:24mm;border:2pt solid #C49A3C;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center">');
-  parts.push('<div style="font-size:6.5pt;color:#C49A3C;font-weight:700;line-height:1.3">\u063a\u0631\u0641\u0629<br/>\u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a<br/>\u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629<br/><span style="font-size:6pt">2026\u0645</span></div>');
+  parts.push('<div style="width:24mm;height:24mm;border:2pt solid #B8860B;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center">');
+  parts.push('<div style="font-size:6.5pt;color:#B8860B;font-weight:700;line-height:1.3">\u063a\u0631\u0641\u0629<br/>\u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a<br/>\u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629<br/><span style="font-size:6pt">2026\u0645</span></div>');
   parts.push('</div>');
   parts.push('<div><p style="font-size:8pt;color:#666;text-align:center;margin-bottom:4mm">\u0627\u0639\u062a\u0645\u0627\u062f \u0627\u0644\u0645\u062d\u0636\u0631</p>');
   parts.push('<div class="sig-ln"></div>');
@@ -1978,7 +2163,7 @@ function generateProfessionalPDF(){
   parts.push('<div class="disc"><strong>\u0625\u062e\u0644\u0627\u0621 \u0627\u0644\u0645\u0633\u0624\u0648\u0644\u064a\u0629:</strong> ');
   parts.push('\u064a\u064f\u0642\u062f\u064e\u0651\u0645 \u0647\u0630\u0627 \u0627\u0644\u0645\u062d\u0636\u0631 \u0643\u062e\u062f\u0645\u0629 \u0627\u0633\u062a\u0634\u0627\u0631\u064a\u0629 \u062a\u062d\u0644\u064a\u0644\u064a\u0629 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 Claude \u0645\u0646 Anthropic \u0648\u0645\u0646\u0647\u062c\u064a\u0629 \u063a\u0631\u0641\u0629 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629. ');
   parts.push('\u0627\u0644\u062a\u0648\u0635\u064a\u0627\u062a \u0627\u0633\u062a\u0634\u0627\u0631\u064a\u0629 \u0648\u0644\u0627 \u062a\u0634\u0643\u0644 \u0636\u0645\u0627\u0646\u0627\u064b. ');
-  parts.push('<strong style="color:#C49A3C">\u0627\u0644\u0645\u0633\u0624\u0648\u0644\u064a\u0629 \u0627\u0644\u0628\u0634\u0631\u064a\u0629 \u0645\u0631\u062c\u0639 \u0646\u0647\u0627\u0626\u064a \u062f\u0627\u0626\u0645\u0627\u064b \u00b7 \u0627\u0644\u0642\u0631\u0627\u0631 \u0627\u0644\u0623\u062e\u064a\u0631 \u0644\u0644\u0642\u0627\u0626\u062f \u0648\u062d\u062f\u0647</strong> \u00b7 ');
+  parts.push('<strong style="color:#B8860B">\u0627\u0644\u0645\u0633\u0624\u0648\u0644\u064a\u0629 \u0627\u0644\u0628\u0634\u0631\u064a\u0629 \u0645\u0631\u062c\u0639 \u0646\u0647\u0627\u0626\u064a \u062f\u0627\u0626\u0645\u0627\u064b \u00b7 \u0627\u0644\u0642\u0631\u0627\u0631 \u0627\u0644\u0623\u062e\u064a\u0631 \u0644\u0644\u0642\u0627\u0626\u062f \u0648\u062d\u062f\u0647</strong> \u00b7 ');
   parts.push('\u0633\u0644\u064a\u0645\u0627\u0646 \u0625\u0628\u0631\u0627\u0647\u064a\u0645 \u0622\u0644 \u062d\u0648\u064a\u0633 \u0627\u0644\u0642\u0648\u0632\u064a \u00b7 ' + sid + ' \u00b7 2026</div>');
 
   parts.push('<'+'script>window.addEventListener("load",function(){setTimeout(function(){window.print();},800);});<\/script>');
@@ -2344,35 +2529,35 @@ function memShowPanel(){
   if(!_mem){alert('\u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0644\u0645 \u062a\u064f\u062d\u0645\u0651\u0644');return;}
   var ss=_mem.sessions||[];
   var h='<div style="direction:rtl;font-family:Cairo,sans-serif">';
-  h+='<div style="background:rgba(196,154,60,.07);border:1px solid rgba(196,154,60,.2);border-radius:10px;padding:14px;margin-bottom:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:11px">';
-  h+='<div><div style="color:#888">\u0625\u062c\u0645\u0627\u0644\u064a</div><div style="font-size:22px;font-weight:700;color:#C49A3C">'+_mem.co.dc+'</div></div>';
+  h+='<div style="background:rgba(184,134,11,.07);border:1px solid rgba(184,134,11,.2);border-radius:10px;padding:14px;margin-bottom:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:11px">';
+  h+='<div><div style="color:#888">\u0625\u062c\u0645\u0627\u0644\u064a</div><div style="font-size:22px;font-weight:700;color:#B8860B">'+_mem.co.dc+'</div></div>';
   h+='<div><div style="color:#888">\u0645\u062a\u0648\u0633\u0637</div><div style="font-size:22px;font-weight:700;color:#1AA886">'+_mem.co.aa+'%</div></div>';
   h+='<div><div style="color:#888">\u0645\u0635\u062f\u0631</div><div style="margin-top:4px;color:'+(MEM.gistId?'#1AA886':'#888')+'">'+(MEM.gistId?'☁ Gist':'💾 \u0645\u062d\u0644\u064a')+'</div></div></div>';
   ss.slice(0,8).forEach(function(s){
-    var vc=s.verd==='approved'?'#1AA886':s.verd==='conditional'?'#C49A3C':'#E24B4A';
+    var vc=s.verd==='approved'?'#1AA886':s.verd==='conditional'?'#B8860B':'#E24B4A';
     h+='<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;margin-bottom:6px">';
     h+='<div style="display:flex;justify-content:space-between;margin-bottom:3px">';
-    h+='<span style="font-size:10px;color:#C49A3C;font-family:monospace">'+s.sid+'</span>';
+    h+='<span style="font-size:10px;color:#B8860B;font-family:monospace">'+s.sid+'</span>';
     h+='<span style="font-size:10px;color:#888">'+s.date+'</span></div>';
-    h+='<div style="font-size:12px;color:#EAD8A0;margin-bottom:4px">'+s.dec.substring(0,70)+'</div>';
+    h+='<div style="font-size:12px;color:#1A1208;margin-bottom:4px">'+s.dec.substring(0,70)+'</div>';
     h+='<span style="font-size:11px;color:'+vc+'">'+
       (s.verd==='approved'?'\u2705 \u0645\u0639\u062a\u0645\u062f':s.verd==='conditional'?'\u26a0 \u0645\u0634\u0631\u0648\u0637':'\u274c \u0645\u0631\u0641\u0648\u062d')+' '+s.ratio+'%</span></div>';});
-  if(!ss.length)h+='<div style="text-align:center;padding:24px;color:#4A5568">\u0644\u0627 \u062c\u0644\u0633\u0627\u062a \u0628\u0639\u062f \u2014 \u0633\u062a\u064f\u062d\u0641\u0638 \u0628\u0639\u062f \u0623\u0648\u0644 \u062a\u0634\u063a\u064a\u0644</div>';
+  if(!ss.length)h+='<div style="text-align:center;padding:24px;color:#7A6548">\u0644\u0627 \u062c\u0644\u0633\u0627\u062a \u0628\u0639\u062f \u2014 \u0633\u062a\u064f\u062d\u0641\u0638 \u0628\u0639\u062f \u0623\u0648\u0644 \u062a\u0634\u063a\u064a\u0644</div>';
   if(_mem.patterns&&_mem.patterns.length){
     h+='<div style="font-size:11px;font-weight:700;color:#888;margin:10px 0 6px">\u0623\u0646\u0645\u0627\u0637</div>';
-    _mem.patterns.forEach(function(p){h+='<div style="border-right:3px solid rgba(196,154,60,.3);padding:5px 8px;margin-bottom:4px;font-size:11px;color:#8A9BB0">'+p+'</div>';});}
+    _mem.patterns.forEach(function(p){h+='<div style="border-right:3px solid rgba(184,134,11,.3);padding:5px 8px;margin-bottom:4px;font-size:11px;color:#5C5040">'+p+'</div>';});}
   h+='</div>';
   var ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
   ov.onclick=function(e){if(e.target===ov)document.body.removeChild(ov);};
   var bx=document.createElement('div');
-  bx.style.cssText='background:#0D1220;border:1px solid rgba(196,154,60,.2);border-radius:14px;width:100%;max-width:520px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column';
-  bx.innerHTML='<div style="padding:13px 18px;border-bottom:1px solid rgba(196,154,60,.15);display:flex;align-items:center;justify-content:space-between">'+
-    '<div style="font-size:14px;font-weight:700;color:#EAD8A0">\u2bc1 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0627\u0644\u0645\u0624\u0633\u0633\u064a\u0629</div>'+
+  bx.style.cssText='background:#F0EDE6;border:1px solid rgba(184,134,11,.2);border-radius:14px;width:100%;max-width:520px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column';
+  bx.innerHTML='<div style="padding:13px 18px;border-bottom:1px solid rgba(184,134,11,.15);display:flex;align-items:center;justify-content:space-between">'+
+    '<div style="font-size:14px;font-weight:700;color:#1A1208">\u2bc1 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0627\u0644\u0645\u0624\u0633\u0633\u064a\u0629</div>'+
     '<div style="display:flex;gap:6px">'+
-    '<button onclick="memSetupGist()" style="background:rgba(196,154,60,.1);border:1px solid rgba(196,154,60,.25);color:#C49A3C;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">☁ Gist</button>'+
+    '<button onclick="memSetupGist()" style="background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.25);color:#B8860B;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">☁ Gist</button>'+
     '<button onclick="memExport()" style="background:rgba(26,168,134,.1);border:1px solid rgba(26,168,134,.2);color:#1AA886;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2b07 \u062a\u0635\u062f\u064a\u0631</button>'+
-    '<button onclick="this.closest(\'[style*=fixed]\').remove()" style="background:rgba(255,255,255,.05);border:none;color:#4A5568;width:26px;height:26px;border-radius:6px;cursor:pointer">\u2715</button>'+
+    '<button onclick="this.closest(\'[style*=fixed]\').remove()" style="background:rgba(255,255,255,.05);border:none;color:#7A6548;width:26px;height:26px;border-radius:6px;cursor:pointer">\u2715</button>'+
     '</div></div>'+
     '<div style="padding:14px 18px;overflow-y:auto;flex:1">'+h+'</div>';
   ov.appendChild(bx);document.body.appendChild(ov);}
@@ -2467,33 +2652,33 @@ function showSystemStatus(){
   var mc=0;
   try{mc=(JSON.parse(localStorage.getItem('sor_mem_v1')||'{}').sessions||[]).length;}catch(e){}
   var h='<div style="direction:rtl;font-family:Cairo,sans-serif;font-size:12px">';
-  h+='<div style="text-align:center;padding:10px;margin-bottom:10px;background:rgba(196,154,60,.06);border-radius:8px;border:1px solid rgba(196,154,60,.2)">';
-  h+='<span style="color:#C49A3C;font-weight:700;font-size:14px">SOR v8.1</span>';
+  h+='<div style="text-align:center;padding:10px;margin-bottom:10px;background:rgba(184,134,11,.06);border-radius:8px;border:1px solid rgba(184,134,11,.2)">';
+  h+='<span style="color:#B8860B;font-weight:700;font-size:14px">SOR v8.1</span>';
   h+=' &nbsp;|&nbsp; <span style="color:#1AA886">28 خبيراً</span>';
   h+=' &nbsp;|&nbsp; <span style="color:#1AA886">'+mc+' جلسة محفوظة</span></div>';
   h+='<div style="font-weight:700;color:#1AA886;margin-bottom:6px">✅ مُثبَّت ومقفول ('+LOCKED.length+')</div>';
   LOCKED.forEach(function(s){var p=s.split(':');
     h+='<div style="display:flex;gap:8px;margin-bottom:4px;padding:5px 8px;background:rgba(26,168,134,.04);border-radius:5px;border:1px solid rgba(26,168,134,.1)">';
     h+='<span style="color:#1AA886;font-family:monospace;min-width:80px;font-size:10px">'+p[0]+'</span>';
-    h+='<span style="color:#8A9BB0">'+p.slice(1).join(':')+'</span></div>';});
+    h+='<span style="color:#5C5040">'+p.slice(1).join(':')+'</span></div>';});
   h+='<div style="font-weight:700;color:#E24B4A;margin:10px 0 6px">❌ PENDING ('+PEND.length+')</div>';
   PEND.forEach(function(s){var p=s.split(':');
     h+='<div style="display:flex;gap:8px;margin-bottom:4px;padding:5px 8px;background:rgba(226,75,74,.04);border-radius:5px;border:1px solid rgba(226,75,74,.12)">';
     h+='<span style="color:#E24B4A;font-family:monospace;min-width:80px;font-size:10px">'+p[0]+'</span>';
-    h+='<span style="color:#8A9BB0">'+p.slice(1).join(':')+'</span></div>';});
+    h+='<span style="color:#5C5040">'+p.slice(1).join(':')+'</span></div>';});
   h+='</div>';
   var ov=document.createElement('div');
   ov.id='sorStat';
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
   ov.onclick=function(ev){if(ev.target===ov){var el=document.getElementById('sorStat');if(el)el.remove();}};
   var bx=document.createElement('div');
-  bx.style.cssText='background:#0D1220;border:1px solid rgba(196,154,60,.2);border-radius:12px;width:100%;max-width:460px;max-height:80vh;overflow-y:auto;padding:16px';
+  bx.style.cssText='background:#F0EDE6;border:1px solid rgba(184,134,11,.2);border-radius:12px;width:100%;max-width:460px;max-height:80vh;overflow-y:auto;padding:16px';
   var title=document.createElement('div');
-  title.style.cssText='font-size:14px;font-weight:700;color:#EAD8A0;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center';
+  title.style.cssText='font-size:14px;font-weight:700;color:#1A1208;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center';
   title.innerHTML='⯁ حالة النظام';
   var cb=document.createElement('button');
   cb.textContent='✕';
-  cb.style.cssText='background:rgba(255,255,255,.05);border:none;color:#4A5568;width:24px;height:24px;border-radius:5px;cursor:pointer';
+  cb.style.cssText='background:rgba(255,255,255,.05);border:none;color:#7A6548;width:24px;height:24px;border-radius:5px;cursor:pointer';
   cb.onclick=function(){var el=document.getElementById('sorStat');if(el)el.remove();};
   title.appendChild(cb);
   bx.appendChild(title);
@@ -2626,243 +2811,16 @@ function closeChat(){
 }
 
 
-// ✅ SOR-ADDED | EXPERT-CHAT-SYSTEM | v8.3
-var _chatExpert=null,_chatHistory=[],_chatRec=null,_chatActive=false,_chatSpeaking=false,_chatUtter=null;
-
-function openExpertChat(expertId){
-  var exp=(typeof EX!=='undefined'?EX:[]).find(function(e){return e.id===expertId;});
-  if(!exp){return;}
-  _chatExpert=exp;_chatHistory=[];
-  document.getElementById('echName').textContent=exp.name||exp.id;
-  document.getElementById('echRole').textContent=exp.role||'';
-  var av=document.getElementById('echAvatar');
-  if(av){av.textContent=exp.icon||'*';av.style.borderColor=exp.color||'#C49A3C';av.style.background=exp.cLight||'rgba(196,154,60,0.08)';}
-  document.getElementById('echMsgs').innerHTML='';
-  document.getElementById('echInterim').textContent='';
-  var welcome='\u0623\u0647\u0644\u0627\u064b\u060c \u0623\u0646\u0627 '+(exp.name||exp.id)+'. '+(exp.sig||'')+'. \u0643\u064a\u0641 \u064a\u0645\u0643\u0646\u0646\u064a \u0645\u0633\u0627\u0639\u062f\u062a\u0643\u061f';
-  addChatMsg('expert',welcome);
-  speakChatText(welcome,exp);
-  buildQuickBtns(exp);
-  setChatStatus('idle');
-  document.getElementById('expertChatOverlay').classList.add('open');
-  setTimeout(function(){var inp=document.getElementById('echInp');if(inp)inp.focus();},400);
-}
-
-function closeExpertChat(){
-  stopChatSpeak();stopChatVoiceRec();
-  document.getElementById('expertChatOverlay').classList.remove('open');
-  _chatExpert=null;_chatHistory=[];
-}
-
-function addChatMsg(role,text){
-  var msgs=document.getElementById('echMsgs');
-  if(!msgs)return;
-  var exp=_chatExpert;
-  var div=document.createElement('div');
-  div.className='ech-msg '+role;
-  var av=document.createElement('div');
-  av.className='ech-msg-avatar';
-  if(role==='expert'&&exp){
-    av.textContent=exp.icon||'E';
-    av.style.borderColor=exp.color||'#C49A3C';
-    av.style.background=exp.cLight||'rgba(196,154,60,0.08)';
-  } else {
-    av.textContent='U';
-    av.style.borderColor='rgba(255,255,255,0.1)';
-    av.style.background='rgba(255,255,255,0.04)';
-  }
-  var bbl=document.createElement('div');
-  bbl.className='ech-bubble';
-  bbl.textContent=text;
-  if(role==='user'){div.appendChild(bbl);div.appendChild(av);}
-  else{div.appendChild(av);div.appendChild(bbl);}
-  msgs.appendChild(div);
-  msgs.scrollTop=msgs.scrollHeight;
-  _chatHistory.push({role:role==='user'?'user':'assistant',content:text});
-}
-
-function showChatTyping(){
-  var msgs=document.getElementById('echMsgs');if(!msgs)return;
-  var div=document.createElement('div');div.id='echTyping';div.className='ech-msg expert';
-  var exp=_chatExpert;
-  var av=document.createElement('div');av.className='ech-msg-avatar';
-  av.textContent=exp?(exp.icon||'E'):'E';
-  av.style.borderColor=exp?(exp.color||'#C49A3C'):'#C49A3C';
-  av.style.background=exp?(exp.cLight||'rgba(196,154,60,0.08)'):'rgba(196,154,60,0.08)';
-  var tp=document.createElement('div');tp.className='ech-typing';
-  tp.innerHTML='<span></span><span></span><span></span>';
-  div.appendChild(av);div.appendChild(tp);
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
-}
-function hideChatTyping(){var el=document.getElementById('echTyping');if(el)el.remove();}
-
-async function sendChatMsg(){
-  var inp=document.getElementById('echInp');
-  if(!inp||!_chatExpert)return;
-  var msg=inp.value.trim();if(!msg)return;
-  inp.value='';
-  addChatMsg('user',msg);
-  setChatStatus('thinking');
-  showChatTyping();
-  try{
-    var sys=(_chatExpert.sys||'')+
-      '\n\n[\u0633\u064a\u0627\u0642] \u0623\u0646\u062a \u0641\u064a \u0645\u062d\u0627\u062f\u062b\u0629 \u0645\u0628\u0627\u0634\u0631\u0629. \u0631\u062f \u0628\u0627\u062e\u062a\u0635\u0627\u0631 3-4 \u062c\u0645\u0644 \u0641\u0642\u0637. \u0644\u0627 \u062a\u0643\u062a\u0628 \u062a\u0642\u0631\u064a\u0631\u0627\u064b \u0637\u0648\u064a\u0644\u0627\u064b.';
-    var msgs2=_chatHistory.slice(-8);
-    var r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:(typeof MDL!=='undefined'?MDL:'claude-sonnet-4-5-20251001'),
-        max_tokens:350,
-        system:sys,
-        messages:msgs2
-      })
-    });
-    if(!r.ok)throw new Error(r.status);
-    var data=await r.json();
-    var reply=(data.content&&data.content[0]&&data.content[0].text)?data.content[0].text:'\u0622\u0633\u0641\u060c \u062d\u062f\u062b \u062e\u0637\u0623.';
-    hideChatTyping();
-    addChatMsg('expert',reply);
-    setChatStatus('speaking');
-    speakChatText(reply,_chatExpert);
-  }catch(err){
-    hideChatTyping();
-    addChatMsg('expert','\u0622\u0633\u0641\u060c \u062d\u062f\u062b\u062a \u0645\u0634\u0643\u0644\u0629. \u062d\u0627\u0648\u0644 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.');
-    setChatStatus('idle');
-  }
-}
-
-function speakChatText(text,exp){
-  if(!window.speechSynthesis)return;
-  stopChatSpeak();
-  _chatSpeaking=true;setChatStatus('speaking');
-  var u=new SpeechSynthesisUtterance(text);
-  u.lang='ar-SA';u.rate=0.92;u.volume=1;
-  var pitches={foresight:0.9,financial:1.05,devil:0.82,verifier:0.95,strategic:1.0,legal:1.0,risk:0.88,digital:1.1};
-  u.pitch=pitches[exp?exp.id:'']||1.0;
-  var voices=window.speechSynthesis.getVoices();
-  var arV=voices.find(function(v){return v.lang==='ar-SA';})||voices.find(function(v){return v.lang.startsWith('ar');});
-  if(arV)u.voice=arV;
-  u.onend=function(){_chatSpeaking=false;setChatStatus('idle');if(_chatActive)setTimeout(startChatVoiceRec,300);};
-  u.onerror=function(){_chatSpeaking=false;setChatStatus('idle');};
-  _chatUtter=u;window.speechSynthesis.speak(u);
-}
-function stopChatSpeak(){if(window.speechSynthesis)window.speechSynthesis.cancel();_chatSpeaking=false;}
-
-function toggleChatVoice(){
-  if(_chatSpeaking){stopChatSpeak();return;}
-  if(_chatActive)stopChatVoiceRec();else startChatVoiceRec();
-}
-function startChatVoiceRec(){
-  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){alert('Chrome \u0641\u0642\u0637');return;}
-  if(_chatRec){try{_chatRec.abort();}catch(e){}}_chatRec=null;
-  var rec=new SR();
-  rec.lang='ar-SA';rec.continuous=false;rec.interimResults=true;
-  rec.onstart=function(){_chatActive=true;setChatStatus('listening');};
-  rec.onresult=function(ev){
-    var fin='',interim='';
-    for(var i=ev.resultIndex;i<ev.results.length;i++){
-      if(ev.results[i].isFinal)fin+=ev.results[i][0].transcript;
-      else interim+=ev.results[i][0].transcript;
-    }
-    var it=document.getElementById('echInterim');
-    if(it)it.textContent=interim?'... '+interim:'';
-    if(fin.trim()){
-      if(it)it.textContent='';
-      var inp=document.getElementById('echInp');
-      if(inp)inp.value=fin.trim();
-      sendChatMsg();
-    }
-  };
-  rec.onerror=function(ev){if(ev.error!=='no-speech'){_chatActive=false;setChatStatus('idle');}};
-  rec.onend=function(){_chatActive=false;if(!_chatSpeaking)setChatStatus('idle');};
-  _chatRec=rec;
-  try{rec.start();}catch(e){_chatRec=null;}
-}
-function stopChatVoiceRec(){
-  _chatActive=false;
-  if(_chatRec){try{_chatRec.abort();}catch(e){}}_chatRec=null;
-  setChatStatus('idle');
-}
-
-function setChatStatus(state){
-  var el=document.getElementById('echStatus');
-  var txt=document.getElementById('echStatusTxt');
-  var btn=document.getElementById('echMicBtn');
-  var wav=document.getElementById('echWave');
-  if(!el)return;
-  el.className='ech-status '+state;
-  var labels={idle:'\u062c\u0627\u0647\u0632',listening:'\u064a\u0633\u062a\u0645\u0639...',thinking:'\u064a\u0641\u0643\u0651\u0631...',speaking:'\u064a\u062a\u062d\u062f\u062b...'};
-  if(txt)txt.textContent=labels[state]||'';
-  var icons={idle:'mic',listening:'stop',thinking:'...',speaking:'vol'};
-  if(btn){
-    btn.className='ech-mic-btn '+(state==='listening'?'listening':state==='speaking'?'speaking':'idle');
-    btn.innerHTML=state==='listening'?'&#128308;':state==='speaking'?'&#128264;':'&#127908;';
-  }
-  if(wav)wav.style.display=state==='speaking'?'flex':'none';
-}
-
-function buildQuickBtns(exp){
-  var c=document.getElementById('echQuickBtns');if(!c)return;
-  var qs={
-    strategic:['\u0645\u0627 \u0623\u0643\u0628\u0631 \u0645\u062e\u0627\u0637\u0631\u0629 \u0647\u064a\u0643\u0644\u064a\u0629\u061f','\u0645\u0627 \u0627\u0644\u0645\u064a\u0632\u0629 \u0627\u0644\u062a\u0646\u0627\u0641\u0633\u064a\u0629\u061f','\u0623\u0633\u0648\u0623 \u0633\u064a\u0646\u0627\u0631\u064a\u0648'],
-    financial: ['\u0643\u064a\u0641 \u062a\u0642\u064a\u0651\u0645 \u0627\u0644\u062c\u062f\u0648\u0649\u061f','\u0645\u0627 \u0627\u0644\u0645\u062e\u0627\u0637\u0631 \u0627\u0644\u062e\u0641\u064a\u0629\u061f','\u062a\u0648\u0635\u064a\u062a\u0643 \u0644\u0644\u062a\u0645\u0648\u064a\u0644'],
-    foresight: ['\u0623\u0633\u0648\u0623 \u0633\u064a\u0646\u0627\u0631\u064a\u0648','\u0627\u0644\u0639\u0627\u0644\u0645 \u0628\u0639\u062f 5 \u0633\u0646\u0648\u0627\u062a','\u0625\u0634\u0627\u0631\u0627\u062a \u0645\u0628\u0643\u0631\u0629'],
-    risk:      ['Kill Switch \u0627\u0644\u0645\u0642\u062a\u0631\u062d','\u0645\u0633\u062a\u0648\u0649 \u0627\u0644\u062e\u0637\u0648\u0631\u0629','\u062e\u0637\u0629 \u0627\u0644\u0637\u0648\u0627\u0631\u0626'],
-    devil:     ['\u0623\u0643\u0628\u0631 \u0627\u0646\u062a\u0642\u0627\u062f\u0643','\u0644\u0645\u0627\u0630\u0627 \u0633\u064a\u0641\u0634\u0644\u061f','\u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636 \u0627\u0644\u0632\u0627\u0626\u0641'],
-  };
-  var list=qs[exp.id]||['\u0634\u0631\u062d \u062a\u062d\u0644\u064a\u0644\u0643','\u0645\u0627 \u062a\u0648\u0635\u064a\u062a\u0643\u061f','\u0645\u0627 \u062a\u062d\u0641\u0638\u0643\u061f'];
-  c.innerHTML=list.map(function(q){
-    return '<button class="ech-quick-btn" onclick="quickAsk(this.textContent)">'+q+'</button>';
-  }).join('');
-}
-function quickAsk(q){
-  var inp=document.getElementById('echInp');
-  if(inp){inp.value=q;sendChatMsg();}
-}
+// chat system removed
+// ✅ SOR-ADDED | PRIVACY-MODAL | v8.3
+function openPrivacy(){ document.getElementById('privacyModal').classList.add('open'); }
+function closePrivacy(){ document.getElementById('privacyModal').classList.remove('open'); }
+// إغلاق بالضغط خارج النافذة
+document.getElementById('privacyModal').addEventListener('click',function(e){
+  if(e.target===this) closePrivacy();
+});
 
 </script>
-
-<!-- ✅ SOR-ADDED | EXPERT-CHAT-MODAL | v8.3 | محادثة مباشرة مع الخبير -->
-<div class="expert-chat-overlay" id="expertChatOverlay" onclick="if(event.target===this)closeExpertChat()">
-  <div class="expert-chat-modal">
-    <!-- HEADER -->
-    <div class="ech-hdr">
-      <div class="ech-avatar" id="echAvatar">🧠</div>
-      <div>
-        <div class="ech-name" id="echName">د. أحمد الشريف</div>
-        <div class="ech-role" id="echRole">مستشار استراتيجية مؤسسية</div>
-      </div>
-      <button class="ech-close" onclick="closeExpertChat()">✕</button>
-    </div>
-
-    <!-- STATUS -->
-    <div class="ech-status idle" id="echStatus">
-      <div class="ech-status-dot"></div>
-      <span class="ech-status-txt" id="echStatusTxt">جاهز للمحادثة</span>
-      <div class="voice-wave" id="echWave" style="display:none">
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
-    </div>
-
-    <!-- MESSAGES -->
-    <div class="ech-msgs" id="echMsgs"></div>
-
-    <!-- INTERIM -->
-    <div class="ech-interim" id="echInterim"></div>
-
-    <!-- INPUT -->
-    <div class="ech-input-area">
-      <div class="ech-actions" id="echQuickBtns"></div>
-      <div class="ech-inp-row">
-        <button class="ech-mic-btn idle" id="echMicBtn" onclick="toggleChatVoice()" title="تحدث">🎤</button>
-        <input class="ech-inp" id="echInp" placeholder="اكتب سؤالك للخبير..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}">
-        <button class="ech-send-btn" onclick="sendChatMsg()">↑</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
